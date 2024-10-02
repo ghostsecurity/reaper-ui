@@ -82,4 +82,14 @@ const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
 }
+
+// TODO: fix this
+function onCollapse() {
+  isCollapsed.value = true
+}
+
+function onExpand() {
+  isCollapsed.value = false
+}
+
 </script>

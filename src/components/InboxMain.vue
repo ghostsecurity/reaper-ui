@@ -53,7 +53,6 @@ import { refDebounced } from '@vueuse/core'
 import type { Mail } from '../data/mails'
 import MailList from './MailList.vue'
 import MailDisplay from './MailDisplay.vue'
-import Nav, { type LinkProp } from './SideNav.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import {
@@ -67,13 +66,11 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 // data
 import { mails } from '../data/mails'
 
-const isCollapsed = ref(false)
 const selectedMail = ref<string | undefined>(mails[0].id)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
 const defaultLayout = ref([20, 20, 60])
-const navCollapsedSize = ref(2)
 
 const filteredMailList = computed(() => {
   let output: Mail[] = []
@@ -97,12 +94,4 @@ const filteredMailList = computed(() => {
 const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read))
 
 const selectedMailData = computed(() => mails.find(item => item.id === selectedMail.value))
-
-function onCollapse() {
-  isCollapsed.value = true
-}
-
-function onExpand() {
-  isCollapsed.value = false
-}
 </script>

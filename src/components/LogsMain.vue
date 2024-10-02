@@ -42,13 +42,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { Search } from 'lucide-vue-next'
-
-import { computed, ref } from 'vue'
-import { refDebounced } from '@vueuse/core'
-import type { Mail } from '../data/mails'
 import LogsList from './LogsList.vue'
-import Nav, { type LinkProp } from './SideNav.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import {
@@ -60,45 +56,11 @@ import {
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 // data
-import { mails } from '../data/mails'
-import { logs } from '../data/logs'
 
-const isCollapsed = ref(false)
+import { logs } from '../data/logs'
 const selectedMail = ref<string | undefined>(logs[0].id)
 const searchValue = ref('')
-const debouncedSearch = refDebounced(searchValue, 250)
 
 const defaultLayout = ref([8, 92])
-const navCollapsedSize = ref(2)
 
-const filteredMailList = computed(() => {
-  let output: Mail[] = []
-  const searchValue = debouncedSearch.value?.trim()
-  if (!searchValue) {
-    output = logs
-  }
-  else {
-    output = logs.filter((item) => {
-      return item.name.includes(debouncedSearch.value)
-        || item.email.includes(debouncedSearch.value)
-        || item.name.includes(debouncedSearch.value)
-        || item.subject.includes(debouncedSearch.value)
-        || item.text.includes(debouncedSearch.value)
-    })
-  }
-
-  return output
-})
-
-const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read))
-
-const selectedMailData = computed(() => mails.find(item => item.id === selectedMail.value))
-
-function onCollapse() {
-  isCollapsed.value = true
-}
-
-function onExpand() {
-  isCollapsed.value = false
-}
 </script>
