@@ -1,6 +1,6 @@
 <template>
   <ScrollArea class="flex h-screen">
-    <div class="divide-y divide-dashed divide-zinc-200">
+    <div class="divide-y divide-dashed divide-zinc-200 dark:divide-zinc-700">
       <TransitionGroup name="list" appear>
         <button
           v-for="item of items"
@@ -13,19 +13,19 @@
         >
           <div class="flex w-full gap-1">
             <div class="flex w-56 space-x-2">
-              <div class="font-mono text-xs text-muted-foreground">
+              <div class="text-xs text-muted-foreground">
                 {{ formatDate(item.timestamp) }}
               </div>
-              <div class="text-center font-mono text-xs font-semibold uppercase">
+              <div class="text-center text-xs font-semibold uppercase">
                 {{ item.severity }}
               </div>
             </div>
             <div class="w-full">
               <div class="flex flex-wrap text-xs font-medium text-muted-foreground">
                 {{ item.message }}
-                <div v-for="value, key of rest(item)" :key="key" class="px-1">
-                  <span class="log-key rounded-sm bg-blue-50 px-1 py-0 text-xs font-semibold lowercase text-blue-500">{{ value[0] }}:</span>
-                  <span class="log-value pl-1 text-xs font-medium text-muted-foreground">{{ value[1] }}</span>
+                <div v-for="value, key of rest(item)" :key="key" class="px-1 text-2xs">
+                  <span class="log-key rounded-sm bg-blue-50 px-1 py-0 font-mono lowercase text-blue-500 dark:bg-blue-950 dark:text-blue-400">{{ value[0] }}:</span>
+                  <span class="log-value pl-1 font-mono font-normal text-muted-foreground">{{ value[1] }}</span>
                 </div>
               </div>
             </div>
