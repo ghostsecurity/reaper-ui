@@ -6,18 +6,17 @@
       <template v-for="(link, index) of links">
         <Tooltip v-if="isCollapsed" :key="`1-${index}`" :delay-duration="0">
           <TooltipTrigger as-child>
-            <a
-              href="#"
+            <router-link
+              :to="link.href ?? '#'"
               :class="cn(
-                buttonVariants({ variant: link.variant, size: 'icon' }),
+                buttonVariants({ variant: isActiveRoute(link.href) ? 'default' : 'ghost', size: 'icon' }),
                 'h-9 w-9',
-                link.variant === 'default'
-                  && 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
+                isActiveRoute(link.href) && 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
               )"
             >
               <Icon :icon="link.icon" class="size-4" />
               <span class="sr-only">{{ link.title }}</span>
-            </a>
+            </router-link>
           </TooltipTrigger>
           <TooltipContent side="right" class="flex items-center gap-4">
             {{ link.title }}
@@ -27,14 +26,13 @@
           </TooltipContent>
         </Tooltip>
 
-        <a
+        <router-link
           v-else
           :key="`2-${index}`"
-          href="#"
+          :to="link.href ?? '#'"
           :class="cn(
-            buttonVariants({ variant: link.variant, size: 'sm' }),
-            link.variant === 'default'
-              && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+            buttonVariants({ variant: isActiveRoute(link.href) ? 'default' : 'ghost', size: 'sm' }),
+            isActiveRoute(link.href) && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
             'justify-start',
           )"
         >
@@ -44,12 +42,11 @@
             v-if="link.label"
             :class="cn(
               'ml-auto',
-              link.variant === 'default'
-                && 'text-background dark:text-white',
+              isActiveRoute(link.href) && 'text-background dark:text-white',
             )">
             {{ link.label }}
           </span>
-        </a>
+        </router-link>
       </template>
     </nav>
   </div>
@@ -57,6 +54,7 @@
 
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
+import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import {
@@ -69,7 +67,7 @@ export interface LinkProp {
   title: string
   label?: string
   icon: string
-  variant: 'default' | 'ghost'
+  href?: string
 }
 
 interface NavProps {
@@ -78,4 +76,10 @@ interface NavProps {
 }
 
 defineProps<NavProps>()
+const route = useRoute()
+
+const isActiveRoute = (href: string | undefined) => {
+  if (!href) return false
+  return route.path === href
+}
 </script>

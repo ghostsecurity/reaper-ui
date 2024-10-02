@@ -80,7 +80,7 @@ import type { Mail } from '../data/mails'
 import AccountSwitcher from './AccountSwitcher.vue'
 import MailList from './MailList.vue'
 import MailDisplay from './MailDisplay.vue'
-import Nav, { type LinkProp } from './Nav.vue'
+import Nav, { type LinkProp } from './SideNav.vue'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
@@ -92,38 +92,25 @@ import {
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+// data
+import { accounts, mails } from '../data/mails'
 
-interface MailProps {
-  accounts: {
-    label: string
-    email: string
-    icon: string
-  }[]
-  mails: Mail[]
-  defaultLayout?: number[]
-  defaultCollapsed?: boolean
-  navCollapsedSize: number
-}
-
-const props = withDefaults(defineProps<MailProps>(), {
-  defaultCollapsed: false,
-  defaultLayout: () => [20, 20, 60],
-})
-
-const isCollapsed = ref(props.defaultCollapsed)
-const selectedMail = ref<string | undefined>(props.mails[0].id)
+const isCollapsed = ref(false)
+const selectedMail = ref<string | undefined>(mails[0].id)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
+
+const defaultLayout = ref([20, 20, 60])
+const navCollapsedSize = ref(2)
 
 const filteredMailList = computed(() => {
   let output: Mail[] = []
   const searchValue = debouncedSearch.value?.trim()
   if (!searchValue) {
-    output = props.mails
+    output = mails
   }
-
   else {
-    output = props.mails.filter((item) => {
+    output = mails.filter((item) => {
       return item.name.includes(debouncedSearch.value)
         || item.email.includes(debouncedSearch.value)
         || item.name.includes(debouncedSearch.value)
@@ -137,68 +124,61 @@ const filteredMailList = computed(() => {
 
 const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read))
 
-const selectedMailData = computed(() => props.mails.find(item => item.id === selectedMail.value))
+const selectedMailData = computed(() => mails.find(item => item.id === selectedMail.value))
 
 const links: LinkProp[] = [
   {
     title: 'Explore',
     label: '1,289',
     icon: 'lucide:earth',
-    variant: 'ghost',
+    href: '/explore',
   },
   {
     title: 'Inbox',
     label: '1',
     icon: 'lucide:inbox',
-    variant: 'default',
+    href: '/inbox',
   },
   {
     title: 'Scan',
     label: '9',
     icon: 'lucide:binoculars',
-    variant: 'ghost',
   },
   {
     title: 'Tamper',
     label: '',
     icon: 'lucide:pocket-knife',
-    variant: 'ghost',
   },
   {
     title: 'Fuzz',
     label: '23k',
     icon: 'lucide:repeat-1',
-    variant: 'ghost',
   },
   {
     title: 'Replay',
     label: '',
     icon: 'lucide:replace-all',
-    variant: 'ghost',
   },
   {
     title: 'Collaborate',
     label: '',
     icon: 'lucide:users',
-    variant: 'ghost',
   },
   {
     title: 'AI Assist',
     label: '',
     icon: 'lucide:brain-circuit',
-    variant: 'ghost',
   },
   {
     title: 'Logs',
     label: '',
     icon: 'lucide:scroll-text',
-    variant: 'ghost',
+    href: '/logs',
   },
   {
     title: 'Settings',
     label: '',
     icon: 'lucide:settings',
-    variant: 'ghost',
   },
 ]
 
@@ -207,37 +187,31 @@ const links2: LinkProp[] = [
     title: 'Image',
     label: '972',
     icon: 'lucide:file-image',
-    variant: 'ghost',
   },
   {
     title: 'Font',
     label: '342',
     icon: 'lucide:file-type',
-    variant: 'ghost',
   },
   {
     title: 'CSS',
     label: '128',
     icon: 'lucide:file-axis-3d',
-    variant: 'ghost',
   },
   {
     title: 'JSON',
     label: '8',
     icon: 'lucide:file-json',
-    variant: 'ghost',
   },
   {
     title: 'Form',
     label: '21',
     icon: 'lucide:file-code',
-    variant: 'ghost',
   },
   {
     title: 'Other',
     label: '21',
     icon: 'lucide:file-question',
-    variant: 'ghost',
   },
 ]
 
