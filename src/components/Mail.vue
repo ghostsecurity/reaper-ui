@@ -3,7 +3,7 @@
     <ResizablePanelGroup
       id="resize-panel-group-1"
       direction="horizontal"
-      class="h-full max-h-[800px] items-stretch"
+      class="h-full items-stretch"
     >
       <ResizablePanel
         id="resize-panel-1"
@@ -143,37 +143,37 @@ const selectedMailData = computed(() => props.mails.find(item => item.id === sel
 
 const links: LinkProp[] = [
   {
-    title: 'Inbox',
+    title: 'Explore',
     label: '128',
     icon: 'lucide:inbox',
     variant: 'default',
   },
   {
-    title: 'Drafts',
+    title: 'Scan',
     label: '9',
     icon: 'lucide:file',
     variant: 'ghost',
   },
   {
-    title: 'Sent',
+    title: 'Tamper',
     label: '',
     icon: 'lucide:send',
     variant: 'ghost',
   },
   {
-    title: 'Junk',
+    title: 'Fuzz',
     label: '23',
     icon: 'lucide:archive',
     variant: 'ghost',
   },
   {
-    title: 'Trash',
+    title: 'Replay',
     label: '',
     icon: 'lucide:trash',
     variant: 'ghost',
   },
   {
-    title: 'Archive',
+    title: 'Collaborate',
     label: '',
     icon: 'lucide:archive',
     variant: 'ghost',
@@ -182,31 +182,31 @@ const links: LinkProp[] = [
 
 const links2: LinkProp[] = [
   {
-    title: 'Social',
+    title: 'Image',
     label: '972',
     icon: 'lucide:user-2',
     variant: 'ghost',
   },
   {
-    title: 'Updates',
+    title: 'Font',
     label: '342',
     icon: 'lucide:alert-circle',
     variant: 'ghost',
   },
   {
-    title: 'Forums',
+    title: 'CSS',
     label: '128',
     icon: 'lucide:message-square',
     variant: 'ghost',
   },
   {
-    title: 'Shopping',
+    title: 'JSON',
     label: '8',
     icon: 'lucide:shopping-cart',
     variant: 'ghost',
   },
   {
-    title: 'Promotions',
+    title: 'Form',
     label: '21',
     icon: 'lucide:archive',
     variant: 'ghost',

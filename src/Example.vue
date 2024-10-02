@@ -15,7 +15,7 @@
       class="block dark:hidden"
     />
   </div>
-  <div class="hidden flex-col md:flex">
+  <div id="foo" class="hidden h-full flex-col md:flex">
     <Mail
       :accounts="accounts"
       :mails="mails"

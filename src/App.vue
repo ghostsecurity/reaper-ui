@@ -1,6 +1,6 @@
 <template>
-  <div class="flex min-h-screen flex-col bg-background">
-    <main class="container">
+  <div class="flex h-screen flex-col bg-background">
+    <main class="container flex-1 overflow-auto">
       <Dashboard />
     </main>
   </div>
