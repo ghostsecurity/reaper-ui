@@ -10,8 +10,8 @@
         :default-size="defaultLayout[0]"
         :collapsed-size="navCollapsedSize"
         collapsible
-        :min-size="15"
-        :max-size="20"
+        :min-size="10"
+        :max-size="15"
         :class="cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')"
         @expand="onExpand"
         @collapse="onCollapse"
@@ -51,7 +51,7 @@
             <form>
               <div class="relative">
                 <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-                <Input v-model="searchValue" placeholder="Search" class="pl-8" />
+                <Input v-model="searchValue" placeholder="filter..." class="pl-8" />
               </div>
             </form>
           </div>
@@ -72,9 +72,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  Search,
-} from 'lucide-vue-next'
+import { Search } from 'lucide-vue-next'
 
 import { computed, ref } from 'vue'
 import { refDebounced } from '@vueuse/core'
@@ -109,7 +107,7 @@ interface MailProps {
 
 const props = withDefaults(defineProps<MailProps>(), {
   defaultCollapsed: false,
-  defaultLayout: () => [265, 440, 655],
+  defaultLayout: () => [20, 20, 60],
 })
 
 const isCollapsed = ref(props.defaultCollapsed)
@@ -174,6 +172,12 @@ const links: LinkProp[] = [
   },
   {
     title: 'Collaborate',
+    label: '',
+    icon: 'lucide:archive',
+    variant: 'ghost',
+  },
+  {
+    title: 'AI Assist',
     label: '',
     icon: 'lucide:archive',
     variant: 'ghost',

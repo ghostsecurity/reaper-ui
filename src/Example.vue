@@ -19,7 +19,7 @@
     <Mail
       :accounts="accounts"
       :mails="mails"
-      :nav-collapsed-size="4"
+      :nav-collapsed-size="2"
     />
   </div>
 </template>
