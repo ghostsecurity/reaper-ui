@@ -176,8 +176,8 @@ export type Mail = (typeof mails)[number]
 export const accounts = [
   {
     label: 'ghostbank',
-    email: 'vercel-prod',
-    icon: 'ion:logo-vercel',
+    email: 'ghostbank',
+    icon: 'lucide:ghost',
   },
   {
     label: 'homedepot',

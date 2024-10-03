@@ -39,58 +39,69 @@ const links: LinkProp[] = [
     label: '1,289',
     icon: 'lucide:earth',
     href: '/explore',
+    shortcut: 'E'
   },
   {
     title: 'Inbox',
     label: '1',
     icon: 'lucide:inbox',
     href: '/inbox',
+    shortcut: 'I'
   },
   {
     title: 'Scan',
     label: '9',
     icon: 'lucide:binoculars',
+    shortcut: 'S'
   },
   {
     title: 'Tamper',
     label: '',
     icon: 'lucide:pocket-knife',
+    shortcut: 'T'
   },
   {
     title: 'Fuzz',
     label: '23k',
     icon: 'lucide:repeat-1',
+    shortcut: 'F'
   },
   {
     title: 'Replay',
     label: '',
     icon: 'lucide:replace-all',
+    shortcut: 'R'
   },
   {
     title: 'Automate',
     label: '',
     icon: 'lucide:waypoints',
+    shortcut: 'A'
   },
   {
     title: 'Collaborate',
     label: '',
     icon: 'lucide:users',
+    shortcut: 'C'
   },
   {
     title: 'AI Assist',
     label: '',
     icon: 'lucide:brain-circuit',
+    shortcut: 'X'
   },
   {
     title: 'Logs',
     label: '',
     icon: 'lucide:scroll-text',
     href: '/logs',
+    shortcut: 'L'
   },
   {
     title: 'Settings',
     label: '',
     icon: 'lucide:settings',
+    shortcut: '.'
   },
 ]
 

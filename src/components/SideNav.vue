@@ -38,6 +38,7 @@
         >
           <Icon :icon="link.icon" class="mr-2 size-4" />
           {{ link.title }}
+          <span v-if="showShortcuts" class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-muted-foreground">{{ link.shortcut }}</span>
           <span
             v-if="link.label"
             :class="cn(
@@ -53,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
@@ -68,6 +70,7 @@ export interface LinkProp {
   label?: string
   icon: string
   href?: string
+  shortcut?: string
 }
 
 interface NavProps {
@@ -77,19 +80,31 @@ interface NavProps {
 
 defineProps<NavProps>()
 const route = useRoute()
-
+const showShortcuts = ref(false)
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
 }
 
-// TODO: fix this
-function onCollapse() {
-  isCollapsed.value = true
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Meta' || event.key === 'Control') {
+    showShortcuts.value = true
+  }
 }
 
-function onExpand() {
-  isCollapsed.value = false
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key === 'Meta' || event.key === 'Control') {
+    showShortcuts.value = false
+  }
 }
 
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
+})
 </script>

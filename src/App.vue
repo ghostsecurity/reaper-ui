@@ -7,6 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import Dashboard from './Example.vue'
+import Dashboard from './ExampleMain.vue'
 </script>
 
