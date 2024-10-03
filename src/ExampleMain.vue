@@ -42,20 +42,13 @@ const links: LinkProp[] = [
     shortcut: 'E'
   },
   {
-    title: 'Inbox',
-    label: '1',
-    icon: 'lucide:inbox',
-    href: '/inbox',
-    shortcut: 'I'
-  },
-  {
     title: 'Scan',
     label: '9',
     icon: 'lucide:binoculars',
     shortcut: 'S'
   },
   {
-    title: 'Tamper',
+    title: 'Tamper/Attack',
     label: '',
     icon: 'lucide:pocket-knife',
     shortcut: 'T'
@@ -70,6 +63,7 @@ const links: LinkProp[] = [
     title: 'Replay',
     label: '',
     icon: 'lucide:replace-all',
+    href: '/replay',
     shortcut: 'R'
   },
   {
@@ -98,10 +92,17 @@ const links: LinkProp[] = [
     shortcut: 'L'
   },
   {
+    title: 'Inbox Temp',
+    label: '1',
+    icon: 'lucide:inbox',
+    href: '/inbox',
+    shortcut: 'I'
+  },
+  {
     title: 'Settings',
     label: '',
     icon: 'lucide:settings',
-    shortcut: '.'
+    shortcut: ','
   },
 ]
 
@@ -123,13 +124,18 @@ const links2: LinkProp[] = [
   },
   {
     title: 'JSON',
-    label: '8',
+    label: '2.3MB',
     icon: 'lucide:file-json',
   },
   {
     title: 'Form',
     label: '21',
     icon: 'lucide:file-code',
+  },
+  {
+    title: 'WebSocket',
+    label: '2',
+    icon: 'lucide:file-cog',
   },
   {
     title: 'Other',

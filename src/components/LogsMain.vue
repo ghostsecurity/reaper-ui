@@ -4,8 +4,8 @@
       id="resize-panel-group-1"
       direction="horizontal"
       class="h-full items-stretch">
-      <ResizableHandle id="resize-handle-1" />
-      <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[1]" :min-size="30">
+      <Separator orientation="vertical" />
+      <div>
         <Tabs default-value="live">
           <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
@@ -36,7 +36,7 @@
             <LogsList v-model:selected-mail="selectedMail" :items="logs" />
           </TabsContent>
         </Tabs>
-      </ResizablePanel>
+      </div>
     </ResizablePanelGroup>
   </TooltipProvider>
 </template>

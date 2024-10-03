@@ -38,7 +38,7 @@
         >
           <Icon :icon="link.icon" class="mr-2 size-4" />
           {{ link.title }}
-          <span v-if="showShortcuts" class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-muted-foreground">{{ link.shortcut }}</span>
+          <span v-if="showShortcuts" class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-2xs text-muted-foreground">{{ link.shortcut }}</span>
           <span
             v-if="link.label"
             :class="cn(
