@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen flex-col bg-background">
     <main class="container flex-1 overflow-auto">
-      <Dashboard :wsConnected="wsConnected"/>
+      <Dashboard :wsConnected="wsConnected" />
     </main>
   </div>
 </template>
@@ -11,17 +11,15 @@ import { ref, type Ref, onMounted, onUnmounted } from 'vue'
 import Dashboard from './ExampleMain.vue'
 
 /**
- * Websocket stuff
+ * Websocket connection handling
  */
- const wsConnected: Ref<boolean> = ref(false)
+const wsConnected: Ref<boolean> = ref(false)
 const wsStreamUrl: string = import.meta.env.VITE_WS_URL
 const MAX_RECONNECT_ATTEMPTS = 25
-const HEARTBEAT_INTERVAL = 5000 // 5 seconds
+const HEARTBEAT_INTERVAL = 5000
 let ws: WebSocket | null = null
 let heartbeatInterval: NodeJS.Timeout | null = null
 let reconnectAttempts = 0
-/* end websocket stuff */
-
 
 function connectWebSocket() {
   ws = new WebSocket(wsStreamUrl)
@@ -29,9 +27,9 @@ function connectWebSocket() {
   ws.onopen = () => {
     wsConnected.value = true;
     console.log("[ws] WebSocket connected")
-    reconnectAttempts = 0; // reset the reconnect attempts on a successful connection
+    reconnectAttempts = 0 // reset the reconnect attempts on a successful connection
     startHeartbeat()
-  };
+  }
 
   ws.onclose = (event) => {
     wsConnected.value = false
@@ -39,12 +37,12 @@ function connectWebSocket() {
       reconnect()
     }
     stopHeartbeat()
-  };
+  }
 
   ws.onerror = (error) => {
     console.error("[ws] WebSocket error:", error)
     ws?.close()
-  };
+  }
 
   // event received
   ws.onmessage = (e) => {
@@ -55,9 +53,20 @@ function connectWebSocket() {
     }
 
     const data = JSON.parse(payload)
-    if (data.type === "page") {
-      // we got a browser navigation page
-      console.log("log:", data)
+    switch (data.type) {
+      case "debug":
+        // we got a debug log
+        console.log("log:", data)
+        break
+      case "host":
+        console.error("host:", data)
+        break
+      case "domain":
+        console.error("domain:", data)
+        break
+      default:
+        console.log("unknown message type:", data)
+        break
     }
   }
 }
@@ -90,18 +99,14 @@ function stopHeartbeat() {
   }
 }
 
-
-
-
 onMounted(() => {
   connectWebSocket();
-});
+})
 
 onUnmounted(() => {
   if (ws) {
     ws.close();
   }
-});
+})
 
 </script>
-
