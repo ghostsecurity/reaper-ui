@@ -11,7 +11,7 @@ interface UtilStore {
   timeAgoInWords: (ts: number) => string
 }
 
-export function useConfigStore(): UtilStore {
+export function useUtilStore(): UtilStore {
 
   const localeTimestamp = (ts: number) => {
     const date = new Date(ts * 1000)
@@ -53,7 +53,7 @@ export function useConfigStore(): UtilStore {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     })
-  
+
     return formatter.format(n);
   }
 
@@ -62,7 +62,7 @@ export function useConfigStore(): UtilStore {
       minimumFractionDigits: 0,
       maximumFractionDigits: 1
     })
-  
+
     if (n >= 1000) {
       // Format the number as "K" (thousands) when it's 1000 or greater
       return formatter.format(n / 1000) + 'K';
@@ -71,12 +71,12 @@ export function useConfigStore(): UtilStore {
   }
 
 
-	return {
+  return {
     customNumberFormat,
     customNumberFormatK,
     localeTimestamp,
     localeTimestampShort,
     localeDate,
     timeAgoInWords
-	}
+  }
 }

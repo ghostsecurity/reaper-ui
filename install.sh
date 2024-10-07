@@ -7,7 +7,8 @@ yarn add axios \
   typescript \
   vite \
   vue \
-  vue-router@4
+  vue-router@4 \
+  pinia
 
 # dev deps
 yarn add -D autoprefixer \

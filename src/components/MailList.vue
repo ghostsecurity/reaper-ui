@@ -1,32 +1,30 @@
 <template>
   <ScrollArea class="flex h-screen">
-    <div class="flex flex-1 flex-col gap-2 p-4 pt-0">
-      <TransitionGroup name="list" appear>
-        <button
-          v-for="item of items"
-          :key="item.id"
-          :class="cn(
-            'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedMail === item.id && 'bg-muted',
-          )"
-          @click="selectedMail = item.id"
-        >
+    <div class="flex flex-1 flex-col gap-2 p-2 pt-0">
+      <TransitionGroup name="list"
+                       appear>
+        <button v-for="item of items"
+                :key="item.id"
+                :class="cn(
+                  'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
+                  selectedMail === item.id && 'bg-muted',
+                )"
+                @click="selectedMail = item.id">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <div class="font-semibold">
                   {{ item.name }}
                 </div>
-                <span v-if="!item.read" class="flex size-2 rounded-full bg-blue-600" />
+                <span v-if="!item.read"
+                      class="flex size-2 rounded-full bg-blue-600" />
               </div>
-              <div
-                :class="cn(
-                  'ml-auto text-xs',
-                  selectedMail === item.id
-                    ? 'text-foreground'
-                    : 'text-muted-foreground',
-                )"
-              >
+              <div :class="cn(
+                'ml-auto text-xs',
+                selectedMail === item.id
+                  ? 'text-foreground'
+                  : 'text-muted-foreground',
+              )">
                 {{ formatDistanceToNow(new Date(item.date), { addSuffix: true }) }}
               </div>
             </div>
@@ -39,7 +37,9 @@
             {{ item.text.substring(0, 300) }}
           </div>
           <div class="flex items-center gap-2">
-            <Badge v-for="label of item.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
+            <Badge v-for="label of item.labels"
+                   :key="label"
+                   :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge>
           </div>
@@ -90,4 +90,5 @@ function getBadgeVariantFromLabel(label: string) {
 
   return 'secondary'
 }
+
 </script>

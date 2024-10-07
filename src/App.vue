@@ -9,6 +9,9 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted, onUnmounted } from 'vue'
 import Dashboard from './ExampleMain.vue'
+import { useExploreStore } from '@/stores/explore'
+
+const exploreStore = useExploreStore()
 
 /**
  * Websocket connection handling
@@ -44,7 +47,7 @@ function connectWebSocket() {
     ws?.close()
   }
 
-  // event received
+  // Update the WebSocket message handler
   ws.onmessage = (e) => {
     const payload = e.data
 
@@ -55,14 +58,21 @@ function connectWebSocket() {
     const data = JSON.parse(payload)
     switch (data.type) {
       case "debug":
-        // we got a debug log
         console.log("log:", data)
         break
-      case "host":
-        console.error("host:", data)
+      case "explore_host":
+        console.info("explore_host:", data)
+        exploreStore.addHost(data)
         break
-      case "domain":
-        console.error("domain:", data)
+      case "explore_endpoint":
+        console.info("explore_endpoint:", data)
+        exploreStore.addEndpoint(data.host, data)
+        break
+      case "scan_domain":
+        console.info("scan_domain:", data)
+        break
+      case "scan_host":
+        console.info("scan_host:", data)
         break
       default:
         console.log("unknown message type:", data)
@@ -104,9 +114,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (ws) {
-    ws.close();
-  }
+  ws?.close()
 })
 
 </script>

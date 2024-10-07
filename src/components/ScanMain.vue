@@ -71,9 +71,6 @@ import {
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useConfigStore } from '@/stores/config'
-
-const config = useConfigStore()
 
 // data
 import { mails } from '../data/mails'
