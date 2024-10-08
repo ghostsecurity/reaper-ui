@@ -21,9 +21,9 @@
           <TooltipContent side="right"
                           class="flex items-center gap-4">
             {{ link.title }}
-            <span v-if="link.title == 'Explore'"
+            <span v-if="link.label"
                   class="ml-auto text-muted-foreground">
-              {{ exploreStore.numEndpoints > 0 ? exploreStore.numEndpoints : '' }}
+              {{ link.label }}
             </span>
           </TooltipContent>
         </Tooltip>
@@ -42,12 +42,12 @@
           <span v-if="showShortcuts"
                 class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-2xs text-muted-foreground">{{
                   link.shortcut }}</span>
-          <span v-if="link.title == 'Explore'"
+          <span v-if="link.label"
                 :class="cn(
                   'ml-auto',
                   isActiveRoute(link.href) && 'text-background dark:text-white',
                 )">
-            {{ exploreStore.numEndpoints > 0 ? exploreStore.numEndpoints : '' }}
+            {{ link.label }}
           </span>
         </router-link>
       </template>
@@ -66,12 +66,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useExploreStore } from '@/stores/explore'
-
 
 export interface LinkProp {
   title: string
-  count?: number
   label?: string
   icon: string
   href?: string
@@ -84,9 +81,7 @@ export interface LinkProp {
 // }
 
 // defineProps<NavProps>()
-const exploreStore = useExploreStore()
 const route = useRoute()
-const isCollapsed = ref(false)
 const showShortcuts = ref(false)
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
@@ -117,75 +112,44 @@ onUnmounted(() => {
 
 const links: LinkProp[] = [
   {
-    title: 'Explore',
-    label: '1,289',
-    icon: 'lucide:earth',
-    href: '/explore',
-    shortcut: 'E'
+    title: 'Image',
+    label: '972',
+    icon: 'lucide:file-image',
   },
   {
-    title: 'Scan',
-    label: '9',
-    icon: 'lucide:binoculars',
-    shortcut: 'S',
-    href: '/scan',
+    title: 'Media',
+    label: '123',
+    icon: 'lucide:file-video',
   },
   {
-    title: 'Attack',
-    label: '',
-    icon: 'lucide:pocket-knife',
-    shortcut: 'T'
+    title: 'Font',
+    label: '342',
+    icon: 'lucide:file-type',
   },
   {
-    title: 'Fuzz',
-    label: '23k',
-    icon: 'lucide:repeat-1',
-    shortcut: 'F'
+    title: 'CSS',
+    label: '128',
+    icon: 'lucide:file-axis-3d',
   },
   {
-    title: 'Replay',
-    label: '',
-    icon: 'lucide:replace-all',
-    href: '/replay',
-    shortcut: 'R'
+    title: 'JSON',
+    label: '2.3MB',
+    icon: 'lucide:file-json',
   },
   {
-    title: 'Automate',
-    label: '',
-    icon: 'lucide:waypoints',
-    shortcut: 'A'
+    title: 'Form',
+    label: '21',
+    icon: 'lucide:file-code',
   },
   {
-    title: 'Collaborate',
-    label: '',
-    icon: 'lucide:users',
-    shortcut: 'C'
+    title: 'WebSocket',
+    label: '2',
+    icon: 'lucide:file-cog',
   },
   {
-    title: 'AI Assist',
-    label: '',
-    icon: 'lucide:brain-circuit',
-    shortcut: 'X'
-  },
-  {
-    title: 'Logs',
-    label: '',
-    icon: 'lucide:scroll-text',
-    href: '/logs',
-    shortcut: 'L'
-  },
-  {
-    title: 'Inbox Temp',
-    label: '1',
-    icon: 'lucide:inbox',
-    href: '/inbox',
-    shortcut: 'I'
-  },
-  {
-    title: 'Settings',
-    label: '',
-    icon: 'lucide:settings',
-    shortcut: '.'
+    title: 'Other',
+    label: '21',
+    icon: 'lucide:file-question',
   },
 ]
 </script>

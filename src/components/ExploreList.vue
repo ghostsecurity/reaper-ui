@@ -1,6 +1,6 @@
 <template>
   <ScrollArea class="flex h-screen">
-    <div class="flex flex-1 flex-col gap-2 p-2 pt-0">
+    <div class="flex flex-1 flex-col gap-2 p-4 pt-0">
       <div>
         <ul class="space-y-0.5 text-sm">
           <li v-for="(host, index) in hosts"
@@ -30,10 +30,18 @@
                     <path d="M1 14V17.5C1 20.2614 3.23858 22.5 6 22.5H15"
                           stroke-width="2" />
                   </svg>
-                  <div class="my-1 w-full cursor-pointer rounded-sm pr-1 hover:bg-secondary">
-                    <span
-                          class="rounded-sm border border-green-300 bg-green-100 px-0.5 text-2xs font-medium text-green-700">GET</span>
-                    <span class="ml-1 text-foreground/80">{{ endpoint.path }}</span>
+                  <div class="my-1 flex w-full cursor-pointer rounded-sm pr-1 hover:bg-secondary">
+                    <div class="w-10">
+                      <span
+                            class="rounded-sm border border-green-300 bg-green-100 px-1 py-0.5 text-2xs font-medium text-green-700">
+                        {{ endpoint.method }}</span>
+                    </div>
+                    <div class="flex w-full justify-between">
+                      <div class="ml-1 truncate text-foreground/80">{{ endpoint.path }}</div>
+                      <div
+                           class="mx-1 rounded-sm border border-foreground/20 bg-background px-1 text-2xs font-semibold text-foreground/60">
+                        {{ endpoint.status }}</div>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -41,31 +49,14 @@
           </li>
         </ul>
       </div>
-      <div>
+      <div v-if="false">
         <Button @click="exploreStore.addHost({ name: 'api.homedepot.com', endpoints: [] })">Add Host</Button>
-        <Button @click="exploreStore.addEndpoint('api.homedepot.com', { path: '/foo/bar' })">Add Endpoint</Button>
+        <Button @click="exploreStore.addEndpoint('api.homedepot.com', { path: '/foo/bar', status: -1 })">Add
+          Endpoint</Button>
       </div>
     </div>
   </ScrollArea>
 </template>
-
-<style scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(15px);
-}
-
-.list-leave-active {
-  position: absolute;
-}
-</style>
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
@@ -75,52 +66,4 @@ import { useExploreStore } from '@/stores/explore'
 
 const exploreStore = useExploreStore()
 const { hosts } = storeToRefs(exploreStore)
-
-// type Host = {
-//   id: number
-//   name: string
-//   endpoints: Endpoint[]
-// }
-
-// type Endpoint = {
-//   id: number
-//   name: string
-// }
-
-// const hosts: Host[] = [
-//   {
-//     id: 1,
-//     name: 'homedepot.com',
-//     endpoints: [],
-//   },
-//   {
-//     id: 2,
-//     name: 'hdstatic.com',
-//     endpoints: [
-//       {
-//         id: 10,
-//         name: '/api/v1/accounts',
-//       },
-//       {
-//         id: 11,
-//         name: '/users',
-//       },
-//       {
-//         id: 12,
-//         name: '/products',
-//       },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     name: 'hdx.com',
-//     endpoints: [],
-//   },
-//   {
-//     id: 4,
-//     name: 'thehomedepot.com',
-//     endpoints: [],
-//   },
-// ]
-
 </script>

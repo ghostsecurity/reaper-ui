@@ -149,7 +149,7 @@
     </div>
     <Separator />
     <div class="p-8 text-center text-muted-foreground">
-      Browse site through your browser.
+      To explore hosts and endpoints, start browsing using the Reaper proxy.
     </div>
   </div>
 </template>

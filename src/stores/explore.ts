@@ -1,4 +1,4 @@
-import { ref, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 type Host = {
@@ -9,7 +9,9 @@ type Host = {
 
 type Endpoint = {
   id?: number
+  method: string
   path: string
+  status: number
 }
 
 export const useExploreStore = defineStore('explore', () => {
@@ -17,7 +19,7 @@ export const useExploreStore = defineStore('explore', () => {
 
   const addHost = (host: Host) => {
     console.info("adding host", host.name)
-    hosts.value.push(reactive(host))
+    hosts.value.push(host)
   }
 
   const addEndpoint = (hostname: string, endpoint: Endpoint) => {
@@ -25,10 +27,13 @@ export const useExploreStore = defineStore('explore', () => {
     if (host) {
       if (!host.endpoints) {
         console.info("adding first endpoint to host", host.name, endpoint.path)
-        host.endpoints = reactive([endpoint])
+        host.endpoints = [endpoint]
       } else {
         console.info("adding endpoint to host", host.name, endpoint.path)
-        host.endpoints.push(reactive(endpoint))
+        // TODO: improve precision of dupe checking
+        if (!host.endpoints.find(e => (e.path === endpoint.path && e.method === endpoint.method))) {
+          host.endpoints.push(endpoint)
+        }
       }
     } else {
       console.warn(`Host ${hostname} not found. Creating new host.`)
@@ -36,9 +41,14 @@ export const useExploreStore = defineStore('explore', () => {
     }
   }
 
+  const numEndpoints = computed(() => {
+    return hosts.value.reduce((total, host) => total + host.endpoints.length, 0)
+  })
+
   return {
     hosts,
     addHost,
     addEndpoint,
+    numEndpoints,
   }
 })
