@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
@@ -82,33 +82,12 @@ export interface LinkProp {
 
 // defineProps<NavProps>()
 const route = useRoute()
+const isCollapsed = ref(false)
 const showShortcuts = ref(false)
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
 }
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = true
-  }
-}
-
-const handleKeyUp = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = false
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-  window.addEventListener('keyup', handleKeyUp)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  window.removeEventListener('keyup', handleKeyUp)
-})
 
 const links: LinkProp[] = [
   {

@@ -8,7 +8,12 @@
       <Separator />
       <SideNav :is-collapsed="false" />
       <Separator />
-      <SideNavSecondary :is-collapsed="false" />
+      <SideNavCollaborate v-if="route.name === 'collaborate'"
+                          :is-collapsed="false" />
+      <SideNavScan v-else-if="route.name === 'scan'"
+                   :is-collapsed="false" />
+      <SideNavSecondary v-else
+                        :is-collapsed="false" />
       <div class="mt-auto">
         <Separator />
         <div class="my-3 ml-5 flex cursor-pointer items-center space-x-2 text-xs font-medium"
@@ -32,9 +37,11 @@ import { Icon } from '@iconify/vue'
 import AccountSwitcher from '@/components/AccountSwitcher.vue'
 import SideNav from '@/components/SideNav.vue'
 import SideNavSecondary from './components/SideNavSecondary.vue'
+import SideNavScan from './components/SideNavScan.vue'
+import SideNavCollaborate from './components/SideNavCollaborate.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useConfigStore } from '@/stores/config'
-
+import { useRoute } from 'vue-router'
 import { accounts } from '@/data/mails'
 
 defineProps<{
@@ -42,4 +49,5 @@ defineProps<{
 }>()
 
 const config = useConfigStore()
+const route = useRoute()
 </script>

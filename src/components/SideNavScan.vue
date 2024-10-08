@@ -21,9 +21,9 @@
           <TooltipContent side="right"
                           class="flex items-center gap-4">
             {{ link.title }}
-            <span v-if="link.title == 'Explore'"
+            <span v-if="link.label"
                   class="ml-auto text-muted-foreground">
-              {{ exploreStore.numEndpoints > 0 ? exploreStore.numEndpoints : '' }}
+              {{ link.label }}
             </span>
           </TooltipContent>
         </Tooltip>
@@ -42,21 +42,22 @@
           <span v-if="showShortcuts"
                 class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-2xs text-muted-foreground">{{
                   link.shortcut }}</span>
-          <span v-if="link.title == 'Explore'"
+          <span v-if="link.label"
                 :class="cn(
                   'ml-auto',
                   isActiveRoute(link.href) && 'text-background dark:text-white',
                 )">
-            {{ exploreStore.numEndpoints > 0 ? exploreStore.numEndpoints : '' }}
+            {{ link.label }}
           </span>
         </router-link>
       </template>
+      <div class="m-2 text-center text-xs text-muted-foreground">No requests yet.</div>
     </nav>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
@@ -66,12 +67,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useExploreStore } from '@/stores/explore'
-
 
 export interface LinkProp {
   title: string
-  count?: number
   label?: string
   icon: string
   href?: string
@@ -84,7 +82,6 @@ export interface LinkProp {
 // }
 
 // defineProps<NavProps>()
-const exploreStore = useExploreStore()
 const route = useRoute()
 const isCollapsed = ref(false)
 const showShortcuts = ref(false)
@@ -93,100 +90,36 @@ const isActiveRoute = (href: string | undefined) => {
   return route.path === href
 }
 
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = true
-  }
-}
-
-const handleKeyUp = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = false
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-  window.addEventListener('keyup', handleKeyUp)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  window.removeEventListener('keyup', handleKeyUp)
-})
-
 const links: LinkProp[] = [
   {
-    title: 'Explore',
-    label: '1,289',
-    icon: 'lucide:earth',
-    href: '/explore',
-    shortcut: 'E'
+    title: 'GET',
+    label: '972',
+    icon: 'lucide:circle-chevron-down',
   },
   {
-    title: 'Scan',
-    label: '9',
-    icon: 'lucide:binoculars',
-    shortcut: 'S',
-    href: '/scan',
+    title: 'POST',
+    label: '123',
+    icon: 'lucide:circle-chevron-up',
   },
   {
-    title: 'Attack',
-    label: '',
-    icon: 'lucide:pocket-knife',
-    shortcut: 'T'
+    title: 'PATCH',
+    label: '123',
+    icon: 'lucide:circle-fading-arrow-up',
   },
   {
-    title: 'Fuzz',
-    label: '23k',
-    icon: 'lucide:repeat-1',
-    shortcut: 'F'
+    title: 'PUT',
+    label: '123',
+    icon: 'lucide:circle-fading-plus',
   },
   {
-    title: 'Replay',
-    label: '',
-    icon: 'lucide:replace-all',
-    href: '/replay',
-    shortcut: 'R'
+    title: 'DELETE',
+    label: '123',
+    icon: 'lucide:circle-x',
   },
   {
-    title: 'Automate',
-    label: '',
-    icon: 'lucide:waypoints',
-    shortcut: 'A'
-  },
-  {
-    title: 'Collaborate',
-    label: '',
-    icon: 'lucide:users',
-    shortcut: 'C',
-    href: '/collaborate'
-  },
-  {
-    title: 'AI Assist',
-    label: '',
-    icon: 'lucide:brain-circuit',
-    shortcut: 'X'
-  },
-  {
-    title: 'Logs',
-    label: '',
-    icon: 'lucide:scroll-text',
-    href: '/logs',
-    shortcut: 'L'
-  },
-  {
-    title: 'Inbox Temp',
-    label: '1',
-    icon: 'lucide:inbox',
-    href: '/inbox',
-    shortcut: 'I'
-  },
-  {
-    title: 'Settings',
-    label: '',
-    icon: 'lucide:settings',
-    shortcut: '.'
+    title: 'OPTIONS',
+    label: '123',
+    icon: 'lucide:circle-help',
   },
 ]
 </script>

@@ -7,12 +7,13 @@ import LogsMain from './components/LogsMain.vue'
 import ScanMain from './components/ScanMain.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', name: 'Root', component: InboxMain },
-  { path: '/inbox', name: 'Inbox', component: InboxMain },
-  { path: '/replay', name: 'Replay', component: ReplayMain },
-  { path: '/explore', name: 'Explore', component: ExploreMain },
-  { path: '/scan', name: 'Scan', component: ScanMain },
-  { path: '/logs', name: 'Logs', component: LogsMain },
+  { path: '/', name: 'root', component: InboxMain },
+  { path: '/inbox', name: 'inbox', component: InboxMain },
+  { path: '/replay', name: 'replay', component: ReplayMain },
+  { path: '/explore', name: 'explore', component: ExploreMain },
+  { path: '/collaborate', name: 'collaborate', component: ExploreMain },
+  { path: '/scan', name: 'scan', component: ScanMain },
+  { path: '/logs', name: 'logs', component: LogsMain },
 ]
 
 const router = createRouter({
