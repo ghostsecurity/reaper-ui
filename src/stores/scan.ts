@@ -42,23 +42,23 @@ export const useScanStore = defineStore('scan', () => {
   const createDomain = (domain: Domain) => {
     return new Promise((resolve, reject) => {
       axios
-        .post('/api/domains', domain)
+        .post('/api/scan/domains', domain)
         .then((response) => {
           addDomain(response.data)
           errors.value = '' // Clear any previous errors
           resolve(response.data)
         })
         .catch((error) => {
-          console.error(error)
-          errors.value = error.message
+          errors.value = error?.response?.data?.error ?? error.message
           reject(error)
         })
     })
   }
 
   const getDomains = () => {
+    console.log('scan.ts', 'getDomains')
     axios
-      .get('/api/domains')
+      .get('/api/scan/domains')
       .then((response) => {
         domains.value = response.data
       })
