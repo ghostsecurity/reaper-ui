@@ -1,29 +1,33 @@
 <template>
   <Table>
-    <TableCaption>Recently seen hosts.</TableCaption>
+    <TableCaption>Recently scanned domains.</TableCaption>
     <TableHeader>
       <TableRow>
-        <TableHead class="w-[140px]">
-          Host
+        <TableHead class="w-[200px]">
+          Domain
         </TableHead>
-        <TableHead>IP</TableHead>
-        <TableHead>First Seen By</TableHead>
-        <TableHead class="text-right">
-          Last Seen
+        <TableHead class="text-center">
+          Hosts
+        </TableHead>
+        <TableHead class="text-center">
+          First Scan
+        </TableHead>
+        <TableHead class="text-center">
+          Last Scan
         </TableHead>
       </TableRow>
     </TableHeader>
-    <TableBody>
-      <TableRow v-for="host in filteredHosts"
-                :key="host.host"
+    <TableBody class="text-xs">
+      <TableRow v-for="domain in filteredDomains"
+                :key="domain.name"
                 class="cursor-pointer">
         <TableCell class="font-medium">
-          {{ host.host }}
+          {{ domain.name }}
         </TableCell>
-        <TableCell>{{ host.ip }}</TableCell>
-        <TableCell>{{ host.first_seen_by }}</TableCell>
-        <TableCell class="text-right">
-          {{ host.last_seen }}
+        <TableCell class="text-center">{{ domain.hosts }}</TableCell>
+        <TableCell class="text-center">{{ domain.first_seen }}</TableCell>
+        <TableCell class="text-center">
+          {{ domain.last_seen }}
         </TableCell>
       </TableRow>
     </TableBody>
@@ -31,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import {
   Table,
   TableBody,
@@ -41,85 +45,85 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useScanStore } from '@/stores/scan'
 
-const props = defineProps<{
-  inScope: boolean
-}>()
+const scanStore = useScanStore()
+const domains = scanStore.domains
+const selectedDomain = ref<string>("")
 
-const filteredHosts = computed(() => {
-  return props.inScope ? hosts.filter((host) => host.in_scope) : hosts.filter((host) => !host.in_scope)
+interface ScanListProps {
+  filter: string
+}
+
+const props = defineProps<ScanListProps>()
+
+const filteredDomains = computed(() => {
+  if (props.filter === '') {
+    return domainsTemp
+  }
+  return domainsTemp.filter((domain) => domain.name.includes(props.filter))
 })
 
-const hosts = [
+const domainsTemp = [
   {
-    host: 'example.com',
-    ip: '192.168.1.1',
-    first_seen_by: 'user',
-    last_seen: '2021-01-01',
-    in_scope: true,
+    name: 'example.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'tesla.com',
-    ip: '192.168.1.2',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: false,
+    name: 'tesla.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'ford.com',
-    ip: '192.168.1.3',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'ford.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'puma.com',
-    ip: '192.168.1.4',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'puma.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'nike.com',
-    ip: '192.168.1.5',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: false,
+    name: 'nike.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'adidas.com',
-    ip: '192.168.1.6',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'adidas.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'reebok.com',
-    ip: '192.168.1.7',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'reebok.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'converse.com',
-    ip: '192.168.1.8',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: false,
+    name: 'converse.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'underarmour.com',
-    ip: '192.168.1.9',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'underarmour.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
   {
-    host: 'newbalance.com',
-    ip: '192.168.1.10',
-    first_seen_by: 'user',
-    last_seen: '2024-01-01',
-    in_scope: true,
+    name: 'newbalance.com',
+    hosts: 33,
+    first_seen: '1d',
+    last_seen: '3d',
   },
 ]
 </script>

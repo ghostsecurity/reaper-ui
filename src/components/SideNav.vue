@@ -39,9 +39,6 @@
           <Icon :icon="link.icon"
                 class="mr-2 size-4" />
           {{ link.title }}
-          <span v-if="showShortcuts"
-                class="py-0.25 ml-2 rounded-sm border border-muted-foreground/25 px-1 text-2xs text-muted-foreground">{{
-                  link.shortcut }}</span>
           <span v-if="link.title == 'Explore'"
                 :class="cn(
                   'ml-auto',
@@ -56,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
@@ -75,7 +72,6 @@ export interface LinkProp {
   label?: string
   icon: string
   href?: string
-  shortcut?: string
 }
 
 // interface NavProps {
@@ -84,36 +80,14 @@ export interface LinkProp {
 // }
 
 // defineProps<NavProps>()
+
 const exploreStore = useExploreStore()
 const route = useRoute()
 const isCollapsed = ref(false)
-const showShortcuts = ref(false)
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
 }
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = true
-  }
-}
-
-const handleKeyUp = (event: KeyboardEvent) => {
-  if (event.key === 'Meta' || event.key === 'Control') {
-    showShortcuts.value = false
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-  window.addEventListener('keyup', handleKeyUp)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  window.removeEventListener('keyup', handleKeyUp)
-})
 
 const links: LinkProp[] = [
   {
@@ -121,72 +95,67 @@ const links: LinkProp[] = [
     label: '1,289',
     icon: 'lucide:earth',
     href: '/explore',
-    shortcut: 'E'
   },
   {
     title: 'Scan',
     label: '9',
     icon: 'lucide:binoculars',
-    shortcut: 'S',
     href: '/scan',
   },
   {
-    title: 'Attack',
-    label: '',
-    icon: 'lucide:pocket-knife',
-    shortcut: 'T'
-  },
-  {
-    title: 'Fuzz',
-    label: '23k',
-    icon: 'lucide:repeat-1',
-    shortcut: 'F'
+    title: 'Crawl',
+    label: '279',
+    icon: 'lucide:bug-play',
+    href: '/crawl',
   },
   {
     title: 'Replay',
     label: '',
     icon: 'lucide:replace-all',
     href: '/replay',
-    shortcut: 'R'
+  },
+  {
+    title: 'Attack',
+    label: '',
+    icon: 'lucide:pocket-knife',
+  },
+  {
+    title: 'Fuzz',
+    label: '23k',
+    icon: 'lucide:repeat-1',
   },
   {
     title: 'Automate',
     label: '',
     icon: 'lucide:waypoints',
-    shortcut: 'A'
   },
   {
     title: 'Collaborate',
     label: '',
     icon: 'lucide:users',
-    shortcut: 'C',
     href: '/collaborate'
   },
   {
     title: 'AI Assist',
     label: '',
     icon: 'lucide:brain-circuit',
-    shortcut: 'X'
   },
   {
     title: 'Logs',
     label: '',
     icon: 'lucide:scroll-text',
     href: '/logs',
-    shortcut: 'L'
   },
   {
     title: 'Inbox Temp',
     label: '1',
     icon: 'lucide:inbox',
     href: '/inbox',
-    shortcut: 'I'
   },
   {
     title: 'Settings',
     label: '',
     icon: 'lucide:settings',
-    shortcut: '.'
   },
 ]
 </script>

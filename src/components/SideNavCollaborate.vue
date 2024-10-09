@@ -92,6 +92,11 @@ const isActiveRoute = (href: string | undefined) => {
 
 const links: LinkProp[] = [
   {
+    title: 'Reaper Admin',
+    label: '972',
+    icon: 'lucide:circle-user-round',
+  },
+  {
     title: 'Guest 1',
     label: '972',
     icon: 'lucide:user',
