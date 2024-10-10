@@ -5,7 +5,7 @@ import { columns } from './table/columns'
 </script>
 
 <template>
-  <div class="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+  <div class="hidden h-full flex-1 flex-col space-y-8 py-4 md:flex">
     <DataTable :data="tasks"
                :columns="columns" />
   </div>
