@@ -7,9 +7,9 @@ const axios = useAxiosClient()
 export type Domain = {
   id?: number
   name: string
-  hosts?: number
-  firstSeen?: Date
-  lastSeen?: Date
+  status: 'pending' | 'success' | 'error'
+  host_count?: number
+  last_scanned_at?: Date
   selected?: boolean
 }
 
@@ -30,6 +30,7 @@ type Address = {
 export const useScanStore = defineStore('scan', () => {
   const domains = ref<Domain[]>([])
   const errors = ref<string>('')
+  const selectedDomain = ref<Domain | null>(null)
 
   const addDomain = (domain: Domain) => {
     domains.value.push(domain)
@@ -80,6 +81,10 @@ export const useScanStore = defineStore('scan', () => {
       })
   }
 
+  const selectDomain = (id: number) => {
+    selectedDomain.value = domains.value.find((domain) => domain.id === id)
+  }
+
   return {
     addDomain,
     domains,
@@ -87,6 +92,8 @@ export const useScanStore = defineStore('scan', () => {
     getDomains,
     createDomain,
     deleteDomain,
+    selectDomain,
+    selectedDomain,
     errors,
   }
 })

@@ -36,6 +36,9 @@
                       isActiveRoute(link.href) && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                       'justify-start',
                     )">
+          <div class="-ml-2 mr-1 rounded-full"
+               :class="link.dot ? [link.dot, 'p-1'] : 'p-1'">
+          </div>
           <Icon :icon="link.icon"
                 class="mr-2 size-4" />
           {{ link.title }}
@@ -44,7 +47,7 @@
                   'ml-auto',
                   isActiveRoute(link.href) && 'text-background dark:text-white',
                 )">
-            {{ exploreStore.numEndpoints > 0 ? exploreStore.numEndpoints : '' }}
+            {{ exploreStore.numEndpoints > 0 ? utils.customNumberFormat(exploreStore.numEndpoints) : '' }}
           </span>
         </router-link>
       </template>
@@ -64,6 +67,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useExploreStore } from '@/stores/explore'
+import { useUtilStore } from '@/utils'
 
 
 export interface LinkProp {
@@ -72,6 +76,7 @@ export interface LinkProp {
   label?: string
   icon: string
   href?: string
+  dot?: string
 }
 
 // interface NavProps {
@@ -81,6 +86,7 @@ export interface LinkProp {
 
 // defineProps<NavProps>()
 
+const utils = useUtilStore()
 const exploreStore = useExploreStore()
 const route = useRoute()
 const isCollapsed = ref(false)
@@ -95,6 +101,7 @@ const links: LinkProp[] = [
     label: '1,289',
     icon: 'lucide:earth',
     href: '/explore',
+    dot: 'bg-green-500',
   },
   {
     title: 'Scan',
@@ -107,6 +114,7 @@ const links: LinkProp[] = [
     label: '279',
     icon: 'lucide:bug-play',
     href: '/crawl',
+    dot: 'bg-orange-500',
   },
   {
     title: 'Replay',

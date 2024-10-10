@@ -162,10 +162,10 @@
               {{ domain.name }}
             </div>
             <div class="line-clamp-1 text-xs">
-              {{ domain.hosts }} hosts
+              {{ utils.customNumberFormat(domain.host_count) }} hosts
             </div>
             <div class="line-clamp-1 text-xs">
-              <span class="font-medium">Reply-To:</span> {{ domain.name }}
+              <span class="font-medium">source:</span> {{ domain.name }}
             </div>
           </div>
         </div>
@@ -225,17 +225,15 @@ import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useUtilStore } from '@/utils'
+import { useScanStore } from '@/stores/scan'
 
-import type { Domain } from '@/stores/scan'
-
-interface DomainDisplayProps {
-  domain: Domain | undefined
-}
-
-const props = defineProps<DomainDisplayProps>()
+const utils = useUtilStore()
+const scanStore = useScanStore()
+const domain = computed(() => scanStore.selectedDomain)
 
 const domainAvatarName = computed(() => {
-  return props.domain?.name.substring(0, 2).toUpperCase()
+  return domain.value?.name.substring(0, 2).toUpperCase()
 })
 
 const today = new Date()
