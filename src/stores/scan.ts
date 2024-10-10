@@ -29,6 +29,7 @@ type Address = {
 
 export const useScanStore = defineStore('scan', () => {
   const domains = ref<Domain[]>([])
+  const hosts = ref<Host[]>([])
   const errors = ref<string>('')
   const selectedDomain = ref<Domain | null>(null)
 
@@ -71,7 +72,7 @@ export const useScanStore = defineStore('scan', () => {
 
   const deleteDomain = (domain: Domain) => {
     axios
-      .delete(`/api/domains/${domain.id}`)
+      .delete(`/api/scan/domains/${domain.id}`)
       .then(() => {
         domains.value = domains.value.filter((d) => d.id !== domain.id)
       })
@@ -81,6 +82,17 @@ export const useScanStore = defineStore('scan', () => {
       })
   }
 
+  const getHosts = (domain: Domain) => {
+    axios
+      .get(`/api/scan/domains/${domain.id}/hosts`)
+      .then((response) => {
+        hosts.value = response.data
+      })
+      .catch((error) => {
+        console.error(error)
+        errors.value = error.message
+      })
+  }
   const selectDomain = (id: number) => {
     selectedDomain.value = domains.value.find((domain) => domain.id === id)
   }
@@ -94,6 +106,8 @@ export const useScanStore = defineStore('scan', () => {
     deleteDomain,
     selectDomain,
     selectedDomain,
+    hosts,
+    getHosts,
     errors,
   }
 })

@@ -176,7 +176,12 @@
       </div>
       <Separator />
       <div class="flex-1 whitespace-pre-wrap p-4 text-sm">
-        {{ domain.text }}
+        <div v-for="host in hosts"
+             :key="host.id"
+             class="flex space-x-4">
+          <div>{{ host.name }}</div>
+          <div>{{ host.source }}</div>
+        </div>
       </div>
       <Separator class="mt-auto" />
       <div class="p-4">
@@ -209,8 +214,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue'
 import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
-import { computed } from 'vue'
 import addDays from 'date-fns/addDays'
 import addHours from 'date-fns/addHours'
 import format from 'date-fns/format'
@@ -231,6 +236,7 @@ import { useScanStore } from '@/stores/scan'
 const utils = useUtilStore()
 const scanStore = useScanStore()
 const domain = computed(() => scanStore.selectedDomain)
+const hosts = computed(() => scanStore.hosts)
 
 const domainAvatarName = computed(() => {
   return domain.value?.name.substring(0, 2).toUpperCase()
@@ -238,4 +244,7 @@ const domainAvatarName = computed(() => {
 
 const today = new Date()
 
+watch(domain, () => {
+  scanStore.getHosts(domain.value)
+})
 </script>
