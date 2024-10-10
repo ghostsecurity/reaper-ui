@@ -5,10 +5,10 @@
 # deps
 yarn add axios \
   typescript \
+  pinia \
   vite \
   vue \
-  vue-router@4 \
-  pinia
+  vue-router@4
 
 # dev deps
 yarn add -D autoprefixer \
@@ -28,16 +28,17 @@ yarn add -D autoprefixer \
   @headlessui/vue \
   @heroicons/vue \
   @radix-icons/vue \
-  @vueuse/core \
   @tailwindcss/aspect-ratio \
   @tailwindcss/container-queries \
   @tailwindcss/forms \
   @tailwindcss/typography \
   @tailwindcss/aspect-ratio \
+  @tanstack/vue-table \
   @types/node \
   @typescript-eslint/eslint-plugin \
   @typescript-eslint/parser \
   @unovis/ts \
   @unovis/vue \
-  @vitejs/plugin-vue
+  @vitejs/plugin-vue \
+  @vueuse/core
 

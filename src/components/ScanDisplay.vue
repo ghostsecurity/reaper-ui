@@ -175,6 +175,8 @@
         </div>
       </div>
       <Separator />
+      <ScanDisplayTable />
+      <Separator />
       <div class="flex-1 whitespace-pre-wrap p-4 text-sm">
         <div v-for="host in hosts"
              :key="host.id"
@@ -230,6 +232,9 @@ import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+
+import ScanDisplayTable from './ScanDisplayTable.vue'
+
 import { useUtilStore } from '@/utils'
 import { useScanStore } from '@/stores/scan'
 
