@@ -64,7 +64,6 @@ export function useConfigStore(): ConfigStore {
   // set dark mode
   const setThemeDark = () => {
     isDark.value = true
-    document.documentElement.classList.remove('dark')
     document.documentElement.classList.add('dark')
     localStorage.setItem('ghost.reaper.dark', isDark.value.toString())
   }
@@ -133,7 +132,7 @@ export function useConfigStore(): ConfigStore {
       setThemeLight()
     }
     if (localStorage.getItem('ghost.reaper.theme') === null) {
-      setThemeColor('blue')
+      setThemeColor('orange')
     }
 
     setThemeData()
