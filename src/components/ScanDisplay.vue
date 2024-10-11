@@ -7,6 +7,17 @@
             <Button variant="ghost"
                     size="icon"
                     :disabled="!domain">
+              <Binoculars class="size-4" />
+              <span class="sr-only">Scan domain</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Scan domain</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger as-child>
+            <Button variant="ghost"
+                    size="icon"
+                    :disabled="!domain">
               <Archive class="size-4" />
               <span class="sr-only">Archive</span>
             </Button>
@@ -164,9 +175,22 @@
             <div class="line-clamp-1 text-xs">
               {{ utils.customNumberFormat(domain.host_count) }} hosts
             </div>
-            <div class="line-clamp-1 text-xs">
-              <span class="font-medium">source:</span> {{ domain.name }}
-            </div>
+            <Tabs default-value="all"
+                  v-model="tab"
+                  @update:model-value="handleTabChange">
+              <div class="flex items-center pt-2">
+                <TabsList class="ml-auto">
+                  <TabsTrigger value="all"
+                               class="text-xs text-zinc-600 dark:text-zinc-200">
+                    All
+                  </TabsTrigger>
+                  <TabsTrigger value="live"
+                               class="text-xs text-zinc-600 dark:text-zinc-200">
+                    Live
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </Tabs>
           </div>
         </div>
         <div v-if="domain.firstSeen"
@@ -176,7 +200,7 @@
       </div>
       <Separator />
       <div class="h-screen space-y-2 overflow-y-auto bg-muted/50 p-2 pb-10 text-xs">
-        <div v-for="host in hosts"
+        <div v-for="host in filteredHosts"
              :key="host.id"
              class="flex justify-between rounded-md bg-background p-1 shadow-sm">
           <div class="flex items-center gap-2">
@@ -210,8 +234,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
-import { Archive, ArchiveX, Clock, Forward, Hexagon, MoreHorizontal, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+import { computed, ref, watch } from 'vue'
+import { Archive, ArchiveX, Binoculars, Clock, Forward, Hexagon, MoreHorizontal, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
 import addDays from 'date-fns/addDays'
 import addHours from 'date-fns/addHours'
 import format from 'date-fns/format'
@@ -223,6 +247,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
 
 import { useUtilStore } from '@/utils'
 import { useScanStore } from '@/stores/scan'
@@ -237,6 +266,18 @@ const domainAvatarName = computed(() => {
 })
 
 const today = new Date()
+const tab = ref('all')
+
+const handleTabChange = (e: string) => {
+  tab.value = e
+}
+
+const filteredHosts = computed(() => {
+  if (tab.value === 'live') {
+    return hosts.value.filter((host) => host.status === 'live')
+  }
+  return hosts.value
+})
 
 watch(domain, () => {
   scanStore.getHosts(domain.value)
