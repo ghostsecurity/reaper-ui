@@ -1,5 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useAxiosClient } from '@/stores/axios'
+
+const axios = useAxiosClient()
 
 type Host = {
   id?: number
@@ -14,8 +17,13 @@ type Endpoint = {
   status: number
 }
 
+type Proxy = {
+  enabled: boolean
+}
+
 export const useExploreStore = defineStore('explore', () => {
   const hosts = ref<Host[]>([])
+  const proxy = ref<Proxy>()
 
   const addHost = (host: Host) => {
     console.info("adding host", host.name)
@@ -45,10 +53,30 @@ export const useExploreStore = defineStore('explore', () => {
     return hosts.value.reduce((total, host) => total + host.endpoints.length, 0)
   })
 
+  const proxyStart = () => {
+    axios.post('/api/proxy/start')
+      .then(() => {
+        proxy.value = { enabled: true }
+      })
+      .catch(() => {
+        proxy.value = { enabled: false }
+      })
+  }
+
+  const proxyStop = () => {
+    axios.post('/api/proxy/stop')
+      .then(() => {
+        proxy.value = { enabled: false }
+      })
+  }
+
   return {
     hosts,
     addHost,
     addEndpoint,
     numEndpoints,
+    proxy,
+    proxyStart,
+    proxyStop,
   }
 })

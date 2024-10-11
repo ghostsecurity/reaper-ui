@@ -7,42 +7,31 @@
       <ResizablePanel id="resize-panel-2"
                       :default-size="defaultLayout[1]"
                       :min-size="20">
-        <Tabs default-value="all">
-          <div class="flex items-center px-4 py-2">
-            <h1 class="text-xl font-bold">
-              Explore
-            </h1>
-            <TabsList class="ml-auto">
-              <TabsTrigger value="all"
-                           class="text-zinc-600 dark:text-zinc-200">
-                In scope
-              </TabsTrigger>
-              <TabsTrigger value="unread"
-                           class="text-zinc-600 dark:text-zinc-200">
-                Out
-              </TabsTrigger>
-            </TabsList>
+        <div class="flex items-center justify-between px-4 py-2">
+          <h1 class="text-xl font-bold">
+            Explore
+          </h1>
+          <div class="flex items-center space-x-2">
+            <Label for="proxy-status"
+                   class="text-xs text-muted-foreground">Proxy {{ exploreStore.proxy?.enabled ? 'on' : 'off' }}</Label>
+            <Switch id="proxy-status"
+                    @update:checked="handleProxyStatusToggle" />
           </div>
-          <Separator />
-          <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <form>
-              <div class="relative">
-                <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-                <Input v-model="searchValue"
-                       placeholder="filter..."
-                       class="pl-8" />
-              </div>
-            </form>
-          </div>
-          <TabsContent value="all"
-                       class="m-0">
-            <ExploreList />
-          </TabsContent>
-          <TabsContent value="unread"
-                       class="m-0">
-            <ExploreList />
-          </TabsContent>
-        </Tabs>
+        </div>
+
+        <Separator />
+        <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <form>
+            <div class="relative">
+              <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+              <Input v-model="searchValue"
+                     placeholder="filter..."
+                     class="pl-8" />
+            </div>
+          </form>
+        </div>
+
+        <ExploreList />
       </ResizablePanel>
       <ResizableHandle id="resiz-handle-2"
                        with-handle />
@@ -61,15 +50,21 @@ import ExploreList from './ExploreList.vue'
 import ExploreInstructions from './ExploreInstructions.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { useExploreStore } from '@/stores/explore'
 
 const searchValue = ref('')
 const defaultLayout = ref([20, 30, 70])
+const exploreStore = useExploreStore()
+
+const handleProxyStatusToggle = () => {
+  if (exploreStore.proxy?.enabled) {
+    exploreStore.proxyStop()
+  } else {
+    exploreStore.proxyStart()
+  }
+}
 </script>

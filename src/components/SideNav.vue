@@ -36,9 +36,14 @@
                       isActiveRoute(link.href) && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                       'justify-start',
                     )">
-          <div class="-ml-2 mr-1 rounded-full"
-               :class="link.dot ? [link.dot, 'p-1'] : 'p-1'">
-          </div>
+          <div v-if="link.title == 'Explore'"
+               class="-ml-2 mr-1 rounded-full p-1"
+               :class="exploreStore.proxy?.enabled ? 'bg-green-400' : ''" />
+          <div v-else-if="link.title == 'Crawl'"
+               class="-ml-2 mr-1 rounded-full p-1"
+               :class="exploreStore.proxy?.enabled ? 'bg-orange-400' : ''" />
+          <div v-else
+               class="-ml-2 mr-1 rounded-full p-1" />
           <Icon :icon="link.icon"
                 class="mr-2 size-4" />
           {{ link.title }}
@@ -76,7 +81,6 @@ export interface LinkProp {
   label?: string
   icon: string
   href?: string
-  dot?: string
 }
 
 // interface NavProps {
@@ -101,7 +105,6 @@ const links: LinkProp[] = [
     label: '1,289',
     icon: 'lucide:earth',
     href: '/explore',
-    dot: 'bg-green-400',
   },
   {
     title: 'Scan',
@@ -114,7 +117,6 @@ const links: LinkProp[] = [
     label: '279',
     icon: 'lucide:bug-play',
     href: '/crawl',
-    dot: 'bg-orange-400',
   },
   {
     title: 'Replay',
