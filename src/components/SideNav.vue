@@ -101,7 +101,7 @@ const links: LinkProp[] = [
     label: '1,289',
     icon: 'lucide:earth',
     href: '/explore',
-    dot: 'bg-green-500',
+    dot: 'bg-green-400',
   },
   {
     title: 'Scan',
@@ -114,7 +114,7 @@ const links: LinkProp[] = [
     label: '279',
     icon: 'lucide:bug-play',
     href: '/crawl',
-    dot: 'bg-orange-500',
+    dot: 'bg-orange-400',
   },
   {
     title: 'Replay',
