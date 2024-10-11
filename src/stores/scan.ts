@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAxiosClient } from '@/stores/axios'
 
@@ -7,24 +7,28 @@ const axios = useAxiosClient()
 export type Domain = {
   id?: number
   name: string
-  status: 'pending' | 'success' | 'error'
+  status: 'pending' | 'success' | 'error' | 'completed'
   host_count?: number
-  last_scanned_at?: Date
+  last_scanned_at: Date
   selected?: boolean
 }
 
 type Host = {
   id?: number
-  domainId?: number
+  domain_id: number
+  project_id?: number
   name: string
-  addresses: Address[]
-  firstSeen: Date
-  lastSeen: Date
-}
-
-type Address = {
-  id?: number
-  name: string
+  status: string
+  status_code?: number
+  source: string
+  scheme?: string
+  content_type?: string
+  cdn_name?: string
+  cdn_type?: string
+  webserver?: string
+  tech?: string
+  created_at: Date
+  updated_at: Date
 }
 
 export const useScanStore = defineStore('scan', () => {
@@ -37,17 +41,17 @@ export const useScanStore = defineStore('scan', () => {
     domains.value.push(domain)
   }
 
-  const numHosts = computed(() => {
-    return domains.value.reduce((total, domain) => total + (domain.hosts ?? 0), 0)
-  })
-
+  /**
+   * Create a domain
+   * @param domain - The domain to create
+   */
   const createDomain = (domain: Domain) => {
     return new Promise((resolve, reject) => {
       axios
         .post('/api/scan/domains', domain)
         .then((response) => {
           addDomain(response.data)
-          errors.value = '' // Clear any previous errors
+          errors.value = '' // clear any previous errors
           resolve(response.data)
         })
         .catch((error) => {
@@ -57,6 +61,9 @@ export const useScanStore = defineStore('scan', () => {
     })
   }
 
+  /**
+   * Get all domains
+   */
   const getDomains = () => {
     console.log('scan.ts', 'getDomains')
     axios
@@ -70,6 +77,10 @@ export const useScanStore = defineStore('scan', () => {
       })
   }
 
+  /**
+   * Delete a domain
+   * @param domain - The domain to delete
+   */
   const deleteDomain = (domain: Domain) => {
     axios
       .delete(`/api/scan/domains/${domain.id}`)
@@ -80,8 +91,18 @@ export const useScanStore = defineStore('scan', () => {
         console.error(error)
         errors.value = error.message
       })
+      .finally(() => {
+        if (domains.value.length > 0) {
+          const newestDomain = domains.value[domains.value.length - 1]
+          selectDomain(newestDomain)
+        }
+      })
   }
 
+  /**
+   * Get hosts for the domain
+   * @param domain - The domain to get hosts for
+   */
   const getHosts = (domain: Domain) => {
     axios
       .get(`/api/scan/domains/${domain.id}/hosts`)
@@ -93,14 +114,29 @@ export const useScanStore = defineStore('scan', () => {
         errors.value = error.message
       })
   }
-  const selectDomain = (id: number) => {
-    selectedDomain.value = domains.value.find((domain) => domain.id === id)
+
+  /**
+   * Select active domain to show in Display component
+   * @param domain - The domain to select
+   */
+  const selectDomain = (domain: Domain) => {
+    selectedDomain.value = domain
+  }
+
+  /**
+   * Sync the domain with the latest data from websocket broadcast message
+   * @param domain - The domain to sync
+   */
+  const syncDomain = (domain: Domain) => {
+    const index = domains.value.findIndex((d) => d.id === domain.id)
+    if (index !== -1) {
+      domains.value[index] = { ...domains.value[index], ...domain }
+    }
   }
 
   return {
     addDomain,
     domains,
-    numHosts,
     getDomains,
     createDomain,
     deleteDomain,
@@ -109,5 +145,6 @@ export const useScanStore = defineStore('scan', () => {
     hosts,
     getHosts,
     errors,
+    syncDomain,
   }
 })

@@ -8,7 +8,7 @@ interface UtilStore {
   localeTimestamp: (ts: number) => string
   localeTimestampShort: (ts: number) => string
   localeDate: (ts: number) => string
-  timeAgoInWords: (ts: number) => string
+  timeAgoInWords: (date: Date) => string
 }
 
 export function useUtilStore(): UtilStore {
@@ -43,9 +43,8 @@ export function useUtilStore(): UtilStore {
     return dateString
   }
 
-  const timeAgoInWords = (ts: number) => {
-    const d = new Date(ts * 1000)
-    return moment(d).fromNow()
+  const timeAgoInWords = (date: Date) => {
+    return moment(date).fromNow()
   }
 
   const customNumberFormat = (n: number) => {

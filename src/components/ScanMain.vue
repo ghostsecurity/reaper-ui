@@ -126,6 +126,7 @@ const handleAddDomain = () => {
   isSubmitting.value = true
   scanStore.createDomain({
     name: domainName.value,
+    status: 'pending',
   })
     .then(() => {
       // If successful, close the modal and reset the form
@@ -140,9 +141,9 @@ const handleAddDomain = () => {
 
 const domain: Domain = {
   name: 'example.com',
-  hosts: 34,
-  firstSeen: new Date(),
-  lastSeen: new Date(),
+  status: 'pending',
+  host_count: 34,
+  last_scanned_at: new Date(),
 }
 
 onMounted(() => {

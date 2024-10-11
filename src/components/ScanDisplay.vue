@@ -17,130 +17,15 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!domain">
-              <Archive class="size-4" />
-              <span class="sr-only">Archive</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Archive</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!domain">
-              <ArchiveX class="size-4" />
-              <span class="sr-only">Move to junk</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Move to junk</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!domain">
+                    :disabled="!domain"
+                    @click="handleDeleteDomain">
               <Trash2 class="size-4" />
-              <span class="sr-only">Move to trash</span>
+              <span class="sr-only">Delete domain</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Move to trash</TooltipContent>
-        </Tooltip>
-        <Separator orientation="vertical"
-                   class="mx-1 h-6" />
-        <Tooltip>
-          <Popover>
-            <PopoverTrigger as-child>
-              <TooltipTrigger as-child>
-                <Button variant="ghost"
-                        size="icon"
-                        :disabled="!domain">
-                  <Clock class="size-4" />
-                  <span class="sr-only">Snooze</span>
-                </Button>
-              </TooltipTrigger>
-            </PopoverTrigger>
-            <PopoverContent class="flex w-[535px] p-0">
-              <div class="flex flex-col gap-2 border-r px-2 py-4">
-                <div class="px-4 text-sm font-medium">
-                  Snooze until
-                </div>
-                <div class="grid min-w-[250px] gap-1">
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Later today
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addHours(today, 4), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Tomorrow
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 1), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    This weekend
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(nextSaturday(today), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Next week
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 7), "E, h:m b") }}
-                    </span>
-                  </Button>
-                </div>
-              </div>
-              <div class="p-2">
-                <Calendar />
-              </div>
-            </PopoverContent>
-          </Popover>
-          <TooltipContent>Snooze</TooltipContent>
+          <TooltipContent>Delete domain</TooltipContent>
         </Tooltip>
       </div>
-      <div class="ml-auto flex items-center gap-2">
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!domain">
-              <Reply class="size-4" />
-              <span class="sr-only">Reply</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reply</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!domain">
-              <ReplyAll class="size-4" />
-              <span class="sr-only">Reply all</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reply all</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!domain">
-              <Forward class="size-4" />
-              <span class="sr-only">Forward</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Forward</TooltipContent>
-        </Tooltip>
-      </div>
-      <Separator orientation="vertical"
-                 class="mx-2 h-6" />
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button variant="ghost"
@@ -152,9 +37,9 @@
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>Mark as unread</DropdownMenuItem>
-          <DropdownMenuItem>Star thread</DropdownMenuItem>
+          <DropdownMenuItem>Star domain</DropdownMenuItem>
           <DropdownMenuItem>Add label</DropdownMenuItem>
-          <DropdownMenuItem>Mute thread</DropdownMenuItem>
+          <DropdownMenuItem>Mute domain</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -173,7 +58,7 @@
               {{ domain.name }}
             </div>
             <div class="line-clamp-1 text-xs">
-              {{ utils.customNumberFormat(domain.host_count) }} hosts
+              {{ utils.customNumberFormat(domain.host_count || 0) }} hosts
             </div>
             <Tabs default-value="all"
                   v-model="tab"
@@ -193,9 +78,9 @@
             </Tabs>
           </div>
         </div>
-        <div v-if="domain.firstSeen"
+        <div v-if="domain.last_scanned_at"
              class="ml-auto text-xs text-muted-foreground">
-          {{ format(new Date(domain.firstSeen), "PPpp") }}
+          {{ domain.last_scanned_at }}
         </div>
       </div>
       <Separator />
@@ -204,18 +89,40 @@
              :key="host.id"
              class="flex justify-between rounded-md bg-background p-1 shadow-sm">
           <div class="flex items-center gap-2">
-            <div class="m-2 rounded-sm p-1"
-                 :class="host.id % 3 === 0 ? ' text-primary' : 'text-secondary'">
+            <div class="m-2 flex flex-col items-center rounded-sm p-1"
+                 :class="host.status === 'live' ? ' text-primary' : 'text-secondary'">
               <Hexagon class="size-4" />
+              <span class="h-4 py-1 text-2xs font-semibold text-primary/80">{{ host.status_code && host.status_code > 0
+                ? host.status_code : '-' }}</span>
             </div>
-            <div>
-              <div class="font-medium">{{ host.name }}</div>
-              <div class="text-muted-foreground">{{ host.source }}</div>
+            <div class="flex space-x-4">
+              <div class="w-64">
+                <div class="truncate font-medium">{{ host.name }}</div>
+                <div class="lowercase text-muted-foreground">{{ host.content_type }}</div>
+              </div>
+              <div class="ml-8 min-w-24">
+                <div class="font-medium">server</div>
+                <div class="lowercase text-muted-foreground">{{ host.webserver && host.webserver.length > 0 ?
+                  host.webserver : '-' }}</div>
+              </div>
+              <div class="ml-8 min-w-24">
+                <div class="font-medium">source</div>
+                <div class="lowercase text-muted-foreground">{{ host.source }}</div>
+              </div>
+              <div class="ml-8 min-w-24">
+                <div class="font-medium">{{ host.cdn_type || 'cloud' }}</div>
+                <div class="lowercase text-muted-foreground">{{ host.cdn_name || '-' }}</div>
+              </div>
+              <div class="ml-8 min-w-24">
+                <div class="font-medium">tech</div>
+                <div class="lowercase text-muted-foreground">{{ host.tech && host.tech.length > 0 ? host.tech : '-' }}
+                </div>
+              </div>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <div>
-              {{ host.status }}
+              {{ host.updated_at }}
             </div>
             <Button variant="ghost"
                     size="icon"
@@ -227,7 +134,7 @@
       </div>
     </div>
     <div v-else
-         class="p-8 text-center text-muted-foreground">
+         class="p-8 text-center text-sm text-muted-foreground">
       No domain selected
     </div>
   </div>
@@ -235,14 +142,8 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { Archive, ArchiveX, Binoculars, Clock, Forward, Hexagon, MoreHorizontal, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
-import addDays from 'date-fns/addDays'
-import addHours from 'date-fns/addHours'
-import format from 'date-fns/format'
-import nextSaturday from 'date-fns/nextSaturday'
-import { Calendar } from '@/components/ui/calendar'
+import { Binoculars, Hexagon, MoreHorizontal, MoreVertical, Trash2 } from 'lucide-vue-next'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -265,11 +166,16 @@ const domainAvatarName = computed(() => {
   return domain.value?.name.substring(0, 2).toUpperCase()
 })
 
-const today = new Date()
 const tab = ref('all')
 
-const handleTabChange = (e: string) => {
-  tab.value = e
+const handleTabChange = (e: string | number) => {
+  tab.value = e as string
+}
+
+const handleDeleteDomain = () => {
+  if (domain.value) {
+    scanStore.deleteDomain(domain.value)
+  }
 }
 
 const filteredHosts = computed(() => {
@@ -280,6 +186,8 @@ const filteredHosts = computed(() => {
 })
 
 watch(domain, () => {
-  scanStore.getHosts(domain.value)
+  if (domain.value) {
+    scanStore.getHosts(domain.value)
+  }
 })
 </script>

@@ -1,6 +1,6 @@
 <template>
   <Table>
-    <TableCaption>Recently scanned domains.</TableCaption>
+    <TableCaption class="text-xs">Recently scanned domains.</TableCaption>
     <TableHeader class="text-xs">
       <TableRow>
         <TableHead class="w-[240px]">
@@ -15,22 +15,24 @@
       </TableRow>
     </TableHeader>
     <TableBody class="text-xs">
-      <TableRow v-for="(domain, index) in filteredDomains"
+      <TableRow v-for="(domain) in filteredDomains"
                 :key="domain.name"
                 class="cursor-pointer"
-                @click="handleRowClick(index)"
-                :class="selectedDomainIdx === index ? 'bg-muted/50' : ''">
+                @click="handleRowClick(domain)"
+                :class="selectedDomain?.id === domain.id ? 'bg-muted/50' : ''">
         <TableCell class="flex items-center font-normal">
           <span class="mr-1 w-0.5 pr-0.5"
-                :class="selectedDomainIdx === index ? 'bg-primary' : 'bg-transparent'">&nbsp;</span>
+                :class="selectedDomain?.id === domain.id ? 'bg-primary' : 'bg-transparent'">&nbsp;</span>
           {{ domain.name }} <span class="ml-2 size-4">
-            <LoaderCircle v-if="domain.status === 'pending'"
-                          class="size-4 animate-spin" />
+            <span v-if="domain.status !== 'completed'"
+                  class="rounded-sm bg-secondary px-1.5 py-0.5 text-muted-foreground">{{ domain.status }}</span>
           </span>
         </TableCell>
-        <TableCell class="text-center font-medium">{{ utils.customNumberFormat(domain.host_count || 0) }}</TableCell>
+        <TableCell class="text-center font-medium">{{ domain.host_count && domain.host_count > 0 &&
+          utils.customNumberFormat(domain.host_count) }}
+        </TableCell>
         <TableCell class="text-center">
-          {{ domain.last_scanned_at }}
+          {{ domain.last_scanned_at && utils.timeAgoInWords(domain.last_scanned_at) }}
         </TableCell>
       </TableRow>
     </TableBody>
@@ -48,13 +50,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { LoaderCircle } from 'lucide-vue-next'
 import { useScanStore } from '@/stores/scan'
 import { useUtilStore } from '@/utils'
+import type { Domain } from '@/stores/scan'
 
 const scanStore = useScanStore()
 const domains = computed(() => scanStore.domains)
-const selectedDomainIdx = ref<number>(0)
+const selectedDomain = ref<Domain | null>(null)
 
 interface ScanListProps {
   filter: string
@@ -70,7 +72,10 @@ const filteredDomains = computed(() => {
   return domains.value.filter((domain) => domain.name.includes(props.filter))
 })
 
-// New functions for keyboard navigation
+/**
+ * Handle keyboard navigation
+ * @param event - The keyboard event
+ */
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'ArrowUp') {
     event.preventDefault()
@@ -81,21 +86,24 @@ const handleKeyDown = (event: KeyboardEvent) => {
   }
 }
 
+/**
+ * Move the selection up or down
+ * @param direction - The direction to move the selection
+ */
 const moveSelection = (direction: number) => {
-  const newIndex = selectedDomainIdx.value + direction
+  const newIndex = selectedDomain.value ? filteredDomains.value.indexOf(selectedDomain.value) + direction : 0
   if (newIndex >= 0 && newIndex < filteredDomains.value.length) {
-    selectedDomainIdx.value = newIndex
-    scanStore.selectDomain(filteredDomains.value[newIndex].id)
+    selectedDomain.value = filteredDomains.value[newIndex]
+    scanStore.selectDomain(filteredDomains.value[newIndex])
   }
 }
 
-const handleRowClick = (idx: number) => {
-  selectedDomainIdx.value = idx
-  scanStore.selectDomain(filteredDomains.value[idx].id)
+const handleRowClick = (domain: Domain) => {
+  selectedDomain.value = domain
+  scanStore.selectDomain(domain)
 }
 
 onMounted(() => {
-  console.log('ScanList.vue', 'onMounted')
   scanStore.getDomains()
 
   // Add event listener for keyboard navigation

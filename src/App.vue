@@ -10,8 +10,10 @@
 import { ref, type Ref, onMounted, onUnmounted } from 'vue'
 import Dashboard from './ExampleMain.vue'
 import { useExploreStore } from '@/stores/explore'
+import { useScanStore } from '@/stores/scan'
 
 const exploreStore = useExploreStore()
+const scanStore = useScanStore()
 
 /**
  * Websocket connection handling
@@ -68,9 +70,17 @@ function connectWebSocket() {
         console.info("explore_endpoint:", data)
         exploreStore.addEndpoint(data.host, data)
         break
-      case "scan_domain":
-        console.info("scan_domain:", data)
+      case "scan.domain":
+        console.info("scan.domain:", data)
         break
+      case "scan.domain.sync":
+        console.info("scan.domain.sync:", data)
+        scanStore.syncDomain(data)
+        break
+      // case "scan.domain.delete":
+      //   console.info("scan.domain.delete:", data)
+      //   scanStore.deleteDomain(data)
+      //   break
       case "scan_host":
         console.info("scan_host:", data)
         break
