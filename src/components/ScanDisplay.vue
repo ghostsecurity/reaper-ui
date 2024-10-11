@@ -175,37 +175,31 @@
         </div>
       </div>
       <Separator />
-      <ScanDisplayTable />
-      <Separator />
-      <div class="flex-1 whitespace-pre-wrap p-4 text-sm">
+      <div class="h-screen space-y-2 overflow-y-auto bg-muted/50 p-2 pb-10 text-xs">
         <div v-for="host in hosts"
              :key="host.id"
-             class="flex space-x-4">
-          <div>{{ host.name }}</div>
-          <div>{{ host.source }}</div>
-        </div>
-      </div>
-      <Separator class="mt-auto" />
-      <div class="p-4">
-        <form>
-          <div class="grid gap-4">
-            <Textarea class="p-4"
-                      :placeholder="`Reply ${domain.name}...`" />
-            <div class="flex items-center">
-              <Label html-for="mute"
-                     class="flex items-center gap-2 text-xs font-normal">
-                <Switch id="mute"
-                        aria-label="Mute thread" /> Mute this
-                thread
-              </Label>
-              <Button type="button"
-                      size="sm"
-                      class="ml-auto">
-                Send
-              </Button>
+             class="flex justify-between rounded-md bg-background p-1 shadow-sm">
+          <div class="flex items-center gap-2">
+            <div class="m-2 rounded-sm p-1"
+                 :class="host.id % 3 === 0 ? ' text-primary' : 'text-secondary'">
+              <Hexagon class="size-4" />
+            </div>
+            <div>
+              <div class="font-medium">{{ host.name }}</div>
+              <div class="text-muted-foreground">{{ host.source }}</div>
             </div>
           </div>
-        </form>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ host.status }}
+            </div>
+            <Button variant="ghost"
+                    size="icon"
+                    class="h-8">
+              <MoreHorizontal class="size-4" />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else
@@ -217,7 +211,7 @@
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue'
-import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+import { Archive, ArchiveX, Clock, Forward, Hexagon, MoreHorizontal, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
 import addDays from 'date-fns/addDays'
 import addHours from 'date-fns/addHours'
 import format from 'date-fns/format'
@@ -227,13 +221,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-
-import ScanDisplayTable from './ScanDisplayTable.vue'
 
 import { useUtilStore } from '@/utils'
 import { useScanStore } from '@/stores/scan'

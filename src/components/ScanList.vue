@@ -1,7 +1,7 @@
 <template>
   <Table>
     <TableCaption>Recently scanned domains.</TableCaption>
-    <TableHeader>
+    <TableHeader class="text-xs">
       <TableRow>
         <TableHead class="w-[240px]">
           Domain

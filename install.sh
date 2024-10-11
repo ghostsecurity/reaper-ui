@@ -33,7 +33,6 @@ yarn add -D autoprefixer \
   @tailwindcss/forms \
   @tailwindcss/typography \
   @tailwindcss/aspect-ratio \
-  @tanstack/vue-table \
   @types/node \
   @typescript-eslint/eslint-plugin \
   @typescript-eslint/parser \
