@@ -7,9 +7,10 @@ const axios = useAxiosClient()
 export type Domain = {
   id?: number
   name: string
-  status: 'pending' | 'success' | 'error' | 'completed'
+  status?: 'pending' | 'success' | 'error' | 'completed'
+  auto_scan: boolean
   host_count?: number
-  last_scanned_at: Date
+  last_scanned_at?: Date
   selected?: boolean
 }
 

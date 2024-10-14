@@ -7,7 +7,7 @@
       <ResizablePanel id="resize-panel-2"
                       :default-size="defaultLayout[1]"
                       :min-size="20">
-        <div class="flex items-center justify-between px-4 py-2">
+        <div class="flex items-center justify-between px-4 py-3">
           <h1 class="text-xl font-bold">
             Explore
           </h1>

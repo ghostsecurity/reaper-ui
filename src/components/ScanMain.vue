@@ -35,6 +35,7 @@
               </div>
               <div class="items-top flex gap-x-2">
                 <Checkbox id="auto-scan"
+                          name="auto_scan"
                           :checked="autoScan"
                           @update:checked="handleAutoScanChange" />
                 <div class="grid gap-1.5 leading-none">
@@ -112,7 +113,7 @@ const scanStore = useScanStore()
 const errors = computed(() => scanStore.errors)
 const searchValue = ref('')
 const domainName = ref('')
-const autoScan = ref(false)
+const autoScan = ref(true)
 const isModalOpen = ref(false)
 const isSubmitting = ref(false)
 
@@ -126,7 +127,7 @@ const handleAddDomain = () => {
   isSubmitting.value = true
   scanStore.createDomain({
     name: domainName.value,
-    status: 'pending',
+    auto_scan: autoScan.value,
   })
     .then(() => {
       // If successful, close the modal and reset the form

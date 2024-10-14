@@ -2,12 +2,14 @@
   <div class="flex h-screen flex-col bg-background">
     <main class="container flex-1 overflow-auto">
       <Dashboard :wsConnected="wsConnected" />
+      <Toaster />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, type Ref, onMounted, onUnmounted } from 'vue'
+import { Toaster } from '@/components/ui/toast'
 import Dashboard from './ExampleMain.vue'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
