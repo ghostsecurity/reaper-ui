@@ -13,9 +13,10 @@
           </h1>
           <div class="flex items-center space-x-2">
             <Label for="proxy-status"
-                   class="text-xs text-muted-foreground">Proxy {{ exploreStore.proxy?.enabled ? 'on' : 'off' }}</Label>
+                   class="text-xs text-muted-foreground">Proxy {{ proxyStatus ? 'on' : 'off' }}</Label>
             <Switch id="proxy-status"
-                    @update:checked="handleProxyStatusToggle" />
+                    :checked="proxyStatus"
+                    @click.prevent="handleProxyStatusToggle" />
           </div>
         </div>
 
@@ -45,7 +46,7 @@
 
 <script lang="ts" setup>
 import { Search } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import ExploreList from './ExploreList.vue'
 import ExploreInstructions from './ExploreInstructions.vue'
 import { Separator } from '@/components/ui/separator'
@@ -60,11 +61,17 @@ const searchValue = ref('')
 const defaultLayout = ref([20, 30, 70])
 const exploreStore = useExploreStore()
 
+const proxyStatus = computed(() => exploreStore.proxy.enabled)
+
 const handleProxyStatusToggle = () => {
-  if (exploreStore.proxy?.enabled) {
+  if (exploreStore.proxy.enabled) {
     exploreStore.proxyStop()
   } else {
     exploreStore.proxyStart()
   }
 }
+
+onMounted(() => {
+  exploreStore.proxyStatus()
+})
 </script>

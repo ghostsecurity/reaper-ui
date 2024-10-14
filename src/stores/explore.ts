@@ -23,7 +23,7 @@ type Proxy = {
 
 export const useExploreStore = defineStore('explore', () => {
   const hosts = ref<Host[]>([])
-  const proxy = ref<Proxy>()
+  const proxy = ref<Proxy>({ enabled: false })
 
   const addHost = (host: Host) => {
     console.info("adding host", host.name)
@@ -56,17 +56,30 @@ export const useExploreStore = defineStore('explore', () => {
   const proxyStart = () => {
     axios.post('/api/proxy/start')
       .then(() => {
-        proxy.value = { enabled: true }
+        proxy.value.enabled = true
       })
       .catch(() => {
-        proxy.value = { enabled: false }
+        proxy.value.enabled = false
       })
   }
 
   const proxyStop = () => {
     axios.post('/api/proxy/stop')
       .then(() => {
-        proxy.value = { enabled: false }
+        proxy.value.enabled = false
+      })
+      .catch(() => {
+        proxy.value.enabled = false
+      })
+  }
+
+  const proxyStatus = () => {
+    axios.get('/api/proxy/status')
+      .then(() => {
+        proxy.value.enabled = true
+      })
+      .catch(() => {
+        proxy.value.enabled = false
       })
   }
 
@@ -78,5 +91,6 @@ export const useExploreStore = defineStore('explore', () => {
     proxy,
     proxyStart,
     proxyStop,
+    proxyStatus,
   }
 })

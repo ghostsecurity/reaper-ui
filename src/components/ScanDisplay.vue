@@ -13,6 +13,8 @@
           </TooltipTrigger>
           <TooltipContent>Scan domain</TooltipContent>
         </Tooltip>
+        <Separator orientation="vertical"
+                   class="mx-2 h-6" />
         <Tooltip>
           <TooltipTrigger as-child>
             <Button variant="ghost"
@@ -58,13 +60,18 @@
               {{ domain.name }}
             </div>
             <div class="line-clamp-1 text-xs">
-              {{ utils.customNumberFormat(domain.host_count || 0) }} hosts
+              <span v-if="tab === 'live'">
+                {{ utils.customNumberFormat(filteredHosts.length || 0) }} of
+              </span>
+              <span>
+                {{ utils.customNumberFormat(domain.host_count || 0) }} hosts
+              </span>
             </div>
             <Tabs default-value="all"
                   v-model="tab"
                   @update:model-value="handleTabChange">
               <div class="flex items-center pt-2">
-                <TabsList class="ml-auto">
+                <TabsList class="">
                   <TabsTrigger value="all"
                                class="text-xs text-zinc-600 dark:text-zinc-200">
                     All
