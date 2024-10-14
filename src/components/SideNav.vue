@@ -38,13 +38,13 @@
                     )">
           <div v-if="link.title == 'Explore'"
                class="-ml-2 mr-1 rounded-full p-1"
-               :class="exploreStore.proxy.enabled ? 'bg-green-400' : ''" />
+               :class="proxy.enabled ? 'bg-green-400' : ''" />
           <div v-else-if="link.title == 'Crawl'"
                class="-ml-2 mr-1 rounded-full p-1"
-               :class="exploreStore.proxy.enabled ? 'bg-orange-400' : ''" />
+               :class="proxy.enabled ? 'bg-orange-400' : ''" />
           <div v-else-if="link.title == 'Collaborate'"
                class="-ml-2 mr-1 rounded-full p-1"
-               :class="collabStore.tunnel.enabled ? 'bg-green-400' : ''" />
+               :class="tunnel.enabled ? 'bg-green-400' : ''" />
           <div v-else
                class="-ml-2 mr-1 rounded-full p-1" />
           <Icon :icon="link.icon"
@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { cn } from '@/lib/utils'
@@ -89,7 +89,9 @@ export interface LinkProp {
 
 const utils = useUtilStore()
 const exploreStore = useExploreStore()
+const proxy = computed(() => exploreStore.proxy)
 const collabStore = useCollabStore()
+const tunnel = computed(() => collabStore.tunnel)
 const route = useRoute()
 const isCollapsed = ref(false)
 const isActiveRoute = (href: string | undefined) => {
