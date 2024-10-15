@@ -16,11 +16,11 @@
                         :is-collapsed="false" />
       <div class="mt-auto">
         <Separator />
-        <div class="flex items-center justify-between">
+        <div class="mx-4 flex items-center justify-between gap-4">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <div class="my-3 ml-5 cursor-pointer text-xs font-medium"
+                <div class="my-3 cursor-pointer text-xs font-medium"
                      @click="config.toggleThemeDark()">
                   <Icon icon="lucide:moon"
                         class="size-4" />
@@ -34,7 +34,7 @@
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <div class="mx-4 flex-none rounded-full"
+                <div class="flex-none rounded-full"
                      :class="wsConnected ? 'bg-green-400/20 p-1 text-green-400' : 'bg-red-500/20 p-1 text-red-500'">
                   <div class="size-2 rounded-full bg-current"></div>
                 </div>
@@ -44,7 +44,7 @@
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <div>
+          <div class="-mt-1">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -59,7 +59,7 @@
               </Tooltip>
             </TooltipProvider>
           </div>
-          <div class="mx-4">
+          <div>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -68,6 +68,19 @@
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>System Settings</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger @click="sessionStore.signOut">
+                  <Icon icon="lucide:door-open"
+                        class="size-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{{ loggedIn ? 'Log out' : 'Log in' }}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -95,8 +108,10 @@ import {
 } from '@/components/ui/tooltip'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useConfigStore } from '@/stores/config'
+import { useSessionStore } from '@/stores/session'
 import { useRoute } from 'vue-router'
 import { accounts } from '@/data/mails'
+import { storeToRefs } from 'pinia'
 
 defineProps<{
   wsConnected: boolean
@@ -104,4 +119,6 @@ defineProps<{
 
 const config = useConfigStore()
 const route = useRoute()
+const sessionStore = useSessionStore()
+const { loggedIn } = storeToRefs(sessionStore)
 </script>

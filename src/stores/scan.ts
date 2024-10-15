@@ -1,3 +1,6 @@
+/**
+ * Scan management store
+ */
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAxiosClient } from '@/stores/axios'

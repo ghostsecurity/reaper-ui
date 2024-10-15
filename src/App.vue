@@ -1,21 +1,31 @@
 <template>
   <div class="flex h-screen flex-col bg-background">
-    <main class="container flex-1 overflow-auto">
+    <main v-if="loggedIn"
+          class="container flex-1 overflow-auto">
       <Dashboard :wsConnected="wsConnected" />
       <Toaster />
+    </main>
+    <main v-if="!loggedIn"
+          class="container flex-1 overflow-auto">
+      <Session />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, onMounted, onUnmounted } from 'vue'
+import { ref, type Ref, computed, onMounted, onUnmounted } from 'vue'
 import { Toaster } from '@/components/ui/toast'
-import Dashboard from './ExampleMain.vue'
+import Session from './SessionMain.vue'
+import Dashboard from './DashboardMain.vue'
+import { useSessionStore } from '@/stores/session'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
 
+const sessionStore = useSessionStore()
 const exploreStore = useExploreStore()
 const scanStore = useScanStore()
+
+const loggedIn = computed(() => sessionStore.loggedIn)
 
 /**
  * Websocket connection handling

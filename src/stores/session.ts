@@ -1,28 +1,23 @@
 /**
  * Session management store
  */
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 
-interface SessionStore {
-  loggedIn: Ref<boolean>
-  signIn: () => void
-  signOut: () => void
-}
+export const useSessionStore = defineStore('session', () => {
+  const loggedIn = ref(false)
 
-const loggedIn = ref(false)
+  const signIn = () => {
+    loggedIn.value = true
+  }
 
-const signIn = () => {
-  loggedIn.value = true
-}
+  const signOut = () => {
+    loggedIn.value = false
+  }
 
-const signOut = () => {
-  loggedIn.value = false
-}
-
-export function useSessionStore(): SessionStore {
   return {
     loggedIn,
     signIn,
     signOut,
   }
-}
+})

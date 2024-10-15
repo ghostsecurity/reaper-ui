@@ -25,7 +25,7 @@
                   Add a new domain.
                 </DialogDescription>
               </DialogHeader>
-              <div class="py-">
+              <div class="py-0">
                 <Input id="name"
                        v-model="domainName"
                        placeholder="example.com"
@@ -143,6 +143,7 @@ const handleAddDomain = () => {
 const domain: Domain = {
   name: 'example.com',
   status: 'pending',
+  auto_scan: true,
   host_count: 34,
   last_scanned_at: new Date(),
 }
