@@ -12,7 +12,7 @@ type Host = {
 
 type Endpoint = {
   id?: number
-  method: string
+  method?: string
   path: string
   status: number
 }
