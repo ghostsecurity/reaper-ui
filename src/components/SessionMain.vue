@@ -60,14 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { GithubIcon, GhostIcon, LinkedinIcon } from 'lucide-vue-next'
 import { useSessionStore } from '@/stores/session'
-
+import { useConfigStore } from '@/stores/config'
 const sessionStore = useSessionStore()
+const configStore = useConfigStore()
 const userName = ref('Reaper Admin')
 const route = useRoute()
 const errors = computed(() => sessionStore.errors)
@@ -78,5 +79,9 @@ const handleRegister = () => {
     invite_code: route.query.code as string,
   })
 }
+
+onMounted(() => {
+  console.log('[theme]', configStore.theme)
+})
 
 </script>

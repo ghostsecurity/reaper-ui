@@ -108,9 +108,9 @@ const handleTunnelStatusToggle = () => {
 const pingTunnelStatus = () => {
   collabStore.tunnelStatus()
   console.log("pinging tunnel status", tunnel.value.url)
-  if (tunnel.value.url === "" || tunnel.value.url === undefined) {
-    setTimeout(pingTunnelStatus, 1000)
-  }
+  // if (tunnel.value.url === "" || tunnel.value.url === undefined) {
+  //   setTimeout(pingTunnelStatus, 1000)
+  // }
 }
 
 onMounted(() => {

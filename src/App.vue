@@ -30,12 +30,23 @@ const loggedIn = computed(() => sessionStore.loggedIn)
  * Websocket connection handling
  */
 const wsConnected: Ref<boolean> = ref(false)
-const wsStreamUrl: string = import.meta.env.VITE_WS_URL
+const wsStreamUrl: string = getWebSocketUrl()
 const MAX_RECONNECT_ATTEMPTS = 25
 const HEARTBEAT_INTERVAL = 5000
 let ws: WebSocket | null = null
 let heartbeatInterval: NodeJS.Timeout | null = null
 let reconnectAttempts = 0
+
+function getWebSocketUrl() {
+  const { protocol, hostname, port } = window.location
+  if (!import.meta.env.PROD) {
+    return import.meta.env.VITE_WS_URL
+  }
+  const wsProtocol = protocol.replace('http', 'ws')
+  const wsUrl = `${wsProtocol}//${hostname}${port ? `:${port}` : ''}/ws`
+  console.log('[ws] App.vue WebSocket URL:', wsUrl)
+  return wsUrl
+}
 
 function connectWebSocket() {
   ws = new WebSocket(wsStreamUrl)
@@ -94,6 +105,10 @@ function connectWebSocket() {
       //   break
       case "scan_host":
         console.info("scan_host:", data)
+        break
+      case "navigation.follow":
+        console.info("navigation.follow:", data)
+        sessionStore.navigationFollow(data.to)
         break
       default:
         console.log("unknown message type:", data)

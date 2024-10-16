@@ -125,6 +125,7 @@ export function useConfigStore(): ConfigStore {
     return `hsl(${t?.cssVars[isDark.value ? 'dark' : 'light'].background})`
   })
 
+  // TODO: remove this; replace with a function and call it directly from components that need it
   onMounted(() => {
     // set default theme color if none is set
     if (localStorage.getItem('ghost.reaper.dark') === null) {
@@ -132,7 +133,7 @@ export function useConfigStore(): ConfigStore {
       setThemeLight()
     }
     if (localStorage.getItem('ghost.reaper.theme') === null) {
-      setThemeColor('orange')
+      setThemeColor('stone')
     }
 
     setThemeData()

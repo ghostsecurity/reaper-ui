@@ -4,16 +4,18 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAxiosClient } from '@/stores/axios'
-
+import { useRouter } from 'vue-router'
 const axios = useAxiosClient()
 
 type User = {
   username: string
   invite_code: string
   token?: string
+  role?: string
 }
 
 export const useSessionStore = defineStore('session', () => {
+  const router = useRouter()
   const currentUser = ref<User | null>(null)
   const loggedIn = ref(false)
   const errors = ref<string>('')
@@ -33,11 +35,18 @@ export const useSessionStore = defineStore('session', () => {
       .then((response) => {
         // if valid status, set loggedIn to true and set currentUser to the user object
         loggedIn.value = true
-        currentUser.value = response.data
+        currentUser.value = response.data.user
       })
       .catch(() => {
         // console.error(error)
       })
+  }
+
+  const navigationFollow = (to: string) => {
+    // only viewers should follow
+    if (currentUser.value?.role === 'viewer') {
+      router.push(to)
+    }
   }
 
   const register = (user: User) => {
@@ -63,6 +72,7 @@ export const useSessionStore = defineStore('session', () => {
     currentUser,
     errors,
     loggedIn,
+    navigationFollow,
     signOut,
     status,
     register,
