@@ -8,10 +8,10 @@
                     size="icon"
                     :disabled="!domain">
               <Binoculars class="size-4" />
-              <span class="sr-only">Scan domain</span>
+              <span class="sr-only">Re-scan domain</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Scan domain</TooltipContent>
+          <TooltipContent>Re-scan domain</TooltipContent>
         </Tooltip>
         <Separator orientation="vertical"
                    class="mx-2 h-6" />

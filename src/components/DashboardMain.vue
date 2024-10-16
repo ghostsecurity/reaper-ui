@@ -96,9 +96,9 @@
 import { Icon } from '@iconify/vue'
 import AccountSwitcher from '@/components/AccountSwitcher.vue'
 import SideNav from '@/components/SideNav.vue'
-import SideNavSecondary from './components/SideNavSecondary.vue'
-import SideNavScan from './components/SideNavScan.vue'
-import SideNavCollaborate from './components/SideNavCollaborate.vue'
+import SideNavSecondary from '@/components/SideNavSecondary.vue'
+import SideNavScan from '@/components/SideNavScan.vue'
+import SideNavCollaborate from '@/components/SideNavCollaborate.vue'
 import Badge from '@/components/ui/badge/Badge.vue'
 import {
   Tooltip,

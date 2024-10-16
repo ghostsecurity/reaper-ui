@@ -1,22 +1,19 @@
 <template>
   <div class="flex h-screen flex-col bg-background">
-    <main v-if="loggedIn"
-          class="container flex-1 overflow-auto">
-      <Dashboard :wsConnected="wsConnected" />
+    <main class="container flex-1 overflow-auto">
+      <Dashboard v-if="loggedIn"
+                 :wsConnected="wsConnected" />
+      <Session v-if="!loggedIn" />
       <Toaster />
-    </main>
-    <main v-if="!loggedIn"
-          class="container flex-1 overflow-auto">
-      <Session />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, type Ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Toaster } from '@/components/ui/toast'
-import Session from './SessionMain.vue'
-import Dashboard from './DashboardMain.vue'
+import Session from '@/components/SessionMain.vue'
+import Dashboard from '@/components/DashboardMain.vue'
 import { useSessionStore } from '@/stores/session'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
@@ -26,6 +23,8 @@ const exploreStore = useExploreStore()
 const scanStore = useScanStore()
 
 const loggedIn = computed(() => sessionStore.loggedIn)
+
+
 
 /**
  * Websocket connection handling
@@ -131,8 +130,18 @@ function stopHeartbeat() {
   }
 }
 
+// watch loggedIn status
+watch(loggedIn, (newVal) => {
+  if (newVal) {
+    connectWebSocket()
+  }
+})
+
 onMounted(() => {
-  connectWebSocket();
+  sessionStore.status()
+  if (sessionStore.loggedIn) {
+    connectWebSocket()
+  }
 })
 
 onUnmounted(() => {

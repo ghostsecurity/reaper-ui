@@ -94,6 +94,8 @@ const collabStore = useCollabStore()
 const tunnel = computed(() => collabStore.tunnel)
 const route = useRoute()
 const isCollapsed = ref(false)
+
+// TODO: refactor - https://router.vuejs.org/guide/essentials/active-links.html
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href

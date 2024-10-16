@@ -22,9 +22,9 @@
 
         <Separator />
 
-        <div class="h-screen bg-muted/50 pt-8">
+        <div class="h-screen bg-muted/50 pt-4">
           <Card v-if="tunnel.enabled"
-                class="mx-auto w-[400px]">
+                class="mx-4">
             <CardHeader>
               <CardTitle>Tunnel URL</CardTitle>
               <CardDescription class="text-xs">Share this URL with your team to collaborate.</CardDescription>
@@ -41,7 +41,7 @@
             </CardContent>
           </Card>
           <Card v-else
-                class="mx-auto w-[400px]">
+                class="mx-4">
             <CardHeader>
               <CardTitle>Create a Tunnel</CardTitle>
               <CardDescription class="text-xs">Create a secure tunnel to collaborate with your team.</CardDescription>
