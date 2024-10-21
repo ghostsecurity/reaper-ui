@@ -60,14 +60,12 @@
         </div>
         <Separator />
         <div class="bg-background/95 px-2 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <form>
-            <div class="relative flex items-center gap-2">
-              <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-              <Input v-model="searchValue"
-                     placeholder="filter..."
-                     class="pl-8" />
-            </div>
-          </form>
+          <div class="relative flex items-center gap-2">
+            <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+            <Input v-model="searchValue"
+                   placeholder="filter..."
+                   class="pl-8" />
+          </div>
         </div>
         <div clas="px-4">
           <ScanList :filter="searchValue" />

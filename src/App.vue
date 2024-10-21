@@ -17,14 +17,12 @@ import Dashboard from '@/components/DashboardMain.vue'
 import { useSessionStore } from '@/stores/session'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
-
+import { useEndpointStore } from '@/stores/endpoint'
 const sessionStore = useSessionStore()
 const exploreStore = useExploreStore()
 const scanStore = useScanStore()
-
+const endpointStore = useEndpointStore()
 const loggedIn = computed(() => sessionStore.loggedIn)
-
-
 
 /**
  * Websocket connection handling
@@ -105,6 +103,10 @@ function connectWebSocket() {
       //   break
       case "scan_host":
         console.info("scan_host:", data)
+        break
+      case "attack.result":
+        console.info("attack.result:", data)
+        endpointStore.addResult(data)
         break
       case "navigation.follow":
         console.info("navigation.follow:", data)

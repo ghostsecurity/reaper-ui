@@ -28,12 +28,13 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!endpoint">
+                    :disabled="!endpoint"
+                    @click="clearResults">
               <Trash2 class="size-4" />
               <span class="sr-only">Move to trash</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Move to trash</TooltipContent>
+          <TooltipContent>Clear all results</TooltipContent>
         </Tooltip>
         <Separator orientation="vertical"
                    class="mx-1 h-6" />
@@ -226,8 +227,22 @@
         </div>
       </div>
       <Separator />
-      <div class="flex h-screen justify-center space-y-2 overflow-y-auto bg-muted/50 p-1 text-sm">
-        <div class="text-foreground-muted p-8 font-medium">No results yet. Start an attack.</div>
+      <div class="h-screen justify-center space-y-2 overflow-y-auto bg-muted/50 p-1 text-sm">
+        <div v-for="result in endpointStore.results"
+             :key="result.id"
+             class="flex flex-col items-start gap-2 rounded-md border bg-background/95 p-3 text-left text-sm transition-all hover:bg-accent/50">
+          <Badge variant="outline"
+                 class="px-1 border-green-600/20 bg-green-50 text-green-700">
+            <div class="text-2xs font-semibold uppercase">
+              Success
+            </div>
+          </Badge>
+          <span class="text-xs text-muted-foreground">{{ result.request }}</span>
+        </div>
+        <div v-if="endpointStore.results.length < 1"
+             class="text-foreground-muted p-8 font-medium">
+          No results yet. Start an attack.
+        </div>
       </div>
     </div>
     <div v-else
@@ -247,6 +262,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Badge } from '@/components/ui/badge'
 import {
   Command,
   CommandEmpty,
@@ -274,6 +290,11 @@ const today = new Date()
 const startAttack = () => {
   // endpointStore.startAttack(props.endpoint)
   endpointStore.startAttack(props.endpoint)
+}
+
+const clearResults = () => {
+  console.log("clear results", props.endpoint)
+  endpointStore.clearResults(props.endpoint)
 }
 
 const frameworks = [

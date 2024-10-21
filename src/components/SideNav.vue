@@ -136,39 +136,39 @@ const links: LinkProp[] = [
     label: '23k',
     icon: 'lucide:repeat-1',
   },
-  {
-    title: 'Automate',
-    label: '',
-    icon: 'lucide:waypoints',
-  },
+  // {
+  //   title: 'Automate',
+  //   label: '',
+  //   icon: 'lucide:waypoints',
+  // },
   {
     title: 'Collaborate',
     label: '',
     icon: 'lucide:users',
     href: '/collaborate'
   },
-  {
-    title: 'AI Assist',
-    label: '',
-    icon: 'lucide:brain-circuit',
-  },
-  {
-    title: 'Logs',
-    label: '',
-    icon: 'lucide:scroll-text',
-    href: '/logs',
-  },
-  {
-    title: 'Inbox Temp',
-    label: '1',
-    icon: 'lucide:inbox',
-    href: '/inbox',
-  },
-  {
-    title: 'Settings',
-    label: '',
-    icon: 'lucide:settings',
-  },
+  // {
+  //   title: 'AI Assist',
+  //   label: '',
+  //   icon: 'lucide:brain-circuit',
+  // },
+  // {
+  //   title: 'Logs',
+  //   label: '',
+  //   icon: 'lucide:scroll-text',
+  //   href: '/logs',
+  // },
+  // {
+  //   title: 'Inbox Temp',
+  //   label: '1',
+  //   icon: 'lucide:inbox',
+  //   href: '/inbox',
+  // },
+  // {
+  //   title: 'Settings',
+  //   label: '',
+  //   icon: 'lucide:settings',
+  // },
 ]
 
 onMounted(() => {

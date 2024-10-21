@@ -18,6 +18,16 @@ export type Endpoint = {
 export type AttackResult = {
   id: number
   endpoint_id: number
+  hostname: string
+  ip_address: string
+  port: string
+  scheme: string
+  template_author: string
+  template_name: string
+  template_severity: string
+  url: string
+  request: string
+  response: string
   created_at: string
 }
 
@@ -58,8 +68,22 @@ export const useEndpointStore = defineStore('endpoint', () => {
       })
   }
 
+  const addResult = (result: AttackResult) => {
+    results.value.push(result)
+  }
+
+  const clearResults = (endpoint: Endpoint) => {
+    axios
+      .delete(`/api/attack/${endpoint.id}/results`)
+      .then(() => {
+        results.value = []
+      })
+  }
+
   return {
+    addResult,
     attackRunning,
+    clearResults,
     endpoints,
     results,
     getEndpoints,
