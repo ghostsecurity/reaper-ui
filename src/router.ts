@@ -3,14 +3,16 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import InboxMain from './components/InboxMain.vue'
 import ExploreMain from './components/ExploreMain.vue'
 import ReplayMain from './components/ReplayMain.vue'
+import AttackMain from './components/AttackMain.vue'
 import LogsMain from './components/LogsMain.vue'
 import ScanMain from './components/ScanMain.vue'
 import CollaborateMain from './components/CollaborateMain.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', name: 'root', component: InboxMain },
+  { path: '/', name: 'root', component: ExploreMain },
   { path: '/inbox', name: 'inbox', component: InboxMain },
   { path: '/replay', name: 'replay', component: ReplayMain },
+  { path: '/attack', name: 'attack', component: AttackMain },
   { path: '/explore', name: 'explore', component: ExploreMain },
   { path: '/collaborate', name: 'collaborate', component: CollaborateMain },
   { path: '/scan', name: 'scan', component: ScanMain },

@@ -40,8 +40,7 @@
                class="-ml-2 mr-1 rounded-full p-1"
                :class="proxy.enabled ? 'bg-green-400' : ''" />
           <div v-else-if="link.title == 'Crawl'"
-               class="-ml-2 mr-1 rounded-full p-1"
-               :class="proxy.enabled ? 'bg-orange-400' : ''" />
+               class="-ml-2 mr-1 rounded-full p-1" />
           <div v-else-if="link.title == 'Collaborate'"
                class="-ml-2 mr-1 rounded-full p-1"
                :class="tunnel.enabled ? 'bg-green-400' : ''" />
@@ -130,6 +129,7 @@ const links: LinkProp[] = [
     title: 'Attack',
     label: '',
     icon: 'lucide:pocket-knife',
+    href: '/attack',
   },
   {
     title: 'Fuzz',

@@ -88,8 +88,8 @@ function connectWebSocket() {
         console.info("explore_host:", data)
         exploreStore.addHost(data)
         break
-      case "explore_endpoint":
-        console.info("explore_endpoint:", data)
+      case "explore.response":
+        console.info("explore.response:", data)
         exploreStore.addEndpoint(data.host, data)
         break
       case "scan.domain":

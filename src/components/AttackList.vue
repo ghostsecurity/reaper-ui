@@ -7,28 +7,28 @@
                 :key="item.id"
                 :class="cn(
                   'flex flex-col items-start gap-2 rounded-md border p-3 text-left text-sm transition-all hover:bg-accent/50 bg-background/95',
-                  selectedRequest === item.id && 'bg-muted',
+                  selectedEndpoint === item.id && 'bg-muted',
                 )"
-                @click="selectedRequest = item.id">
+                @click="selectedEndpoint = item.id">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <Badge variant="outline"
-                       :class="badgeColorFromStatus(item.response.status_code)">
-                  <div class="font-semibold text-2xs">
+                       :class="badgeColorFromMethod(item.method)">
+                  <div class="text-2xs font-semibold">
                     {{ item.method }}
                   </div>
                 </Badge>
-                <span class="text-xs font-semibold">{{ pathFromURI(item.url) }}</span>
+                <span class="text-xs font-semibold">{{ item.path }}</span>
               </div>
             </div>
 
             <div class="flex items-center justify-between gap-2">
               <div class="text-xs font-medium text-muted-foreground">
-                {{ hostFromURI(item.url) }}
+                {{ item.hostname }}
               </div>
               <div class="ml-auto text-xs"
-                   :class="selectedRequest === item.id ? 'text-foreground' : 'text-muted-foreground'">
+                   :class="selectedEndpoint === item.id ? 'text-foreground' : 'text-muted-foreground'">
                 {{ formatDistanceToNow(new Date(item.created_at), { addSuffix: true }) }}
               </div>
             </div>
@@ -62,41 +62,22 @@ import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import type { Endpoint } from '@/stores/endpoint'
 
-interface ReplayListProps {
-  items: Request[]
+interface EndpointListProps {
+  items: Endpoint[]
 }
 
-defineProps<ReplayListProps>()
-const selectedRequest = defineModel<string>('selectedRequest', { required: false })
+defineProps<EndpointListProps>()
+const selectedEndpoint = defineModel<number>('selectedEndpoint', { required: false })
 
-const pathFromURI = (uri: string) => {
-  const url = new URL(uri)
-  return url.pathname
-}
-
-const hostFromURI = (uri: string) => {
-  const url = new URL(uri)
-  return url.host
-}
-
-function badgeColorFromStatus(status: number) {
-  if (status >= 0 && status < 300)
+function badgeColorFromMethod(method: string) {
+  if (method === 'GET')
     return 'bg-green-50 border-green-600/20 text-green-700'
 
-  if (status >= 300 && status < 400)
+  if (method === 'POST')
     return 'bg-yellow-50 border-yellow-600/20 text-yellow-700'
 
   return 'bg-red-50 border-red-600/20 text-red-700'
-}
-
-function getBadgeVariantFromLabel(label: string) {
-  if (['work'].includes(label.toLowerCase()))
-    return 'default'
-
-  if (['personal'].includes(label.toLowerCase()))
-    return 'outline'
-
-  return 'secondary'
 }
 </script>

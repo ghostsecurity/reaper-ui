@@ -129,7 +129,7 @@
           </div>
           <div class="flex items-center gap-2">
             <div>
-              {{ host.updated_at }}
+              {{ formatDistanceToNow(new Date(host.updated_at), { addSuffix: true }) }}
             </div>
             <Button variant="ghost"
                     size="icon"
@@ -149,6 +149,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
+import { formatDistanceToNow } from 'date-fns'
 import { Binoculars, Hexagon, MoreHorizontal, MoreVertical, Trash2 } from 'lucide-vue-next'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'

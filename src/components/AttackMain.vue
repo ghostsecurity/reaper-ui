@@ -10,7 +10,7 @@
         <Tabs default-value="all">
           <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
-              Replay
+              Attack
             </h1>
             <TabsList class="ml-auto">
               <TabsTrigger value="all"
@@ -34,13 +34,13 @@
           </div>
           <TabsContent value="all"
                        class="m-0 bg-secondary/50">
-            <ReplayList v-model:selected-request="selectedRequest"
-                        :items="filteredRequestList" />
+            <AttackList v-model:selected-endpoint="selectedEndpoint"
+                        :items="filteredEndpointList" />
           </TabsContent>
           <TabsContent value="unread"
                        class="m-0">
-            <ReplayList v-model:selected-request="selectedRequest"
-                        :items="unreadRequestList" />
+            <AttackList v-model:selected-endpoint="selectedEndpoint"
+                        :items="filteredEndpointList" />
           </TabsContent>
         </Tabs>
       </ResizablePanel>
@@ -48,7 +48,7 @@
                        with-handle />
       <ResizablePanel id="resize-panel-3"
                       :default-size="defaultLayout[2]">
-        <ReplayDisplay :request="selectedRequestData" />
+        <AttackDisplay :endpoint="selectedEndpointData" />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
@@ -59,8 +59,8 @@ import { computed, ref, onMounted } from 'vue'
 
 import { Search } from 'lucide-vue-next'
 import { refDebounced } from '@vueuse/core'
-import ReplayList from './ReplayList.vue'
-import ReplayDisplay from './ReplayDisplay.vue'
+import AttackList from './AttackList.vue'
+import AttackDisplay from './AttackDisplay.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import {
@@ -71,41 +71,39 @@ import {
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useRequestStore } from '@/stores/request'
+import { useEndpointStore } from '@/stores/endpoint'
+import type { Endpoint } from '@/stores/endpoint'
 
-const requestStore = useRequestStore()
-const requests = computed(() => requestStore.requests)
+const endpointStore = useEndpointStore()
+const endpoints = computed(() => endpointStore.endpoints)
 
-const selectedRequest = ref<string | undefined>(requests.value.length > 0 ? requests.value[0].id : undefined)
+const selectedEndpoint = ref<string | undefined>(endpoints.value.length > 0 ? endpoints.value[0].id : undefined)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
 const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
 
-const filteredRequestList = computed(() => {
-  let output: Request[] = []
+const filteredEndpointList = computed(() => {
+  let output: Endpoint[] = []
   const searchValue = debouncedSearch.value?.trim()
   if (!searchValue) {
-    output = requests.value
+    output = endpoints.value
   }
   else {
-    output = requests.value.filter((item) => {
-      return item.url.includes(debouncedSearch.value)
-        || item.method.includes(debouncedSearch.value)
-        || item.response.status.toString().includes(debouncedSearch.value)
-        || item.body.includes(debouncedSearch.value)
+    output = endpoints.value.filter((item) => {
+      return item.hostname.includes(debouncedSearch.value)
+        || item.path.includes(debouncedSearch.value)
     })
   }
 
   return output
 })
 
-const unreadRequestList = computed(() => requests.value.filter(item => item.response.content_type === 'application/json'))
 
-const selectedRequestData = computed(() => requests.value.find(item => item.id === selectedRequest.value))
+const selectedEndpointData = computed(() => endpoints.value.find(item => item.id === selectedEndpoint.value))
 
 onMounted(() => {
-  requestStore.getRequests()
+  endpointStore.getEndpoints()
 })
 </script>
