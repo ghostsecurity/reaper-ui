@@ -108,6 +108,10 @@ function connectWebSocket() {
         console.info("attack.result:", data)
         endpointStore.addResult(data)
         break
+      case "attack.result.clear":
+        console.info("attack.result.clear:", data)
+        endpointStore.emptyResults()
+        break
       case "navigation.follow":
         console.info("navigation.follow:", data)
         sessionStore.navigationFollow(data.to)

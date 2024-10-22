@@ -113,12 +113,12 @@ const links: LinkProp[] = [
     icon: 'lucide:binoculars',
     href: '/scan',
   },
-  {
-    title: 'Crawl',
-    label: '279',
-    icon: 'lucide:bug-play',
-    href: '/crawl',
-  },
+  // {
+  //   title: 'Crawl',
+  //   label: '279',
+  //   icon: 'lucide:bug-play',
+  //   href: '/crawl',
+  // },
   {
     title: 'Replay',
     label: '',
@@ -131,11 +131,11 @@ const links: LinkProp[] = [
     icon: 'lucide:pocket-knife',
     href: '/attack',
   },
-  {
-    title: 'Fuzz',
-    label: '23k',
-    icon: 'lucide:repeat-1',
-  },
+  // {
+  //   title: 'Fuzz',
+  //   label: '23k',
+  //   icon: 'lucide:repeat-1',
+  // },
   // {
   //   title: 'Automate',
   //   label: '',
@@ -169,6 +169,12 @@ const links: LinkProp[] = [
   //   label: '',
   //   icon: 'lucide:settings',
   // },
+  {
+    title: 'Reports',
+    label: '',
+    icon: 'lucide:scroll-text',
+    href: '/reports',
+  },
 ]
 
 onMounted(() => {

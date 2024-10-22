@@ -105,5 +105,8 @@ const selectedEndpointData = computed(() => endpoints.value.find(item => item.id
 
 onMounted(() => {
   endpointStore.getEndpoints()
+  if (endpoints.value.length > 0) {
+    selectedEndpoint.value = endpoints.value[0].id
+  }
 })
 </script>

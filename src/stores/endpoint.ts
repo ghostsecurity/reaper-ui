@@ -35,6 +35,7 @@ export const useEndpointStore = defineStore('endpoint', () => {
   const endpoints = ref<Endpoint[]>([])
   const results = ref<AttackResult[]>([])
   const attackRunning = ref(false)
+  const attackComplete = ref(false)
 
   const getEndpoints = () => {
     axios
@@ -49,6 +50,7 @@ export const useEndpointStore = defineStore('endpoint', () => {
 
   const startAttack = (endpoint: Endpoint) => {
     attackRunning.value = true
+    attackComplete.value = false
     console.log("start attack", endpoint)
 
     const payload = {
@@ -65,6 +67,7 @@ export const useEndpointStore = defineStore('endpoint', () => {
       })
       .finally(() => {
         attackRunning.value = false
+        attackComplete.value = true
       })
   }
 
@@ -77,13 +80,24 @@ export const useEndpointStore = defineStore('endpoint', () => {
       .delete(`/api/attack/${endpoint.id}/results`)
       .then(() => {
         results.value = []
+        attackComplete.value = false
+        attackRunning.value = false
       })
+  }
+
+  /**
+   * Empty the local results array for navigation followers
+   */
+  const emptyResults = () => {
+    results.value = []
   }
 
   return {
     addResult,
+    attackComplete,
     attackRunning,
     clearResults,
+    emptyResults,
     endpoints,
     results,
     getEndpoints,

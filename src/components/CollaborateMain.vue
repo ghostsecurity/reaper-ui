@@ -115,5 +115,6 @@ const pingTunnelStatus = () => {
 
 onMounted(() => {
   collabStore.tunnelStatus()
+  // pingTunnelStatus()
 })
 </script>

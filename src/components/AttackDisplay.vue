@@ -168,7 +168,7 @@
           </div>
         </div>
         <div v-if="endpoint.created_at"
-             class="ml-auto text-xs text-muted-foreground space-y-4">
+             class="ml-auto space-y-4 text-xs text-muted-foreground">
           <div>
             {{ format(new Date(endpoint.created_at), "PPpp") }}
           </div>
@@ -182,7 +182,7 @@
                   {{ attackTemplateSelectValue
                     ? frameworks.find((framework) => framework.value === attackTemplateSelectValue)?.label
                     : "Select template tags..." }}
-                  <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <CaretSortIcon class="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-[200px] p-0">
@@ -202,7 +202,7 @@
                                     attackTemplateSelectOpen = false
                                   }">
                         {{ framework.label }}
-                        <CheckIcon class="ml-auto h-4 w-4"
+                        <CheckIcon class="ml-auto size-4"
                                    :class="attackTemplateSelectValue === framework.value ? 'opacity-100' : 'opacity-0'" />
                       </CommandItem>
                     </CommandGroup>
@@ -214,14 +214,18 @@
           <div class="w-full">
             <Button class="w-full"
                     :disabled="attackRunning"
-                    v-if="!attackRunning"
+                    v-if="!attackRunning && !attackComplete"
                     @click="startAttack">
-              <PocketKnifeIcon class="w-4 h-4 mr-2" /> Start attack
+              <PocketKnifeIcon class="mr-2 size-4" /> Start attack
             </Button>
             <Button class="w-full"
                     :disabled="attackRunning"
                     v-if="attackRunning">
-              <RefreshCwIcon class="w-4 h-4 mr-2 animate-spin" /> Attack running...
+              <RefreshCwIcon class="mr-2 size-4 animate-spin" /> Attack running...
+            </Button>
+            <Button class="w-full"
+                    v-if="attackComplete && !attackRunning">
+              <ScrollText class="mr-2 size-4" /> View report
             </Button>
           </div>
         </div>
@@ -232,7 +236,7 @@
              :key="result.id"
              class="flex flex-col items-start gap-2 rounded-md border bg-background/95 p-3 text-left text-sm transition-all hover:bg-accent/50">
           <Badge variant="outline"
-                 class="px-1 border-green-600/20 bg-green-50 text-green-700">
+                 class="border-green-600/20 bg-green-50 px-1 text-green-700">
             <div class="text-2xs font-semibold uppercase">
               Success
             </div>
@@ -253,7 +257,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Archive, ArchiveX, Clock, Forward, MoreVertical, PocketKnifeIcon, RefreshCwIcon, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+import { Archive, ArchiveX, Clock, Forward, MoreVertical, PocketKnifeIcon, RefreshCwIcon, Reply, ReplyAll, ScrollText, Trash2 } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { addDays, addHours, format, nextSaturday } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
@@ -282,7 +286,7 @@ const endpointStore = useEndpointStore()
 const attackTemplateSelectOpen = ref(false)
 const attackTemplateSelectValue = ref('')
 const attackRunning = computed(() => endpointStore.attackRunning)
-
+const attackComplete = computed(() => endpointStore.attackComplete)
 const props = defineProps<EndpointDisplayProps>()
 
 const today = new Date()

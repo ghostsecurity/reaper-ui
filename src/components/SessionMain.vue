@@ -36,7 +36,7 @@
             Welcome to Reaper
           </h1>
           <p class="text-sm text-muted-foreground">
-            You are the admin, enter a name to continue.
+            Enter a name to continue.
           </p>
         </div>
         <Input v-model="userName"
