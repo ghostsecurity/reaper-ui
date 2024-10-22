@@ -7,13 +7,6 @@
       </div>
       <Separator />
       <SideNav :is-collapsed="false" />
-      <Separator />
-      <SideNavCollaborate v-if="route.name === 'collaborate'"
-                          :is-collapsed="false" />
-      <SideNavScan v-else-if="route.name === 'scan'"
-                   :is-collapsed="false" />
-      <SideNavSecondary v-else
-                        :is-collapsed="false" />
       <div class="mt-auto">
         <Separator />
         <div class="mx-4 flex items-center justify-between gap-4">
