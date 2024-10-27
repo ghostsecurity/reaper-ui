@@ -21,7 +21,7 @@
                        fill="none"
                        stroke="currentColor"
                        xmlns="http://www.w3.org/2000/svg"
-                       class="-top-2 left-4 text-foreground">
+                       class="-top-2 left-4 flex-shrink-0 text-foreground">
                     <path d="M1 -4 V18"
                           stroke-width="2" />
                     <path v-if="jdx != host.endpoints.length - 1"
@@ -30,16 +30,16 @@
                     <path d="M1 14V17.5C1 20.2614 3.23858 22.5 6 22.5H15"
                           stroke-width="2" />
                   </svg>
-                  <div class="my-1 flex w-full cursor-pointer rounded-sm pr-1 hover:bg-secondary">
-                    <div class="w-10">
+                  <div class="my-1 flex w-full min-w-0 cursor-pointer rounded-sm pr-1 hover:bg-secondary">
+                    <div class="w-10 flex-shrink-0">
                       <span
                             class="rounded-sm border border-green-300 bg-green-100 px-1 py-0.5 text-2xs font-medium text-green-700">
                         {{ endpoint.method }}</span>
                     </div>
-                    <div class="flex w-full justify-between">
+                    <div class="flex w-full min-w-0 justify-between">
                       <div class="ml-1 truncate text-foreground/80">{{ endpoint.path }}</div>
                       <div
-                           class="mx-1 rounded-sm border border-foreground/20 bg-background px-1 text-2xs font-semibold text-foreground/60">
+                           class="mx-1 flex-shrink-0 rounded-sm border border-foreground/20 bg-background px-1 text-2xs font-semibold text-foreground/60">
                         {{ endpoint.status }}</div>
                     </div>
                   </div>

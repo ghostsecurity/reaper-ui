@@ -15,7 +15,7 @@
               <div class="flex items-center gap-2">
                 <Badge variant="outline"
                        :class="badgeColorFromStatus(item.response.status_code)">
-                  <div class="font-semibold text-2xs">
+                  <div class="text-2xs font-semibold">
                     {{ item.method }}
                   </div>
                 </Badge>
@@ -62,13 +62,14 @@ import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { type ReaperRequest } from '@/stores/request'
 
 interface ReplayListProps {
-  items: Request[]
+  items: ReaperRequest[]
 }
 
 defineProps<ReplayListProps>()
-const selectedRequest = defineModel<string>('selectedRequest', { required: false })
+const selectedRequest = defineModel<number>('selectedRequest', { required: false })
 
 const pathFromURI = (uri: string) => {
   const url = new URL(uri)
@@ -88,15 +89,5 @@ function badgeColorFromStatus(status: number) {
     return 'bg-yellow-50 border-yellow-600/20 text-yellow-700'
 
   return 'bg-red-50 border-red-600/20 text-red-700'
-}
-
-function getBadgeVariantFromLabel(label: string) {
-  if (['work'].includes(label.toLowerCase()))
-    return 'default'
-
-  if (['personal'].includes(label.toLowerCase()))
-    return 'outline'
-
-  return 'secondary'
 }
 </script>

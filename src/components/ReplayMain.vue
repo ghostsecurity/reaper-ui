@@ -72,11 +72,12 @@ import {
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { useRequestStore } from '@/stores/request'
+import { type ReaperRequest } from '@/stores/request'
 
 const requestStore = useRequestStore()
 const requests = computed(() => requestStore.requests)
 
-const selectedRequest = ref<string | undefined>(requests.value.length > 0 ? requests.value[0].id : undefined)
+const selectedRequest = ref<number | undefined>(requests.value.length > 0 ? requests.value[0].id : undefined)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
@@ -84,7 +85,7 @@ const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
 
 const filteredRequestList = computed(() => {
-  let output: Request[] = []
+  let output: ReaperRequest[] = []
   const searchValue = debouncedSearch.value?.trim()
   if (!searchValue) {
     output = requests.value

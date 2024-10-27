@@ -18,23 +18,30 @@ import { useSessionStore } from '@/stores/session'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
 import { useEndpointStore } from '@/stores/endpoint'
+
 const sessionStore = useSessionStore()
 const exploreStore = useExploreStore()
 const scanStore = useScanStore()
 const endpointStore = useEndpointStore()
 const loggedIn = computed(() => sessionStore.loggedIn)
 
-/**
- * Websocket connection handling
- */
+const MAX_RECONNECT_ATTEMPTS = 50
+const RECONNECT_DELAY_MS = 2000
+const HEARTBEAT_INTERVAL_MS = 5000
 const wsConnected: Ref<boolean> = ref(false)
 const wsStreamUrl: string = getWebSocketUrl()
-const MAX_RECONNECT_ATTEMPTS = 25
-const HEARTBEAT_INTERVAL = 5000
+
 let ws: WebSocket | null = null
 let heartbeatInterval: NodeJS.Timeout | null = null
 let reconnectAttempts = 0
 
+/**
+ * Get the WebSocket URL.
+ *
+ * If the environment is not production (i.e. static build),
+ * use the VITE_WS_URL environment variable. Otherwise,
+ * derive the WebSocket URL from the current URL.
+ */
 function getWebSocketUrl() {
   const { protocol, hostname, port } = window.location
   if (!import.meta.env.PROD) {
@@ -42,7 +49,6 @@ function getWebSocketUrl() {
   }
   const wsProtocol = protocol.replace('http', 'ws')
   const wsUrl = `${wsProtocol}//${hostname}${port ? `:${port}` : ''}/ws`
-  console.log('[ws] App.vue WebSocket URL:', wsUrl)
   return wsUrl
 }
 
@@ -51,7 +57,6 @@ function connectWebSocket() {
 
   ws.onopen = () => {
     wsConnected.value = true;
-    console.log("[ws] WebSocket connected")
     reconnectAttempts = 0 // reset the reconnect attempts on a successful connection
     startHeartbeat()
   }
@@ -69,7 +74,7 @@ function connectWebSocket() {
     ws?.close()
   }
 
-  // Update the WebSocket message handler
+  // Handle incoming messages
   ws.onmessage = (e) => {
     const payload = e.data
 
@@ -77,7 +82,17 @@ function connectWebSocket() {
       return
     }
 
-    const data = JSON.parse(payload)
+    let data
+
+    try {
+      data = JSON.parse(payload)
+    }
+    catch (error) {
+      console.error("[ws] Error parsing message:", error)
+      return
+    }
+
+    // Handle incoming messages
     switch (data.type) {
       case "debug":
         console.log("log:", data)
@@ -97,10 +112,6 @@ function connectWebSocket() {
         console.info("scan.domain.sync:", data)
         scanStore.syncDomain(data)
         break
-      // case "scan.domain.delete":
-      //   console.info("scan.domain.delete:", data)
-      //   scanStore.deleteDomain(data)
-      //   break
       case "scan_host":
         console.info("scan_host:", data)
         break
@@ -125,14 +136,14 @@ function connectWebSocket() {
 
 function reconnect() {
   setTimeout(() => {
-    console.log("[ws] Attempting to reconnect...")
+    console.info("[ws] Attempting to reconnect...")
     reconnectAttempts++
     connectWebSocket()
   }, generateReconnectDelay(reconnectAttempts))
 }
 
 function generateReconnectDelay(attempts: number) {
-  const delay = 2000 + attempts * 100
+  const delay = RECONNECT_DELAY_MS + attempts * 100
   return delay
 }
 
@@ -141,7 +152,7 @@ function startHeartbeat() {
     if (ws?.readyState === WebSocket.OPEN) {
       ws.send("ping")
     }
-  }, HEARTBEAT_INTERVAL)
+  }, HEARTBEAT_INTERVAL_MS)
 }
 
 function stopHeartbeat() {

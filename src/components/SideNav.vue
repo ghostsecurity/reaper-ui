@@ -81,7 +81,6 @@ import { useUtilStore } from '@/utils'
 export interface LinkProp {
   title: string
   count?: number
-  label?: string
   icon: string
   href?: string
 }
@@ -94,7 +93,8 @@ const tunnel = computed(() => collabStore.tunnel)
 const route = useRoute()
 const isCollapsed = ref(false)
 
-// TODO: refactor - https://router.vuejs.org/guide/essentials/active-links.html
+// TODO: refactor to use dynamic classes
+// https://router.vuejs.org/guide/essentials/active-links.html
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
@@ -102,16 +102,14 @@ const isActiveRoute = (href: string | undefined) => {
 
 const links: LinkProp[] = [
   {
-    title: 'Explore',
-    label: '1,289',
-    icon: 'lucide:earth',
-    href: '/explore',
-  },
-  {
     title: 'Scan',
-    label: '9',
     icon: 'lucide:binoculars',
     href: '/scan',
+  },
+  {
+    title: 'Explore',
+    icon: 'lucide:earth',
+    href: '/explore',
   },
   // {
   //   title: 'Crawl',
@@ -121,59 +119,50 @@ const links: LinkProp[] = [
   // },
   {
     title: 'Replay',
-    label: '',
     icon: 'lucide:replace-all',
     href: '/replay',
   },
   {
-    title: 'Attack',
-    label: '',
+    title: 'Tests',
     icon: 'lucide:pocket-knife',
-    href: '/attack',
+    href: '/test',
   },
-  // {
-  //   title: 'Fuzz',
-  //   label: '23k',
-  //   icon: 'lucide:repeat-1',
-  // },
+  {
+    title: 'Fuzz',
+    icon: 'lucide:repeat-1',
+    href: '/fuzz',
+  },
   // {
   //   title: 'Automate',
   //   label: '',
   //   icon: 'lucide:waypoints',
   // },
-  {
-    title: 'Collaborate',
-    label: '',
-    icon: 'lucide:users',
-    href: '/collaborate'
-  },
   // {
-  //   title: 'AI Assist',
+  //   title: 'Collaborate',
   //   label: '',
-  //   icon: 'lucide:brain-circuit',
+  //   icon: 'lucide:users',
+  //   href: '/collaborate'
   // },
+  {
+    title: 'AI Agent',
+    icon: 'lucide:brain-circuit',
+    href: '/agent',
+  },
   // {
   //   title: 'Logs',
   //   label: '',
   //   icon: 'lucide:scroll-text',
   //   href: '/logs',
   // },
-  // {
-  //   title: 'Inbox Temp',
-  //   label: '1',
-  //   icon: 'lucide:inbox',
-  //   href: '/inbox',
-  // },
-  // {
-  //   title: 'Settings',
-  //   label: '',
-  //   icon: 'lucide:settings',
-  // },
   {
     title: 'Reports',
-    label: '',
     icon: 'lucide:scroll-text',
     href: '/reports',
+  },
+  {
+    title: 'Settings',
+    icon: 'lucide:settings',
+    href: '/settings',
   },
 ]
 

@@ -48,6 +48,7 @@ export const useScanStore = defineStore('scan', () => {
   /**
    * Create a domain
    * @param domain - The domain to create
+   * @returns Promise<Domain> - The created domain
    */
   const createDomain = (domain: Domain) => {
     return new Promise((resolve, reject) => {
@@ -69,7 +70,6 @@ export const useScanStore = defineStore('scan', () => {
    * Get all domains
    */
   const getDomains = () => {
-    console.log('scan.ts', 'getDomains')
     axios
       .get('/api/scan/domains')
       .then((response) => {
@@ -140,15 +140,15 @@ export const useScanStore = defineStore('scan', () => {
 
   return {
     addDomain,
-    domains,
     getDomains,
+    getHosts,
     createDomain,
     deleteDomain,
     selectDomain,
-    selectedDomain,
-    hosts,
-    getHosts,
-    errors,
     syncDomain,
+    domains,
+    hosts,
+    selectedDomain,
+    errors,
   }
 })

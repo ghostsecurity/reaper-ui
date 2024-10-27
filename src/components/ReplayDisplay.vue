@@ -210,9 +210,10 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { type ReaperRequest } from '@/stores/request'
 
 interface ReplayDisplayProps {
-  request: Request | undefined
+  request: ReaperRequest | undefined
 }
 
 const props = defineProps<ReplayDisplayProps>()
