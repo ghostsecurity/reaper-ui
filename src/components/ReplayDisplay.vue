@@ -180,7 +180,7 @@
         </div>
       </div>
       <Separator />
-      <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm">
+      <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm text-foreground/80">
         <div class="rounded-md bg-background p-2">
           <pre class="text-xs">{{ request?.headers?.length > 0 ? formattedBody(request.headers) : '-' }}</pre>
         </div>

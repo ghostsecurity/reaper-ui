@@ -36,6 +36,9 @@
                       isActiveRoute(link.href) && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                       'justify-start',
                     )">
+          <div v-if="link.title == 'Scan'"
+               class="-ml-2 rounded-full p-1"
+               :class="scanActive ? 'bg-orange-500' : ''" />
           <div v-if="link.title == 'Explore'"
                class="-ml-2 mr-1 rounded-full p-1"
                :class="proxy.enabled ? 'bg-green-400' : ''" />
@@ -73,6 +76,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useScanStore } from '@/stores/scan'
 import { useExploreStore } from '@/stores/explore'
 import { useCollabStore } from '@/stores/collab'
 import { useUtilStore } from '@/utils'
@@ -90,8 +94,14 @@ const exploreStore = useExploreStore()
 const proxy = computed(() => exploreStore.proxy)
 const collabStore = useCollabStore()
 const tunnel = computed(() => collabStore.tunnel)
+const scanStore = useScanStore()
 const route = useRoute()
 const isCollapsed = ref(false)
+
+const scanActive = computed(() => {
+  // true if any domain is 'pending', 'scanning', or 'probing'
+  return scanStore.domains.some(domain => domain.status === 'pending' || domain.status === 'scanning' || domain.status === 'probing')
+})
 
 // TODO: refactor to use dynamic classes
 // https://router.vuejs.org/guide/essentials/active-links.html
