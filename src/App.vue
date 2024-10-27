@@ -1,6 +1,7 @@
 <template>
   <div class="flex h-screen flex-col bg-background">
-    <main class="container flex-1 overflow-auto">
+    <main v-if="!loading"
+          class="container flex-1 overflow-auto">
       <Dashboard v-if="loggedIn"
                  :wsConnected="wsConnected" />
       <Session v-if="!loggedIn" />
@@ -24,6 +25,7 @@ const exploreStore = useExploreStore()
 const scanStore = useScanStore()
 const endpointStore = useEndpointStore()
 const loggedIn = computed(() => sessionStore.loggedIn)
+const loading = computed(() => sessionStore.loading)
 
 const MAX_RECONNECT_ATTEMPTS = 50
 const RECONNECT_DELAY_MS = 2000

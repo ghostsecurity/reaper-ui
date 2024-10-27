@@ -18,6 +18,7 @@ export const useSessionStore = defineStore('session', () => {
   const router = useRouter()
   const currentUser = ref<User | null>(null)
   const loggedIn = ref(false)
+  const loading = ref(true)
   const errors = ref<string>('')
 
   const signOut = () => {
@@ -39,6 +40,9 @@ export const useSessionStore = defineStore('session', () => {
       })
       .catch(() => {
         // console.error(error)
+      })
+      .finally(() => {
+        loading.value = false
       })
   }
 
@@ -71,6 +75,7 @@ export const useSessionStore = defineStore('session', () => {
   return {
     currentUser,
     errors,
+    loading,
     loggedIn,
     navigationFollow,
     signOut,
