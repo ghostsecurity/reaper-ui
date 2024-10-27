@@ -10,7 +10,7 @@
         <Tabs default-value="all">
           <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
-              Attack
+              AI Agent
             </h1>
             <TabsList class="ml-auto">
               <TabsTrigger value="all"
@@ -33,14 +33,14 @@
             </div>
           </div>
           <TabsContent value="all"
-                       class="m-0 bg-secondary/50">
-            <AttackList v-model:selected-endpoint="selectedEndpoint"
-                        :items="filteredEndpointList" />
+                       class="m-0">
+            <ReportsList v-model:selected-report="selectedReport"
+                         :items="filteredReportList" />
           </TabsContent>
           <TabsContent value="unread"
                        class="m-0">
-            <AttackList v-model:selected-endpoint="selectedEndpoint"
-                        :items="filteredEndpointList" />
+            <ReportsList v-model:selected-report="selectedReport"
+                         :items="filteredReportList" />
           </TabsContent>
         </Tabs>
       </ResizablePanel>
@@ -48,7 +48,7 @@
                        with-handle />
       <ResizablePanel id="resize-panel-3"
                       :default-size="defaultLayout[2]">
-        <AttackDisplay :endpoint="selectedEndpointData" />
+        <ReportsDisplay :report="selectedReportData" />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
@@ -59,8 +59,6 @@ import { computed, ref, onMounted } from 'vue'
 
 import { Search } from 'lucide-vue-next'
 import { refDebounced } from '@vueuse/core'
-import AttackList from './AttackList.vue'
-import AttackDisplay from './AttackDisplay.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import {
@@ -70,30 +68,31 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import ReportsList from './ReportsList.vue'
+import ReportsDisplay from './ReportsDisplay.vue'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useEndpointStore } from '@/stores/endpoint'
-import type { Endpoint } from '@/stores/endpoint'
+import { useReportStore } from '@/stores/report'
+import type { Report } from '@/stores/report'
 
-const endpointStore = useEndpointStore()
-const endpoints = computed(() => endpointStore.endpoints)
+const reportStore = useReportStore()
+const reports = computed(() => reportStore.reports)
 
-const selectedEndpoint = ref<number | undefined>(endpoints.value.length > 0 ? endpoints.value[0].id : undefined)
+const selectedReport = ref<number | undefined>(reports.value.length > 0 ? reports.value[0].id : undefined)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
 const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
 
-const filteredEndpointList = computed(() => {
-  let output: Endpoint[] = []
+const filteredReportList = computed(() => {
+  let output: Report[] = []
   const searchValue = debouncedSearch.value?.trim()
   if (!searchValue) {
-    output = endpoints.value
+    output = reports.value
   }
   else {
-    output = endpoints.value.filter((item) => {
-      return item.hostname.includes(debouncedSearch.value)
-        || item.path.includes(debouncedSearch.value)
+    output = reports.value.filter((item) => {
+      return item.domain.includes(debouncedSearch.value)
     })
   }
 
@@ -101,12 +100,12 @@ const filteredEndpointList = computed(() => {
 })
 
 
-const selectedEndpointData = computed(() => endpoints.value.find(item => item.id === selectedEndpoint.value))
+const selectedReportData = computed(() => reports.value.find(item => item.id === selectedReport.value))
 
 onMounted(() => {
-  endpointStore.getEndpoints()
-  if (endpoints.value.length > 0) {
-    selectedEndpoint.value = endpoints.value[0].id
+  reportStore.getReports()
+  if (reports.value.length > 0) {
+    selectedReport.value = reports.value[0].id
   }
 })
 </script>

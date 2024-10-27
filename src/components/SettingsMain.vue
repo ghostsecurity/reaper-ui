@@ -10,7 +10,7 @@
         <Tabs default-value="all">
           <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
-              Attack
+              Settings
             </h1>
             <TabsList class="ml-auto">
               <TabsTrigger value="all"

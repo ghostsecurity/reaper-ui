@@ -6,7 +6,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report">
               <Archive class="size-4" />
               <span class="sr-only">Archive</span>
             </Button>
@@ -17,7 +17,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report">
               <ArchiveX class="size-4" />
               <span class="sr-only">Move to junk</span>
             </Button>
@@ -28,9 +28,10 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report"
+                    @click="handleDeleteReport">
               <Trash2 class="size-4" />
-              <span class="sr-only">Move to trash</span>
+              <span class="sr-only">Delete report</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>Move to trash</TooltipContent>
@@ -43,7 +44,7 @@
               <TooltipTrigger as-child>
                 <Button variant="ghost"
                         size="icon"
-                        :disabled="!request">
+                        :disabled="!report">
                   <Clock class="size-4" />
                   <span class="sr-only">Snooze</span>
                 </Button>
@@ -98,7 +99,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report">
               <Reply class="size-4" />
               <span class="sr-only">Reply</span>
             </Button>
@@ -109,7 +110,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report">
               <ReplyAll class="size-4" />
               <span class="sr-only">Reply all</span>
             </Button>
@@ -120,7 +121,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!request">
+                    :disabled="!report">
               <Forward class="size-4" />
               <span class="sr-only">Forward</span>
             </Button>
@@ -134,7 +135,7 @@
         <DropdownMenuTrigger as-child>
           <Button variant="ghost"
                   size="icon"
-                  :disabled="!request">
+                  :disabled="!report">
             <MoreVertical class="size-4" />
             <span class="sr-only">More</span>
           </Button>
@@ -148,7 +149,7 @@
       </DropdownMenu>
     </div>
     <Separator />
-    <div v-if="request"
+    <div v-if="report"
          class="flex flex-1 flex-col">
       <div class="flex items-start p-4">
         <div class="flex items-start gap-4 text-sm">
@@ -159,36 +160,30 @@
           </Avatar>
           <div class="grid gap-1">
             <div class="font-semibold">
-              {{ request.url }}
+              {{ report.domain }}
             </div>
             <div class="line-clamp-1 text-xs">
-              {{ request.method }} / res: {{ request.response.content_length }}
+              {{ report.id }}
             </div>
             <div class="flex items-center justify-between gap-2 text-xs">
               <div>
-                <span class="font-medium">Status:</span> {{ request.response.status }}
+                <span class="font-medium">Status:</span> {{ report.status }}
               </div>
               <div>
-                {{ request.response.content_type }}
+                {{ report.markdown }}
               </div>
             </div>
           </div>
         </div>
-        <div v-if="request.created_at"
+        <div v-if="report.created_at"
              class="ml-auto text-xs text-muted-foreground">
-          {{ format(new Date(request.created_at), "PPpp") }}
+          {{ format(new Date(report.created_at), "PPpp") }}
         </div>
       </div>
       <Separator />
       <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm text-foreground/80">
         <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ request?.headers?.length > 0 ? formattedBody(request.headers) : '-' }}</pre>
-        </div>
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ request?.body?.length > 0 ? formattedBody(request.body) : '-' }}</pre>
-        </div>
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ formattedBody(request.response.body) }}</pre>
+          <pre class="text-xs">{{ formattedReport(report.markdown) }}</pre>
         </div>
       </div>
     </div>
@@ -210,29 +205,35 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { type ReaperRequest } from '@/stores/request'
+import type { Report } from '@/stores/report'
+import { useReportStore } from '@/stores/report'
 
-interface ReplayDisplayProps {
-  request: ReaperRequest | undefined
+const reportStore = useReportStore()
+
+interface ReportsDisplayProps {
+  report: Report | undefined
 }
 
-const props = defineProps<ReplayDisplayProps>()
+const props = defineProps<ReportsDisplayProps>()
 
 const mailFallbackName = computed(() => {
-  return props.request?.url
+  return props.report?.domain
     .split(' ')
     .map(chunk => chunk[0])
     .join('')
 })
 
+const handleDeleteReport = () => {
+  if (props.report) {
+    reportStore.deleteReport(props.report)
+  }
+}
+
+
 const today = new Date()
 
-const formattedBody = (body: string) => {
-  try {
-    return JSON.stringify(JSON.parse(body), null, 2)
-  }
-  catch {
-    return body
-  }
+const formattedReport = (body: string) => {
+  // TODO: parse Markdown
+  return body
 }
 </script>

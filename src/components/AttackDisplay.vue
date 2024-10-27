@@ -180,30 +180,30 @@
                         :aria-expanded="attackTemplateSelectOpen"
                         class="w-[200px] justify-between">
                   {{ attackTemplateSelectValue
-                    ? frameworks.find((framework) => framework.value === attackTemplateSelectValue)?.label
-                    : "Select template tags..." }}
+                    ? testTypes.find((tt) => tt.value === attackTemplateSelectValue)?.label
+                    : "Select test type..." }}
                   <CaretSortIcon class="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="w-[200px] p-0">
                 <Command>
                   <CommandInput class="h-9"
-                                placeholder="Search framework..." />
-                  <CommandEmpty>No framework found.</CommandEmpty>
+                                placeholder="Search test type..." />
+                  <CommandEmpty>No test type found.</CommandEmpty>
                   <CommandList>
                     <CommandGroup>
-                      <CommandItem v-for="framework in frameworks"
-                                   :key="framework.value"
-                                   :value="framework.value"
+                      <CommandItem v-for="tt in testTypes"
+                                   :key="tt.value"
+                                   :value="tt.value"
                                    @select="(ev) => {
                                     if (typeof ev.detail.value === 'string') {
                                       attackTemplateSelectValue = ev.detail.value
                                     }
                                     attackTemplateSelectOpen = false
                                   }">
-                        {{ framework.label }}
+                        {{ tt.label }}
                         <CheckIcon class="ml-auto size-4"
-                                   :class="attackTemplateSelectValue === framework.value ? 'opacity-100' : 'opacity-0'" />
+                                   :class="attackTemplateSelectValue === tt.value ? 'opacity-100' : 'opacity-0'" />
                       </CommandItem>
                     </CommandGroup>
                   </CommandList>
@@ -292,16 +292,18 @@ const props = defineProps<EndpointDisplayProps>()
 const today = new Date()
 
 const startAttack = () => {
-  // endpointStore.startAttack(props.endpoint)
-  endpointStore.startAttack(props.endpoint)
+  if (props.endpoint) {
+    endpointStore.startAttack(props.endpoint)
+  }
 }
 
 const clearResults = () => {
-  console.log("clear results", props.endpoint)
-  endpointStore.clearResults(props.endpoint)
+  if (props.endpoint) {
+    endpointStore.clearResults(props.endpoint)
+  }
 }
 
-const frameworks = [
+const testTypes = [
   { value: '-', label: '-' },
   { value: 'botnet', label: 'botnet' },
   { value: 'bottle', label: 'bottle' },
@@ -318,228 +320,6 @@ const frameworks = [
   { value: 'bravia', label: 'bravia' },
   { value: 'breach-forums', label: 'breach-forums' },
   { value: 'bricks', label: 'bricks' },
-  { value: 'brickset', label: 'brickset' },
-  { value: 'brighthr', label: 'brighthr' },
-  { value: 'hortonworks', label: 'hortonworks' },
-  { value: 'hospital', label: 'hospital' },
-  { value: 'hospital_management_system_project', label: 'hospital_management_system_project' },
-  { value: 'hostheader-injection', label: 'hostheader-injection' },
-  { value: 'hostio', label: 'hostio' },
-  { value: 'hostuxsocial-mastodon-instance', label: 'hostuxsocial-mastodon-instance' },
-  { value: 'hoteldrui', label: 'hoteldrui' },
-  { value: 'hoteldruid', label: 'hoteldruid' },
-  { value: 'houzz', label: 'houzz' },
-  { value: 'hoverfly', label: 'hoverfly' },
-  { value: 'hp', label: 'hp' },
-  { value: 'hpe', label: 'hpe' },
-  { value: 'hrsale', label: 'hrsale' },
-  { value: 'hsc', label: 'hsc' },
-  { value: 'hsp', label: 'hsp' },
-  { value: 'hsphere', label: 'hsphere' },
-  { value: 'html', label: 'html' },
-  { value: 'html2pdf', label: 'html2pdf' },
-  { value: 'html2wp', label: 'html2wp' },
-  { value: 'html2wp_project', label: 'html2wp_project' },
-  { value: 'html5-video-player', label: 'html5-video-player' },
-  { value: 'htmlcoderhelper', label: 'htmlcoderhelper' },
-  { value: 'htmli', label: 'htmli' },
-  { value: 'http', label: 'http' },
-  { value: 'httpbin', label: 'httpbin' },
-  { value: 'httpbrowser', label: 'httpbrowser' },
-  { value: 'httpd', label: 'httpd' },
-  { value: 'https', label: 'https' },
-  { value: 'httpserver', label: 'httpserver' },
-  { value: 'huatian', label: 'huatian' },
-  { value: 'huawei', label: 'huawei' },
-  { value: 'hubpages', label: 'hubpages' },
-  { value: 'hubski', label: 'hubski' },
-  { value: 'hubspot', label: 'hubspot' },
-  { value: 'hue', label: 'hue' },
-  { value: 'huemagic', label: 'huemagic' },
-  { value: 'hugegraph', label: 'hugegraph' },
-  { value: 'hugging-face', label: 'hugging-face' },
-  { value: 'huggingface', label: 'huggingface' },
-  { value: 'hugo', label: 'hugo' },
-  { value: 'huijietong', label: 'huijietong' },
-  { value: 'huiwen', label: 'huiwen' },
-  { value: 'hunter', label: 'hunter' },
-  { value: 'huntr', label: 'huntr' },
-  { value: 'hybris', label: 'hybris' },
-  { value: 'hydra', label: 'hydra' },
-  { value: 'hydra_project', label: 'hydra_project' },
-  { value: 'hydracrypt', label: 'hydracrypt' },
-  { value: 'hyperic', label: 'hyperic' },
-  { value: 'hypertest', label: 'hypertest' },
-  { value: 'hytec', label: 'hytec' },
-  { value: 'i-mscp', label: 'i-mscp' },
-  { value: 'i-plugins', label: 'i-plugins' },
-  { value: 'i3geo', label: 'i3geo' },
-  { value: 'iam', label: 'iam' },
-  { value: 'ibax', label: 'ibax' },
-  { value: 'ibenic', label: 'ibenic' },
-  { value: 'ibm', label: 'ibm' },
-  { value: 'ibm-decision-runner', label: 'ibm-decision-runner' },
-  { value: 'ictprotege', label: 'ictprotege' },
-  { value: 'idangero', label: 'idangero' },
-  { value: 'idea', label: 'idea' },
-  { value: 'idehweb', label: 'idehweb' },
-  { value: 'idemia', label: 'idemia' },
-  { value: 'identity_provider', label: 'identity_provider' },
-  { value: 'identityguard', label: 'identityguard' },
-  { value: 'identityserver', label: 'identityserver' },
-  { value: 'idera', label: 'idera' },
-  { value: 'idnovate', label: 'idnovate' },
-  { value: 'idoc', label: 'idoc' },
-  { value: 'idor', label: 'idor' },
-  { value: 'idrac', label: 'idrac' },
-  { value: 'ids', label: 'ids' },
-  { value: 'idsecure', label: 'idsecure' },
-  { value: 'imcat', label: 'imcat' },
-  { value: 'imgbb', label: 'imgbb' },
-  { value: 'imgproxy', label: 'imgproxy' },
-  { value: 'imgsrcru', label: 'imgsrcru' },
-  { value: 'imgur', label: 'imgur' },
-  { value: 'imm', label: 'imm' },
-  { value: 'immich', label: 'immich' },
-  { value: 'ghost', label: 'ghost' },
-  { value: 'kkfileview', label: 'kkfileview' },
-  { value: 'klog', label: 'klog' },
-  { value: 'klogserver', label: 'klogserver' },
-  { value: 'klr300n', label: 'klr300n' },
-  { value: 'kmc_information_systems', label: 'kmc_information_systems' },
-  { value: 'kms', label: 'kms' },
-  { value: 'knowage', label: 'knowage' },
-  { value: 'knowledgetree', label: 'knowledgetree' },
-  { value: 'knowyourmeme', label: 'knowyourmeme' },
-  { value: 'knr-author-list-widget', label: 'knr-author-list-widget' },
-  { value: 'ko-fi', label: 'ko-fi' },
-  { value: 'kodbox', label: 'kodbox' },
-  { value: 'kodexplorer', label: 'kodexplorer' },
-  { value: 'kodi', label: 'kodi' },
-  { value: 'kubeview_project', label: 'kubeview_project' },
-  { value: 'kuma', label: 'kuma' },
-  { value: 'kunalnagar', label: 'kunalnagar' },
-  { value: 'kvm', label: 'kvm' },
-  { value: 'kwejkpl', label: 'kwejkpl' },
-  { value: 'kyan', label: 'kyan' },
-  { value: 'smartping', label: 'smartping' },
-  { value: 'smartsearchwp', label: 'smartsearchwp' },
-  { value: 'smartsense', label: 'smartsense' },
-  { value: 'smartsheet', label: 'smartsheet' },
-  { value: 'smartstore', label: 'smartstore' },
-  { value: 'smartupload', label: 'smartupload' },
-  { value: 'smartypantsplugins', label: 'smartypantsplugins' },
-  { value: 'smartzone', label: 'smartzone' },
-  { value: 'smashballoon', label: 'smashballoon' },
-  { value: 'smashrun', label: 'smashrun' },
-  { value: 'smb', label: 'smb' },
-  { value: 'smelsy', label: 'smelsy' },
-  { value: 'smf', label: 'smf' },
-  { value: 'smh', label: 'smh' },
-  { value: 'smi', label: 'smi' },
-  { value: 'smokeping', label: 'smokeping' },
-  { value: 'sms', label: 'sms' },
-  { value: 'smtp', label: 'smtp' },
-  { value: 'socialbundde', label: 'socialbundde' },
-  { value: 'sock', label: 'sock' },
-  { value: 'socomec', label: 'socomec' },
-  { value: 'sofacy', label: 'sofacy' },
-  { value: 'sofneta', label: 'sofneta' },
-  { value: 'softaculous', label: 'softaculous' },
-  { value: 'softether', label: 'softether' },
-  { value: 'softlimit', label: 'softlimit' },
-  { value: 'softr', label: 'softr' },
-  { value: 'softvelum', label: 'softvelum' },
-  { value: 'software.realtyna', label: 'software.realtyna' },
-  { value: 'softwarepublico', label: 'softwarepublico' },
-  { value: 'sofurry', label: 'sofurry' },
-  { value: 'sogo', label: 'sogo' },
-  { value: 'solara', label: 'solara' },
-  { value: 'solari', label: 'solari' },
-  { value: 'solarlog', label: 'solarlog' },
-  { value: 'solarview', label: 'solarview' },
-  { value: 'solarwinds', label: 'solarwinds' },
-  { value: 'solikick', label: 'solikick' },
-  { value: 'solman', label: 'solman' },
-  { value: 'soloby', label: 'soloby' },
-  { value: 'soloto', label: 'soloto' },
-  { value: 'solr', label: 'solr' },
-  { value: 'somansa', label: 'somansa' },
-  { value: 'sonarcloud', label: 'sonarcloud' },
-  { value: 'sonarqube', label: 'sonarqube' },
-  { value: 'sonarr', label: 'sonarr' },
-  { value: 'sonarsource', label: 'sonarsource' },
-  { value: 'sonatype', label: 'sonatype' },
-  { value: 'sonicwall', label: 'sonicwall' },
-  { value: 'sony', label: 'sony' },
-  { value: 'sophos', label: 'sophos' },
-  { value: 'soplanning', label: 'soplanning' },
-  { value: 'sound4', label: 'sound4' },
-  { value: 'soundcloud', label: 'soundcloud' },
-  { value: 'soup', label: 'soup' },
-  { value: 'sourceafrica_project', label: 'sourceafrica_project' },
-  { value: 'sourcebans', label: 'sourcebans' },
-  { value: 'sourcecodester', label: 'sourcecodester' },
-  { value: 'webshells', label: 'webshells' },
-  { value: 'websitepanel', label: 'websitepanel' },
-  { value: 'websocket', label: 'websocket' },
-  { value: 'websphere', label: 'websphere' },
-  { value: 'websvn', label: 'websvn' },
-  { value: 'webtareas', label: 'webtareas' },
-  { value: 'webtareas_project', label: 'webtareas_project' },
-  { value: 'webtitan', label: 'webtitan' },
-  { value: 'webtools', label: 'webtools' },
-  { value: 'webtoprint', label: 'webtoprint' },
-  { value: 'webtransferclient', label: 'webtransferclient' },
-  { value: 'webtrees', label: 'webtrees' },
-  { value: 'webui', label: 'webui' },
-  { value: 'webuzo', label: 'webuzo' },
-  { value: 'whmcs', label: 'whmcs' },
-  { value: 'whois', label: 'whois' },
-  { value: 'wibu', label: 'wibu' },
-  { value: 'widget', label: 'widget' },
-  { value: 'wielebenwir', label: 'wielebenwir' },
-  { value: 'wifi', label: 'wifi' },
-  { value: 'wifisky', label: 'wifisky' },
-  { value: 'wiki', label: 'wiki' },
-  { value: 'wiki-js', label: 'wiki-js' },
-  { value: 'wikidot', label: 'wikidot' },
-  { value: 'wikipedia', label: 'wikipedia' },
-  { value: 'wildcard', label: 'wildcard' },
-  { value: 'wildfly', label: 'wildfly' },
-  { value: 'wildix', label: 'wildix' },
-  { value: 'wildneutron', label: 'wildneutron' },
-  { value: 'wimkin-publicprofile', label: 'wimkin-publicprofile' },
-  { value: 'windows', label: 'windows' },
-  { value: 'wing', label: 'wing' },
-  { value: 'wing-ftp', label: 'wing-ftp' },
-  { value: 'winscp', label: 'winscp' },
-  { value: 'wintercms', label: 'wintercms' },
-  { value: 'wipro', label: 'wipro' },
-  { value: 'wireclub', label: 'wireclub' },
-  { value: 'wireguard', label: 'wireguard' },
-  { value: 'wireless', label: 'wireless' },
-  { value: 'wiren', label: 'wiren' },
-  { value: 'wisegiga', label: 'wisegiga' },
-  { value: 'wishlistr', label: 'wishlistr' },
-  { value: 'wishpond', label: 'wishpond' },
-  { value: 'withsecure', label: 'withsecure' },
-  { value: 'wix', label: 'wix' },
-  { value: 'wizard', label: 'wizard' },
-  { value: 'wl-500', label: 'wl-500' },
-  { value: 'wl-520gu', label: 'wl-520gu' },
-  { value: 'wms', label: 'wms' },
-  { value: 'wmt', label: 'wmt' },
-  { value: 'wmw', label: 'wmw' },
-  { value: 'woc-order-alert', label: 'woc-order-alert' },
-  { value: 'wolni-slowianie', label: 'wolni-slowianie' },
-  { value: 'workreap', label: 'workreap' },
-  { value: 'workresources', label: 'workresources' },
-  { value: 'workshop', label: 'workshop' },
-  { value: 'workspace', label: 'workspace' },
-  { value: 'workspaceone', label: 'workspaceone' },
-  { value: 'worldserver', label: 'worldserver' },
-  { value: 'wow-company', label: 'wow-company' },
   { value: 'wowcms', label: 'wowcms' },
   { value: 'wowhead', label: 'wowhead' },
   { value: 'wowjoomla', label: 'wowjoomla' },

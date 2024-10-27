@@ -92,7 +92,7 @@ export const useScanStore = defineStore('scan', () => {
         domains.value = domains.value.filter((d) => d.id !== domain.id)
       })
       .catch((error) => {
-        console.error(error)
+        console.error("[scan.ts]", error)
         errors.value = error.message
       })
       .finally(() => {
@@ -114,7 +114,7 @@ export const useScanStore = defineStore('scan', () => {
         hosts.value = response.data
       })
       .catch((error) => {
-        console.error(error)
+        console.error("[scan.ts]", error)
         errors.value = error.message
       })
   }

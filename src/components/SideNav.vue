@@ -137,16 +137,6 @@ const links: LinkProp[] = [
     icon: 'lucide:pocket-knife',
     href: '/test',
   },
-  {
-    title: 'Fuzz',
-    icon: 'lucide:repeat-1',
-    href: '/fuzz',
-  },
-  // {
-  //   title: 'Automate',
-  //   label: '',
-  //   icon: 'lucide:waypoints',
-  // },
   // {
   //   title: 'Collaborate',
   //   label: '',
