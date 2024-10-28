@@ -6,7 +6,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report">
+                    :disabled="!session">
               <Archive class="size-4" />
               <span class="sr-only">Archive</span>
             </Button>
@@ -17,7 +17,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report">
+                    :disabled="!session">
               <ArchiveX class="size-4" />
               <span class="sr-only">Move to junk</span>
             </Button>
@@ -28,8 +28,8 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report"
-                    @click="handleDeleteReport">
+                    :disabled="!session"
+                    @click="handleDeleteSession">
               <Trash2 class="size-4" />
               <span class="sr-only">Delete report</span>
             </Button>
@@ -44,7 +44,7 @@
               <TooltipTrigger as-child>
                 <Button variant="ghost"
                         size="icon"
-                        :disabled="!report">
+                        :disabled="!session">
                   <Clock class="size-4" />
                   <span class="sr-only">Snooze</span>
                 </Button>
@@ -99,7 +99,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report">
+                    :disabled="!session">
               <Reply class="size-4" />
               <span class="sr-only">Reply</span>
             </Button>
@@ -110,7 +110,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report">
+                    :disabled="!session">
               <ReplyAll class="size-4" />
               <span class="sr-only">Reply all</span>
             </Button>
@@ -121,7 +121,7 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!report">
+                    :disabled="!session">
               <Forward class="size-4" />
               <span class="sr-only">Forward</span>
             </Button>
@@ -135,7 +135,7 @@
         <DropdownMenuTrigger as-child>
           <Button variant="ghost"
                   size="icon"
-                  :disabled="!report">
+                  :disabled="!session">
             <MoreVertical class="size-4" />
             <span class="sr-only">More</span>
           </Button>
@@ -149,7 +149,7 @@
       </DropdownMenu>
     </div>
     <Separator />
-    <div v-if="report"
+    <div v-if="session"
          class="flex flex-1 flex-col">
       <div class="flex items-start p-4">
         <div class="flex items-start gap-4 text-sm">
@@ -160,36 +160,35 @@
           </Avatar>
           <div class="grid gap-1">
             <div class="font-semibold">
-              {{ report.domain }}
+              {{ session.domain }}
             </div>
             <div class="line-clamp-1 text-xs">
-              {{ report.id }}
+              {{ session.id }}
             </div>
             <div class="flex items-center justify-between gap-2 text-xs">
               <div>
-                <span class="font-medium">Status:</span> {{ report.status }}
+                <span class="font-medium">Status:</span> {{ session.domain }}
               </div>
               <div>
-                {{ report.markdown }}
+                {{ session.created_at }}
               </div>
             </div>
           </div>
         </div>
-        <div v-if="report.created_at"
+        <div v-if="session.created_at"
              class="ml-auto text-xs text-muted-foreground">
-          {{ format(new Date(report.created_at), "PPpp") }}
+          {{ format(new Date(session.created_at), "PPpp") }}
         </div>
       </div>
       <Separator />
-      <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm text-foreground/80">
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ formattedReport(report.markdown) }}</pre>
-        </div>
+      <div class="min-h-0 flex-1">
+        <AgentSessionMessages id="session-messages"
+                              :messages="session.messages" />
       </div>
     </div>
     <div v-else
          class="p-8 text-center text-muted-foreground">
-      No report selected
+      No session selected
     </div>
   </div>
 </template>
@@ -205,35 +204,31 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { Report } from '@/stores/report'
-import { useReportStore } from '@/stores/report'
+import AgentSessionMessages from './AgentSessionMessages.vue'
 
-const reportStore = useReportStore()
+import type { AgentSession } from '@/stores/agent'
+import { useAgentStore } from '@/stores/agent'
 
-interface ReportsDisplayProps {
-  report: Report | undefined
+interface AgentSessionDisplayProps {
+  session: AgentSession | undefined
 }
 
-const props = defineProps<ReportsDisplayProps>()
+const agentStore = useAgentStore()
+const props = defineProps<AgentSessionDisplayProps>()
 
 const mailFallbackName = computed(() => {
-  return props.report?.domain
+  return props.session?.domain
     .split(' ')
     .map(chunk => chunk[0])
     .join('')
 })
 
-const handleDeleteReport = () => {
-  if (props.report) {
-    reportStore.deleteReport(props.report)
+const handleDeleteSession = () => {
+  if (props.session) {
+    agentStore.deleteSession(props.session)
   }
 }
 
-
 const today = new Date()
 
-const formattedReport = (body: string) => {
-  // TODO: parse Markdown
-  return body
-}
 </script>

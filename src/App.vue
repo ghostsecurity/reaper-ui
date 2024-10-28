@@ -19,11 +19,15 @@ import { useSessionStore } from '@/stores/session'
 import { useExploreStore } from '@/stores/explore'
 import { useScanStore } from '@/stores/scan'
 import { useEndpointStore } from '@/stores/endpoint'
+import { useAgentStore } from '@/stores/agent'
+import { useConfigStore } from '@/stores/config'
 
+useConfigStore()
 const sessionStore = useSessionStore()
 const exploreStore = useExploreStore()
 const scanStore = useScanStore()
 const endpointStore = useEndpointStore()
+const agentStore = useAgentStore()
 const loggedIn = computed(() => sessionStore.loggedIn)
 const loading = computed(() => sessionStore.loading)
 
@@ -128,6 +132,10 @@ function connectWebSocket() {
       case "navigation.follow":
         console.info("navigation.follow:", data)
         sessionStore.navigationFollow(data.to)
+        break
+      case "agent.session.message":
+        console.info("agent.session.message:", data)
+        agentStore.appendMessageToSession(data.session_id, data.message)
         break
       default:
         console.log("unknown message type:", data)

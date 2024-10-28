@@ -10,16 +10,16 @@
         <Tabs default-value="all">
           <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
-              AI Agent
+              AI Agent Sessions
             </h1>
             <TabsList class="ml-auto">
               <TabsTrigger value="all"
                            class="text-zinc-600 dark:text-zinc-200">
                 All
               </TabsTrigger>
-              <TabsTrigger value="unread"
+              <TabsTrigger value="active"
                            class="text-zinc-600 dark:text-zinc-200">
-                APIs
+                Active
               </TabsTrigger>
             </TabsList>
           </div>
@@ -34,13 +34,13 @@
           </div>
           <TabsContent value="all"
                        class="m-0">
-            <ReportsList v-model:selected-report="selectedReport"
-                         :items="filteredReportList" />
+            <AgentSessionsList v-model:selected-session="selectedSession"
+                               :items="filteredSessionList" />
           </TabsContent>
-          <TabsContent value="unread"
+          <TabsContent value="active"
                        class="m-0">
-            <ReportsList v-model:selected-report="selectedReport"
-                         :items="filteredReportList" />
+            <AgentSessionsList v-model:selected-session="selectedSession"
+                               :items="filteredSessionList" />
           </TabsContent>
         </Tabs>
       </ResizablePanel>
@@ -48,7 +48,7 @@
                        with-handle />
       <ResizablePanel id="resize-panel-3"
                       :default-size="defaultLayout[2]">
-        <ReportsDisplay :report="selectedReportData" />
+        <AgentSessionDisplay :session="selectedSessionData" />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
@@ -68,30 +68,30 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import ReportsList from './ReportsList.vue'
-import ReportsDisplay from './ReportsDisplay.vue'
+import AgentSessionsList from './AgentSessionsList.vue'
+import AgentSessionDisplay from './AgentSessionDisplay.vue'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useReportStore } from '@/stores/report'
-import type { Report } from '@/stores/report'
+import { useAgentStore } from '@/stores/agent'
+import type { AgentSession } from '@/stores/agent'
 
-const reportStore = useReportStore()
-const reports = computed(() => reportStore.reports)
+const agentStore = useAgentStore()
+const sessions = computed(() => agentStore.sessions)
 
-const selectedReport = ref<number | undefined>(reports.value.length > 0 ? reports.value[0].id : undefined)
+const selectedSession = ref<number | undefined>(sessions.value.length > 0 ? sessions.value[0].id : undefined)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
 const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
 
-const filteredReportList = computed(() => {
-  let output: Report[] = []
+const filteredSessionList = computed(() => {
+  let output: AgentSession[] = []
   const searchValue = debouncedSearch.value?.trim()
   if (!searchValue) {
-    output = reports.value
+    output = sessions.value
   }
   else {
-    output = reports.value.filter((item) => {
+    output = sessions.value.filter((item) => {
       return item.domain.includes(debouncedSearch.value)
     })
   }
@@ -100,12 +100,12 @@ const filteredReportList = computed(() => {
 })
 
 
-const selectedReportData = computed(() => reports.value.find(item => item.id === selectedReport.value))
+const selectedSessionData = computed(() => sessions.value.find(item => item.id === selectedSession.value))
 
 onMounted(() => {
-  reportStore.getReports()
-  if (reports.value.length > 0) {
-    selectedReport.value = reports.value[0].id
+  agentStore.getSessions()
+  if (sessions.value.length > 0) {
+    selectedSession.value = sessions.value[0].id
   }
 })
 </script>

@@ -11,7 +11,11 @@ type NavigationRecord = {
 export const useNavStore = defineStore('nav', () => {
   const recordNavigation = (to: string, from: string) => {
     const record: NavigationRecord = { to, from }
-    axios.post('/api/navigation', record)
+    axios
+      .post('/api/navigation', record)
+      .catch(() => {
+        // ignore errors
+      })
   }
 
   return {
