@@ -68,10 +68,16 @@ export const useAgentStore = defineStore('agent', () => {
    * @param session - The session to append the message to
    * @param message - The message to append
    */
-  const appendMessageToSession = (session: AgentSession, message: AgentMessage) => {
-    const sessionToUpdate = sessions.value.find((s) => s.id === session.id)
+  const appendMessageToSession = (sessionId: number, message: AgentMessage) => {
+    const sessionToUpdate = sessions.value.find((s) => s.id === sessionId)
     if (sessionToUpdate) {
+      console.info('[agent.ts] appendMessageToSession: session found', sessionToUpdate)
+      console.info('[agent.ts] appendMessageToSession: message', message)
       sessionToUpdate.messages.push(message)
+      // update session in sessions array
+      // sessions.value = sessions.value.map((s) => s.id === sessionId ? sessionToUpdate : s)
+    } else {
+      console.error('[agent.ts] appendMessageToSession: session not found, id: ', sessionId)
     }
   }
 

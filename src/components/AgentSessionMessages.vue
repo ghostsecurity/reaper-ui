@@ -59,7 +59,7 @@ interface AgentSessionMessagesProps {
   messages: AgentMessage[]
 }
 
-defineProps<AgentSessionMessagesProps>()
+const props = defineProps<AgentSessionMessagesProps>()
 
 // const messages = ref([
 //   { author_id: 0, content: 'Hi, how can I help you today?' },
@@ -71,6 +71,7 @@ defineProps<AgentSessionMessagesProps>()
 
 const input = ref('')
 const inputLength = computed(() => input.value.trim().length)
+const messages = computed(() => props.messages)
 
 const handleUserMessageSubmit = () => {
   console.log('[AgentSessionMessages.vue] handleUserMessageSubmit', input.value)

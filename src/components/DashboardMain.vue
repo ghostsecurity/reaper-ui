@@ -37,21 +37,6 @@
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <div class="-mt-1">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Badge variant="secondary"
-                         class="text-xs">
-                    13
-                  </Badge>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>13 collaborators</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
           <div>
             <TooltipProvider>
               <Tooltip>
@@ -89,7 +74,6 @@
 import { Icon } from '@iconify/vue'
 import AccountSwitcher from '@/components/AccountSwitcher.vue'
 import SideNav from '@/components/SideNav.vue'
-import Badge from '@/components/ui/badge/Badge.vue'
 import {
   Tooltip,
   TooltipContent,

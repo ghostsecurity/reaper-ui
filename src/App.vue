@@ -135,7 +135,7 @@ function connectWebSocket() {
         break
       case "agent.session.message":
         console.info("agent.session.message:", data)
-        agentStore.appendMessageToSession(data.session_id, data.message)
+        agentStore.appendMessageToSession(data.session_id, data)
         break
       default:
         console.log("unknown message type:", data)
