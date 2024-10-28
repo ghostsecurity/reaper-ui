@@ -11,3 +11,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* custom report markdown styles */
+#report-markdown h1 {
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-2xl;
+}
+
+#report-markdown h2 {
+  @apply mt-10 scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight transition-colors first:mt-0;
+}
+
+#report-markdown h3 {
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+
+/* #report-markdown ul {
+  @apply my-0 ml-6 list-disc [&>li]:mt-0;
+} */
+
+#report-markdown pre {
+  @apply rounded bg-muted p-2 font-mono text-xs;
+}
+
+#report-markdown p code {
+  @apply rounded bg-muted p-1 font-mono font-semibold text-xs;
+}
+
+#report-markdown li code {
+  @apply rounded bg-muted p-1 font-mono font-semibold text-xs;
+}

@@ -169,9 +169,6 @@
               <div>
                 <span class="font-medium">Status:</span> {{ report.status }}
               </div>
-              <div>
-                {{ report.markdown }}
-              </div>
             </div>
           </div>
         </div>
@@ -182,8 +179,9 @@
       </div>
       <Separator />
       <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm text-foreground/80">
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ formattedReport(report.markdown) }}</pre>
+        <div class="rounded-md bg-background p-10">
+          <vue-markdown id="report-markdown"
+                        :source="report.markdown" />
         </div>
       </div>
     </div>
@@ -205,6 +203,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+
+import VueMarkdown from 'vue-markdown-render'
 import type { Report } from '@/stores/report'
 import { useReportStore } from '@/stores/report'
 
@@ -215,7 +215,7 @@ interface ReportsDisplayProps {
 }
 
 const props = defineProps<ReportsDisplayProps>()
-
+const today = new Date()
 const mailFallbackName = computed(() => {
   return props.report?.domain
     .split(' ')
@@ -229,11 +229,4 @@ const handleDeleteReport = () => {
   }
 }
 
-
-const today = new Date()
-
-const formattedReport = (body: string) => {
-  // TODO: parse Markdown
-  return body
-}
 </script>

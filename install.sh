@@ -23,6 +23,7 @@ yarn add -D autoprefixer \
   tailwindcss-animate \
   tailwindcss \
   vue-tsc \
+  vue-markdown-render \
   @eslint/js \
   @eslint/eslintrc \
   @headlessui/vue \
@@ -34,10 +35,10 @@ yarn add -D autoprefixer \
   @tailwindcss/typography \
   @tailwindcss/aspect-ratio \
   @types/node \
+  @types/markdown-it \
   @typescript-eslint/eslint-plugin \
   @typescript-eslint/parser \
   @unovis/ts \
   @unovis/vue \
   @vitejs/plugin-vue \
   @vueuse/core
-
