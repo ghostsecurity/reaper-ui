@@ -19,7 +19,7 @@
               </TabsTrigger>
               <TabsTrigger value="unread"
                            class="text-zinc-600 dark:text-zinc-200">
-                APIs
+                Archived
               </TabsTrigger>
             </TabsList>
           </div>

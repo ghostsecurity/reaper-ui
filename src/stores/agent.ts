@@ -18,6 +18,7 @@ export type AgentMessage = {
 export type AgentSession = {
   id: number
   domain: string
+  description: string
   messages: AgentMessage[]
   created_at: string
 }

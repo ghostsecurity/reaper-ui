@@ -67,18 +67,18 @@
                 {{ utils.customNumberFormat(domain.host_count || 0) }} hosts
               </span>
             </div>
-            <Tabs default-value="all"
+            <Tabs default-value="live"
                   v-model="tab"
                   @update:model-value="handleTabChange">
               <div class="flex items-center pt-2">
                 <TabsList class="">
-                  <TabsTrigger value="all"
-                               class="text-xs text-zinc-600 dark:text-zinc-200">
-                    All
-                  </TabsTrigger>
                   <TabsTrigger value="live"
                                class="text-xs text-zinc-600 dark:text-zinc-200">
                     Live
+                  </TabsTrigger>
+                  <TabsTrigger value="all"
+                               class="text-xs text-zinc-600 dark:text-zinc-200">
+                    All
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -174,7 +174,7 @@ const domainAvatarName = computed(() => {
   return domain.value?.name.substring(0, 2).toUpperCase()
 })
 
-const tab = ref('all')
+const tab = ref('live')
 
 const handleTabChange = (e: string | number) => {
   tab.value = e as string

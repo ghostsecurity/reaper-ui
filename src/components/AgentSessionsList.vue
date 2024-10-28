@@ -29,7 +29,7 @@
 
             <div class="flex items-center justify-between gap-2">
               <div class="text-xs font-medium text-muted-foreground">
-                {{ item.domain }}
+                {{ item.description }}
               </div>
               <div class="ml-auto text-xs"
                    :class="selectedSession === item.id ? 'text-foreground' : 'text-muted-foreground'">
