@@ -25,7 +25,7 @@
         <div v-for="(message, index) in messages"
              :key="index"
              class="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm"
-             :class="message.author_id > 0 ? 'ml-auto bg-primary text-primary-foreground' : 'bg-muted'">
+             :class="message.author_role !== 'agent' ? 'ml-auto bg-primary text-primary-foreground' : 'bg-muted'">
           {{ message.content }}
         </div>
       </div>

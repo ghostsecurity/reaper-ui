@@ -9,6 +9,7 @@ const axios = useAxiosClient()
 export type AgentMessage = {
   id: number
   author_id: number
+  author_role: string
   agent_session_id: number
   content: string
   created_at: string
