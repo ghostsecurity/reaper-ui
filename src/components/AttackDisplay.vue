@@ -178,14 +178,14 @@
                 <Button variant="outline"
                         role="combobox"
                         :aria-expanded="attackTemplateSelectOpen"
-                        class="w-[200px] justify-between">
+                        class="w-[360px] justify-between">
                   {{ attackTemplateSelectValue
                     ? testTypes.find((tt) => tt.value === attackTemplateSelectValue)?.label
                     : "Select test type..." }}
                   <CaretSortIcon class="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent class="w-[200px] p-0">
+              <PopoverContent class="w-[350px] p-0">
                 <Command>
                   <CommandInput class="h-9"
                                 placeholder="Search test type..." />
@@ -211,12 +211,32 @@
               </PopoverContent>
             </Popover>
           </div>
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <Checkbox />
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                account_from
+              </label>
+            </div>
+            <div class="flex items-center gap-2">
+              <Checkbox />
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                account_to
+              </label>
+            </div>
+            <div class="flex items-center gap-2">
+              <Checkbox />
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                amount
+              </label>
+            </div>
+          </div>
           <div class="w-full">
             <Button class="w-full"
                     :disabled="attackRunning"
                     v-if="!attackRunning && !attackComplete"
                     @click="startAttack">
-              <PocketKnifeIcon class="mr-2 size-4" /> Start attack
+              <PocketKnifeIcon class="mr-2 size-4" /> Start test
             </Button>
             <Button class="w-full"
                     :disabled="attackRunning"
@@ -245,7 +265,7 @@
         </div>
         <div v-if="endpointStore.results.length < 1"
              class="text-foreground-muted p-8 font-medium">
-          No results yet. Start an attack.
+          No results yet. Start a dynamic test.
         </div>
       </div>
     </div>
@@ -260,6 +280,7 @@
 import { Archive, ArchiveX, Clock, Forward, MoreVertical, PocketKnifeIcon, RefreshCwIcon, Reply, ReplyAll, ScrollText, Trash2 } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { addDays, addHours, format, nextSaturday } from 'date-fns'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Calendar } from '@/components/ui/calendar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -305,27 +326,16 @@ const clearResults = () => {
 
 const testTypes = [
   { value: '-', label: '-' },
-  { value: 'botnet', label: 'botnet' },
-  { value: 'bottle', label: 'bottle' },
-  { value: 'bouqueteditor_project', label: 'bouqueteditor_project' },
-  { value: 'bower', label: 'bower' },
-  { value: 'box', label: 'box' },
-  { value: 'box-storage', label: 'box-storage' },
-  { value: 'bplugins', label: 'bplugins' },
-  { value: 'bqe', label: 'bqe' },
-  { value: 'brafton', label: 'brafton' },
-  { value: 'brandfolder', label: 'brandfolder' },
-  { value: 'brave', label: 'brave' },
-  { value: 'bravenewcoin', label: 'bravenewcoin' },
-  { value: 'bravia', label: 'bravia' },
-  { value: 'breach-forums', label: 'breach-forums' },
-  { value: 'bricks', label: 'bricks' },
-  { value: 'wowcms', label: 'wowcms' },
-  { value: 'wowhead', label: 'wowhead' },
-  { value: 'wowjoomla', label: 'wowjoomla' },
-  { value: 'wowonder', label: 'wowonder' },
-  { value: 'wowthemes', label: 'wowthemes' },
-  { value: 'wowza', label: 'wowza' },
-  { value: 'wp', label: 'wp' },
+  { value: 'bf', label: 'Brute Force' },
+  { value: 'sqli', label: 'SQL Injection (SQLi)' },
+  { value: 'header', label: 'HTTP Header Injection' },
+  { value: 'xml', label: 'XML Injection (XXE)' },
+  { value: 'xss', label: 'Cross Site Scripting (XSS)' },
+  { value: 'ssrf', label: 'Server Side Request Forgery (SSRF)' },
+  { value: 'lfi', label: 'Local File Inclusion (LFI)' },
+  { value: 'patht', label: 'Path Traversal' },
+  { value: 'ssti', label: 'Server Side Template Injection (SSTI)' },
+  { value: 'idor', label: 'Insecure Direct Object References (IDOR/BOLA)' },
+  { value: 'cmdi', label: 'Command Injection (cmd/shell)' },
 ]
 </script>
