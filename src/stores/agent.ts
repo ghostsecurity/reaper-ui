@@ -56,6 +56,23 @@ export const useAgentStore = defineStore('agent', () => {
   }
 
   /**
+   * Send a user message to the ai agent session
+   * @param message - The message to send
+   */
+  const sendUserMessage = (sessionId: number, message: string) => {
+    axios
+      .post(`/api/agent/sessions/${sessionId}/messages`, {
+        content: message,
+      })
+      .then((response) => {
+        console.info('[agent.ts] sendUserMessage', response.data)
+      })
+      .catch((error) => {
+        console.error('[agent.ts] sendUserMessage', error)
+      })
+  }
+
+  /**
    * Select an ai agent session
    * @param session - The session to select
    */
@@ -71,11 +88,7 @@ export const useAgentStore = defineStore('agent', () => {
   const appendMessageToSession = (sessionId: number, message: AgentMessage) => {
     const sessionToUpdate = sessions.value.find((s) => s.id === sessionId)
     if (sessionToUpdate) {
-      console.info('[agent.ts] appendMessageToSession: session found', sessionToUpdate)
-      console.info('[agent.ts] appendMessageToSession: message', message)
       sessionToUpdate.messages.push(message)
-      // update session in sessions array
-      // sessions.value = sessions.value.map((s) => s.id === sessionId ? sessionToUpdate : s)
     } else {
       console.error('[agent.ts] appendMessageToSession: session not found, id: ', sessionId)
     }
@@ -88,5 +101,6 @@ export const useAgentStore = defineStore('agent', () => {
     sessions,
     selectedSession,
     appendMessageToSession,
+    sendUserMessage,
   }
 })

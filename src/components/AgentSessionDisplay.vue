@@ -183,7 +183,8 @@
       <Separator />
       <div class="min-h-0 flex-1">
         <AgentSessionMessages id="session-messages"
-                              :messages="session.messages" />
+                              :messages="session.messages"
+                              :selected-session-id="session.id" />
       </div>
     </div>
     <div v-else

@@ -38,6 +38,7 @@
                placeholder="Type a message..."
                class="flex-1" />
         <Button class="flex items-center justify-center p-2.5"
+                type="submit"
                 :disabled="inputLength === 0">
           <PaperPlaneIcon class="size-4" />
           <span class="sr-only">Send</span>
@@ -48,19 +49,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PaperPlaneIcon } from '@radix-icons/vue'
 import type { AgentMessage } from '@/stores/agent'
+import { useAgentStore } from '@/stores/agent'
 
 interface AgentSessionMessagesProps {
   messages: AgentMessage[]
+  selectedSessionId: number
 }
 
 const props = defineProps<AgentSessionMessagesProps>()
-
+const agentStore = useAgentStore()
 // const messages = ref([
 //   { author_id: 0, content: 'Hi, how can I help you today?' },
 //   { author_id: 1, content: 'Hey, I\'m having trouble with my account.' },
@@ -74,6 +77,12 @@ const inputLength = computed(() => input.value.trim().length)
 const messages = computed(() => props.messages)
 
 const handleUserMessageSubmit = () => {
-  console.log('[AgentSessionMessages.vue] handleUserMessageSubmit', input.value)
+  agentStore.sendUserMessage(props.selectedSessionId, input.value)
+  input.value = ''
 }
+
+// when message list changes, reset input
+watch(messages, () => {
+  input.value = ''
+})
 </script>
