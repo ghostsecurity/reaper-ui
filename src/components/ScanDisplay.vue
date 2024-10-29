@@ -87,7 +87,7 @@
         </div>
         <div v-if="domain.last_scanned_at"
              class="ml-auto text-xs text-muted-foreground">
-          {{ domain.last_scanned_at }}
+          last scanned {{ formatDistanceToNow(new Date(domain.last_scanned_at), { addSuffix: true }) }}
         </div>
       </div>
       <Separator />
