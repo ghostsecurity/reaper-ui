@@ -159,11 +159,11 @@ const links: LinkProp[] = [
     icon: 'lucide:scroll-text',
     href: '/reports',
   },
-  {
-    title: 'Settings',
-    icon: 'lucide:settings',
-    href: '/settings',
-  },
+  // {
+  //   title: 'Settings',
+  //   icon: 'lucide:settings',
+  //   href: '/settings',
+  // },
 ]
 
 onMounted(() => {

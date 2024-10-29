@@ -1,9 +1,14 @@
 <template>
   <div class="hidden h-full md:flex">
     <div class="flex w-64 flex-col">
-      <div class="p-2">
-        <AccountSwitcher :is-collapsed="false"
-                         :accounts="accounts" />
+      <div v-if="projectsEnabled"
+           class="p-2">
+        <ProjectSwitcher :is-collapsed="false"
+                         :projects="projects" />
+      </div>
+      <div class="flex items-center gap-2 p-3.5 font-bold">
+        <GhostLogo class="size-6 text-primary" />
+        Reaper
       </div>
       <Separator />
       <SideNav :is-collapsed="false" />
@@ -40,19 +45,6 @@
           <div>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <Icon icon="lucide:sliders-horizontal"
-                        class="size-4" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>System Settings</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <div>
-            <TooltipProvider>
-              <Tooltip>
                 <TooltipTrigger @click="sessionStore.signOut">
                   <Icon icon="lucide:door-open"
                         class="size-4" />
@@ -72,7 +64,7 @@
 
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
-import AccountSwitcher from '@/components/AccountSwitcher.vue'
+import ProjectSwitcher from '@/components/ProjectSwitcher.vue'
 import SideNav from '@/components/SideNav.vue'
 import {
   Tooltip,
@@ -81,9 +73,10 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import Separator from '@/components/ui/separator/Separator.vue'
+import GhostLogo from '@/components/brand/GhostLogo.vue'
+
 import { useConfigStore } from '@/stores/config'
 import { useSessionStore } from '@/stores/session'
-import { accounts } from '@/data/mails'
 import { storeToRefs } from 'pinia'
 
 defineProps<{
@@ -93,4 +86,6 @@ defineProps<{
 const config = useConfigStore()
 const sessionStore = useSessionStore()
 const { loggedIn } = storeToRefs(sessionStore)
+const projectsEnabled = false
+const projects = [{ value: 'ghostbank', label: 'Ghostbank', icon: 'lucide:ghost' }]
 </script>

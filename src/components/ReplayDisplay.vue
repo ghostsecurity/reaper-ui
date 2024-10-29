@@ -200,17 +200,17 @@
                     v-model="bodyText"></textarea>
         </div>
         <div class="rounded-md bg-background shadow-sm">
-          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold flex items-center justify-between">
+          <div class="flex items-center justify-between rounded-t-md bg-muted p-2 text-xs font-semibold">
             <div class="flex items-center">
               Response
-              <div class="ml-4 text-xs flex items-center cursor-ns-resize">
+              <div class="ml-4 flex cursor-ns-resize items-center text-xs">
                 <Rows2 class="size-4" />
                 <span class="ml-1">
                   Show Headers
                 </span>
               </div>
             </div>
-            <div class="ml-4 text-xs flex items-center cursor-copy">
+            <div class="ml-4 flex cursor-copy items-center text-xs">
               <Copy class="size-4" />
               <span class="ml-1">
                 Copy
