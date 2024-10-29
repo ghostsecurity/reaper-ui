@@ -24,6 +24,9 @@
             </TabsList>
           </div>
           <Separator />
+          <HelperHint hint-key="reports.main">
+            View and filter available reports.
+          </HelperHint>
           <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="relative">
               <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
@@ -71,6 +74,8 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import ReportsList from './ReportsList.vue'
 import ReportsDisplay from './ReportsDisplay.vue'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import HelperHint from '@/components/HelperHint.vue'
+
 import { useReportStore } from '@/stores/report'
 import type { Report } from '@/stores/report'
 

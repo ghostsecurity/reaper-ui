@@ -21,6 +21,9 @@
         </div>
 
         <Separator />
+        <HelperHint hint-key="explore.main">
+          Enable the proxy to explore targets.
+        </HelperHint>
         <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <form>
             <div class="relative">
@@ -55,6 +58,8 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import HelperHint from './HelperHint.vue'
+
 import { useExploreStore } from '@/stores/explore'
 
 const searchValue = ref('')

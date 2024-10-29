@@ -24,6 +24,9 @@
             </TabsList>
           </div>
           <Separator />
+          <HelperHint hint-key="replay.main">
+            Select a request to manipulate and replay.
+          </HelperHint>
           <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="relative">
               <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
@@ -33,7 +36,7 @@
             </div>
           </div>
           <TabsContent value="all"
-                       class="m-0 bg-secondary/50">
+                       class="m-0">
             <ReplayList v-model:selected-request="selectedRequest"
                         :items="filteredRequestList" />
           </TabsContent>
@@ -71,6 +74,8 @@ import {
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import HelperHint from '@/components/HelperHint.vue'
+
 import { useRequestStore } from '@/stores/request'
 import { type ReaperRequest } from '@/stores/request'
 

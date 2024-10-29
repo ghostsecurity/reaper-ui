@@ -7,42 +7,57 @@
       <ResizablePanel id="resize-panel-2"
                       :default-size="defaultLayout[1]"
                       :min-size="20">
-        <Tabs default-value="all">
-          <div class="flex items-center px-4 py-2">
-            <h1 class="text-xl font-bold">
-              AI Agent Sessions
-            </h1>
-            <TabsList class="ml-auto">
-              <TabsTrigger value="all"
-                           class="text-zinc-600 dark:text-zinc-200">
-                All
-              </TabsTrigger>
-              <TabsTrigger value="active"
-                           class="text-zinc-600 dark:text-zinc-200">
-                Active
-              </TabsTrigger>
-            </TabsList>
+        <div class="flex items-center justify-between px-4 py-2.5">
+          <h1 class="text-xl font-bold">
+            Sessions
+          </h1>
+          <Dialog v-model:open="isModalOpen">
+            <DialogTrigger as-child>
+              <Button variant="outline"
+                      size="sm">
+                <CircleFadingPlus class="mr-2 w-4" />New Session
+              </Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>New session</DialogTitle>
+                <DialogDescription>
+                  Start a new AI session.
+                </DialogDescription>
+              </DialogHeader>
+              <div class="py-0">
+                <Input id="name"
+                       v-model="sessionName"
+                       placeholder="example.com session"
+                       @keyup.enter.prevent="handleCreateSession"
+                       class="w-full" />
+                <div class="h-4 text-xs font-medium text-destructive">{{ errors }}</div>
+              </div>
+              <DialogFooter>
+                <Button type="submit"
+                        @click.prevent="handleCreateSession">
+                  New session
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <Separator />
+        <HelperHint hint-key="agent.session.list">
+          You can add components to your app using the cli.
+        </HelperHint>
+        <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div class="relative">
+            <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+            <Input v-model="searchValue"
+                   placeholder="filter..."
+                   class="pl-8" />
           </div>
-          <Separator />
-          <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div class="relative">
-              <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-              <Input v-model="searchValue"
-                     placeholder="filter..."
-                     class="pl-8" />
-            </div>
-          </div>
-          <TabsContent value="all"
-                       class="m-0">
-            <AgentSessionsList v-model:selected-session="selectedSession"
-                               :items="filteredSessionList" />
-          </TabsContent>
-          <TabsContent value="active"
-                       class="m-0">
-            <AgentSessionsList v-model:selected-session="selectedSession"
-                               :items="filteredSessionList" />
-          </TabsContent>
-        </Tabs>
+        </div>
+        <div class="px-4">
+          <AgentSessionsList v-model:selected-session="selectedSession"
+                             :items="filteredSessionList" />
+        </div>
       </ResizablePanel>
       <ResizableHandle id="resiz-handle-2"
                        with-handle />
@@ -62,27 +77,42 @@ import { refDebounced } from '@vueuse/core'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { CircleFadingPlus } from 'lucide-vue-next'
 import AgentSessionsList from './AgentSessionsList.vue'
 import AgentSessionDisplay from './AgentSessionDisplay.vue'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import HelperHint from '@/components/HelperHint.vue'
+
 import { useAgentStore } from '@/stores/agent'
 import type { AgentSession } from '@/stores/agent'
 
 const agentStore = useAgentStore()
 const sessions = computed(() => agentStore.sessions)
+const errors = computed(() => agentStore.errors)
 
 const selectedSession = ref<number | undefined>(sessions.value.length > 0 ? sessions.value[0].id : undefined)
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
+const isModalOpen = ref(false)
+const sessionName = ref('')
+
 const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
+
+const handleCreateSession = () => {
+  isModalOpen.value = false
+}
 
 const filteredSessionList = computed(() => {
   let output: AgentSession[] = []

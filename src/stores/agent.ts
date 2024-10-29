@@ -26,7 +26,7 @@ export type AgentSession = {
 export const useAgentStore = defineStore('agent', () => {
   const sessions = ref<AgentSession[]>([])
   const selectedSession = ref<AgentSession | null>(null)
-
+  const errors = ref<string>('')
   /**
    * Get all ai agent sessions
    */
@@ -100,6 +100,7 @@ export const useAgentStore = defineStore('agent', () => {
     getSessions,
     deleteSession,
     selectSession,
+    errors,
     sessions,
     selectedSession,
     appendMessageToSession,

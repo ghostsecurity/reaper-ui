@@ -24,6 +24,9 @@
             </TabsList>
           </div>
           <Separator />
+          <HelperHint hint-key="test.main">
+            Select an endpoint to launch a dynamic test against it.
+          </HelperHint>
           <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="relative">
               <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
@@ -33,7 +36,7 @@
             </div>
           </div>
           <TabsContent value="all"
-                       class="m-0 bg-secondary/50">
+                       class="m-0">
             <AttackList v-model:selected-endpoint="selectedEndpoint"
                         :items="filteredEndpointList" />
           </TabsContent>
@@ -71,6 +74,8 @@ import {
 } from '@/components/ui/tabs'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import HelperHint from '@/components/HelperHint.vue'
+
 import { useEndpointStore } from '@/stores/endpoint'
 import type { Endpoint } from '@/stores/endpoint'
 

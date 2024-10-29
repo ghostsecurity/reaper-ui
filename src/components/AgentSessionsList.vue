@@ -1,6 +1,6 @@
 <template>
   <ScrollArea class="flex h-screen">
-    <div class="flex flex-1 flex-col gap-2 p-4 pt-0">
+    <div class="flex flex-1 flex-col gap-2 py-4 pt-0">
       <TransitionGroup name="list"
                        appear>
         <button v-for="item of items"
@@ -42,24 +42,6 @@
     </div>
   </ScrollArea>
 </template>
-
-<style scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(15px);
-}
-
-.list-leave-active {
-  position: absolute;
-}
-</style>
 
 <script lang="ts" setup>
 import { formatDistanceToNow } from 'date-fns'

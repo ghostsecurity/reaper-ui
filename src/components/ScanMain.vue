@@ -59,7 +59,10 @@
           </Dialog>
         </div>
         <Separator />
-        <div class="bg-background/95 px-2 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <HelperHint hint-key="scan.main">
+          Add a domain to scan for live hosts and subdomains.
+        </HelperHint>
+        <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div class="relative flex items-center gap-2">
             <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
             <Input v-model="searchValue"
@@ -102,6 +105,8 @@ import { Input } from '@/components/ui/input'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { CircleFadingPlus } from 'lucide-vue-next'
+import HelperHint from './HelperHint.vue'
+
 import type { Domain } from '@/stores/scan'
 import { useScanStore } from '@/stores/scan'
 
