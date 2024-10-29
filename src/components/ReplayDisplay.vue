@@ -180,15 +180,34 @@
         </div>
       </div>
       <Separator />
-      <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-1 text-sm text-foreground/80">
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ request?.headers?.length > 0 ? formattedBody(request.headers) : '-' }}</pre>
+      <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-2 text-sm text-foreground/80">
+        <div class="rounded-md bg-background shadow-sm">
+          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
+            Request Headers
+          </div>
+          <textarea class="min-h-48 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+                    name=""
+                    spellcheck="false"
+                    v-model="headersText"></textarea>
         </div>
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ request?.body?.length > 0 ? formattedBody(request.body) : '-' }}</pre>
+        <div class="rounded-md bg-background shadow-sm">
+          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
+            Request Body
+          </div>
+          <textarea class="min-h-64 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+                    name=""
+                    spellcheck="false"
+                    v-model="bodyText"></textarea>
         </div>
-        <div class="rounded-md bg-background p-2">
-          <pre class="text-xs">{{ formattedBody(request.response.body) }}</pre>
+        <div class="rounded-md bg-background shadow-sm">
+          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
+            Response
+          </div>
+          <textarea class="min-h-64 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+                    name=""
+                    disabled
+                    spellcheck="false"
+                    v-model="responseText"></textarea>
         </div>
       </div>
     </div>
@@ -217,6 +236,27 @@ interface ReplayDisplayProps {
 }
 
 const props = defineProps<ReplayDisplayProps>()
+
+const headersText = computed(() => {
+  if (props.request && props.request.headers.length > 0) {
+    return formattedBody(props.request.headers)
+  }
+  return ''
+})
+
+const bodyText = computed(() => {
+  if (props.request && props.request.body.length > 0) {
+    return formattedBody(props.request.body)
+  }
+  return ''
+})
+
+const responseText = computed(() => {
+  if (props.request && props.request.response.body.length > 0) {
+    return formattedBody(props.request.response.body)
+  }
+  return ''
+})
 
 const mailFallbackName = computed(() => {
   return props.request?.url

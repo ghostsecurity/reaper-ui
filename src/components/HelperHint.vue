@@ -10,7 +10,7 @@
           ×
         </span>
       </div>
-      <AlertDescription class="mt-1">
+      <AlertDescription class="mt-1 text-foreground/80">
         <slot />
       </AlertDescription>
     </Alert>
@@ -23,6 +23,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { BadgeInfo } from 'lucide-vue-next'
 
 interface HelperHintProps {
+  // the key to use for the hint in local storage
   hintKey: string
 }
 
