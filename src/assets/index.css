@@ -16,15 +16,15 @@
 }
 /* custom report markdown styles */
 #report-markdown h1 {
-  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-2xl mt-8;
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-2xl mt-0;
 }
 
 #report-markdown h2 {
-  @apply mt-10 scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight transition-colors mt-4;
+  @apply mt-16 scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight transition-colors mt-4 border-black;
 }
 
 #report-markdown h3 {
-  @apply scroll-m-20 text-lg font-semibold tracking-tight mt-2;
+  @apply scroll-m-20 text-lg font-semibold tracking-tight mt-4;
 }
 
 #report-markdown h4 {
@@ -47,11 +47,14 @@
 #report-markdown pre {
   @apply rounded bg-muted p-2 font-mono text-xs mt-2;
 }
+#report-markdown code {
+  @apply text-wrap;
+}
 
 #report-markdown p code {
-  @apply rounded bg-muted p-1 font-mono font-semibold text-xs mt-2;
+  @apply rounded bg-muted p-1 font-mono font-semibold text-xs mt-2 text-wrap;
 }
 
 #report-markdown li code {
-  @apply rounded bg-muted p-1 font-mono font-semibold text-xs mt-2;
+  @apply rounded bg-muted p-1 font-mono font-semibold text-xs mt-2 text-wrap;
 }
