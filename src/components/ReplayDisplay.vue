@@ -185,7 +185,7 @@
           <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Headers
           </div>
-          <textarea class="min-h-48 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+          <textarea class="min-h-48 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
                     spellcheck="false"
                     v-model="headersText"></textarea>
@@ -194,7 +194,7 @@
           <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Body
           </div>
-          <textarea class="min-h-64 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+          <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
                     spellcheck="false"
                     v-model="bodyText"></textarea>
@@ -203,7 +203,7 @@
           <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
             Response
           </div>
-          <textarea class="min-h-64 w-full resize-y rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+          <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
                     disabled
                     spellcheck="false"
