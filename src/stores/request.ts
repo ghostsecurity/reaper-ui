@@ -18,6 +18,7 @@ export type ReaperResponse = {
 export type ReaperRequest = {
   id: number
   headers: string
+  host: string
   method: string
   url: string
   body: string

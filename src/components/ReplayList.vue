@@ -12,11 +12,11 @@
                 @click="selectedRequest = item.id">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
-              <div class="flex items-center gap-2">
+              <div class="flex min-w-0 flex-1 items-center gap-2">
                 <RequestMethod :code="item.response.status_code">
                   {{ item.method }}
                 </RequestMethod>
-                <span class="text-xs font-semibold">{{ pathFromURI(item.url) }}</span>
+                <div class="truncate text-xs font-semibold">{{ pathFromURI(item.url) }}</div>
               </div>
             </div>
 

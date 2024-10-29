@@ -16,6 +16,9 @@ defineProps<{
 }>()
 
 function badgeColorFromStatus(code: number) {
+  if (code < 0)
+    return 'bg-gray-50 border-gray-500/10 text-gray-600'
+
   if (code >= 0 && code < 300)
     return 'bg-green-50 border-green-600/20 text-green-700'
 

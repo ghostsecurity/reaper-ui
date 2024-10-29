@@ -94,13 +94,14 @@
       <div class="h-screen space-y-2 overflow-y-auto bg-muted/50 p-2 pb-10 text-xs">
         <div v-for="host in filteredHosts"
              :key="host.id"
-             class="flex justify-between rounded-md bg-background p-1 shadow-sm">
+             class="group flex justify-between rounded-md bg-background p-1 shadow-sm">
           <div class="flex items-center gap-2">
             <div class="m-2 flex flex-col items-center rounded-sm p-1"
                  :class="host.status === 'live' ? ' text-primary' : 'text-secondary'">
               <Hexagon class="size-4" />
-              <span class="h-4 py-1 text-2xs font-semibold text-primary/80">{{ host.status_code && host.status_code > 0
-                ? host.status_code : '-' }}</span>
+              <span class="h-4 py-1 text-2xs font-semibold text-muted-foreground group-hover:text-primary/80">{{
+                host.status_code && host.status_code > 0
+                  ? host.status_code : '-' }}</span>
             </div>
             <div class="flex space-x-4">
               <div class="w-64">
@@ -128,14 +129,9 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <div>
+            <div class="text-xs text-muted-foreground group-hover:text-foreground">
               {{ formatDistanceToNow(new Date(host.updated_at), { addSuffix: true }) }}
             </div>
-            <Button variant="ghost"
-                    size="icon"
-                    class="h-8">
-              <MoreHorizontal class="size-4" />
-            </Button>
           </div>
         </div>
       </div>
@@ -150,7 +146,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { formatDistanceToNow } from 'date-fns'
-import { Binoculars, Hexagon, MoreHorizontal, MoreVertical, Trash2 } from 'lucide-vue-next'
+import { Binoculars, Hexagon, MoreVertical, Trash2 } from 'lucide-vue-next'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'

@@ -31,7 +31,7 @@
         <TableCell class="text-center font-medium">{{ domain.host_count && domain.host_count > 0 &&
           utils.customNumberFormat(domain.host_count) }}
         </TableCell>
-        <TableCell class="text-center">
+        <TableCell class="text-center text-muted-foreground">
           {{ domain.last_scanned_at && utils.timeAgoInWords(domain.last_scanned_at) }}
         </TableCell>
       </TableRow>

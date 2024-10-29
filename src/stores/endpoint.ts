@@ -34,6 +34,7 @@ export type AttackResult = {
 export const useEndpointStore = defineStore('endpoint', () => {
   const endpoints = ref<Endpoint[]>([])
   const results = ref<AttackResult[]>([])
+  const errors = ref<string[]>([])
   const attackRunning = ref(false)
   const attackComplete = ref(false)
 
@@ -65,14 +66,16 @@ export const useEndpointStore = defineStore('endpoint', () => {
       .catch((error) => {
         console.error("[request.ts]", error)
       })
-      .finally(() => {
-        attackRunning.value = false
-        attackComplete.value = true
-      })
   }
 
   const addResult = (result: AttackResult) => {
     results.value.push(result)
+  }
+
+  const attackCompleted = () => {
+    console.log("[!!!] attack completed")
+    attackComplete.value = true
+    attackRunning.value = false
   }
 
   const clearResults = (endpoint: Endpoint) => {
@@ -95,10 +98,12 @@ export const useEndpointStore = defineStore('endpoint', () => {
   return {
     addResult,
     attackComplete,
+    attackCompleted,
     attackRunning,
     clearResults,
     emptyResults,
     endpoints,
+    errors,
     results,
     getEndpoints,
     startAttack,

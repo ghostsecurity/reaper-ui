@@ -46,7 +46,10 @@
             <div class="mr-4 truncate font-semibold text-foreground/80">
               {{ request.url }}
             </div>
-            <div class="flex items-center justify-between gap-2 text-xs">
+            <div class="space-y-1 text-xs">
+              <div class="font-medium text-muted-foreground">
+                {{ request.host }}
+              </div>
               <div>
                 {{ request.response.content_type }}
               </div>

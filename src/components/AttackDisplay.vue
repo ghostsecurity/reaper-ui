@@ -6,28 +6,6 @@
           <TooltipTrigger as-child>
             <Button variant="ghost"
                     size="icon"
-                    :disabled="!endpoint">
-              <Archive class="size-4" />
-              <span class="sr-only">Archive</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Archive</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!endpoint">
-              <ArchiveX class="size-4" />
-              <span class="sr-only">Move to junk</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Move to junk</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
                     :disabled="!endpoint"
                     @click="clearResults">
               <Trash2 class="size-4" />
@@ -36,156 +14,46 @@
           </TooltipTrigger>
           <TooltipContent>Clear all results</TooltipContent>
         </Tooltip>
-        <Separator orientation="vertical"
-                   class="mx-1 h-6" />
-        <Tooltip>
-          <Popover>
-            <PopoverTrigger as-child>
-              <TooltipTrigger as-child>
-                <Button variant="ghost"
-                        size="icon"
-                        :disabled="!endpoint">
-                  <Clock class="size-4" />
-                  <span class="sr-only">Snooze</span>
-                </Button>
-              </TooltipTrigger>
-            </PopoverTrigger>
-            <PopoverContent class="flex w-[535px] p-0">
-              <div class="flex flex-col gap-2 border-r px-2 py-4">
-                <div class="px-4 text-sm font-medium">
-                  Snooze until
-                </div>
-                <div class="grid min-w-[250px] gap-1">
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Later today
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addHours(today, 4), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Tomorrow
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 1), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    This weekend
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(nextSaturday(today), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Next week
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 7), "E, h:m b") }}
-                    </span>
-                  </Button>
-                </div>
-              </div>
-              <div class="p-2">
-                <Calendar />
-              </div>
-            </PopoverContent>
-          </Popover>
-          <TooltipContent>Snooze</TooltipContent>
-        </Tooltip>
       </div>
       <div class="ml-auto flex items-center gap-2">
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!endpoint">
-              <Reply class="size-4" />
-              <span class="sr-only">Reply</span>
+        <Dialog v-model:open="isModalOpen">
+          <DialogTrigger as-child>
+            <Button variant="outline"
+                    :disabled="!endpoint || attackRunning">
+              <PocketKnifeIcon class="mr-2 size-4" />Create a test
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reply</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!endpoint">
-              <ReplyAll class="size-4" />
-              <span class="sr-only">Reply all</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reply all</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!endpoint">
-              <Forward class="size-4" />
-              <span class="sr-only">Forward</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Forward</TooltipContent>
-        </Tooltip>
-      </div>
-      <Separator orientation="vertical"
-                 class="mx-2 h-6" />
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <Button variant="ghost"
-                  size="icon"
-                  :disabled="!endpoint">
-            <MoreVertical class="size-4" />
-            <span class="sr-only">More</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>Mark as unread</DropdownMenuItem>
-          <DropdownMenuItem>Star thread</DropdownMenuItem>
-          <DropdownMenuItem>Add label</DropdownMenuItem>
-          <DropdownMenuItem>Mute thread</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-    <Separator />
-    <div v-if="endpoint"
-         class="flex flex-1 flex-col">
-      <div class="flex items-start p-4">
-        <div class="flex items-start gap-4 text-sm">
-          <div class="grid gap-1">
-            <div class="font-semibold">
-              {{ endpoint.path }}
-            </div>
-            <div class="line-clamp-1 text-xs">
-              {{ endpoint.method }}
-            </div>
-            <div class="flex items-center justify-between gap-2 text-xs">
-              <div>
-                {{ endpoint.hostname }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-if="endpoint.created_at"
-             class="ml-auto space-y-4 text-xs text-muted-foreground">
-          <div>
-            {{ format(new Date(endpoint.created_at), "PPpp") }}
-          </div>
-          <div>
+          </DialogTrigger>
+          <DialogContent class="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>New dynamic test</DialogTitle>
+              <DialogDescription>
+                Create and run a new dynamic test on this endpoint.
+              </DialogDescription>
+              <DialogDescription class="rounded-md bg-muted p-2 text-xs font-medium">
+                <RequestMethod :code="-1">
+                  {{ endpoint?.method }}
+                </RequestMethod>
+                <span class="ml-2 text-xs">
+                  {{ endpoint?.path }}
+                </span>
+              </DialogDescription>
+            </DialogHeader>
+            <span class="text-xs font-medium">
+              Test type
+            </span>
             <Popover v-model:open="attackTemplateSelectOpen">
               <PopoverTrigger as-child>
                 <Button variant="outline"
                         role="combobox"
                         :aria-expanded="attackTemplateSelectOpen"
-                        class="w-[360px] justify-between">
+                        class="w-full justify-between">
                   {{ attackTemplateSelectValue
                     ? testTypes.find((tt) => tt.value === attackTemplateSelectValue)?.label
                     : "Select test type..." }}
                   <CaretSortIcon class="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent class="w-[350px] p-0">
+              <PopoverContent class="w-full p-0">
                 <Command>
                   <CommandInput class="h-9"
                                 placeholder="Search test type..." />
@@ -210,43 +78,99 @@
                 </Command>
               </PopoverContent>
             </Popover>
-          </div>
+            <div v-if="attackTemplateSelectValue === 'idor'"
+                 class="flex flex-col gap-4">
+              <span class="text-xs font-medium">
+                Included parameters
+              </span>
+              <div class="mx-1 space-y-2 text-muted-foreground">
+                <div class="flex items-center gap-2">
+                  <Checkbox />
+                  <label
+                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    account_from
+                  </label>
+                </div>
+                <div class="flex items-center gap-2">
+                  <Checkbox />
+                  <label
+                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    account_to
+                  </label>
+                </div>
+                <div class="flex items-center gap-2">
+                  <Checkbox />
+                  <label
+                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    amount
+                  </label>
+                </div>
+              </div>
+              <span class="text-xs text-muted-foreground">These parameters were dynamically determined from previous
+                requests to this endpoint. Included parameters will be used as test inputs, while the rest of parameters
+                will be left intact from the original request.</span>
+            </div>
+            <div v-if="unsupportedTest">
+              <span class="text-xs font-medium">
+                Unsupported test type
+              </span>
+              <div class="mt-1 space-y-2 text-xs text-muted-foreground">
+                We'll be adding more test types soon. In the meantime, please submit an issue on <a
+                   href="https://github.com/ghostsecurity/reaper/issues"
+                   target="_blank"
+                   class="text-foreground">GitHub</a>.
+              </div>
+            </div>
+            <DialogFooter>
+              <div>
+                <Button type="submit"
+                        @click.prevent="handleCreateTest"
+                        :disabled="attackRunning"
+                        v-if="!attackRunning && !attackComplete && !unsupportedTest">
+                  <PocketKnifeIcon class="mr-2 size-4" />
+                  {{ attackRunning ? 'Starting...' : 'Start test' }}
+                </Button>
+                <Button class="w-full"
+                        :disabled="attackRunning"
+                        v-if="attackRunning">
+                  <RefreshCwIcon class="mr-2 size-4 animate-spin" /> Test running...
+                </Button>
+                <Button class="w-full"
+                        v-if="attackComplete && !attackRunning"
+                        @click="viewReport">
+                  <ScrollText class="mr-2 size-4" /> View report
+                </Button>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+    <Separator />
+    <div v-if="endpoint"
+         class="flex flex-1 flex-col">
+      <div class="flex items-start p-4">
+        <div class="mr-4 flex items-start gap-4 text-sm">
           <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-2">
-              <Checkbox />
-              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                account_from
-              </label>
+            <RequestMethod :code="-1">
+              {{ endpoint.method }}
+            </RequestMethod>
+          </div>
+          <div class="grid gap-1">
+            <div class="mr-4 truncate font-semibold text-foreground/80">
+              {{ endpoint.path }}
             </div>
-            <div class="flex items-center gap-2">
-              <Checkbox />
-              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                account_to
-              </label>
-            </div>
-            <div class="flex items-center gap-2">
-              <Checkbox />
-              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                amount
-              </label>
+            <div class="space-y-1 text-xs">
+              <div class="font-medium text-muted-foreground">
+                {{ endpoint.hostname }}
+              </div>
             </div>
           </div>
-          <div class="w-full">
-            <Button class="w-full"
-                    :disabled="attackRunning"
-                    v-if="!attackRunning && !attackComplete"
-                    @click="startAttack">
-              <PocketKnifeIcon class="mr-2 size-4" /> Start test
-            </Button>
-            <Button class="w-full"
-                    :disabled="attackRunning"
-                    v-if="attackRunning">
-              <RefreshCwIcon class="mr-2 size-4 animate-spin" /> Attack running...
-            </Button>
-            <Button class="w-full"
-                    v-if="attackComplete && !attackRunning">
-              <ScrollText class="mr-2 size-4" /> View report
-            </Button>
+        </div>
+        <div v-if="endpoint.created_at"
+             class="ml-auto space-y-4 text-xs text-muted-foreground">
+          <div>
+            {{ format(new Date(endpoint.created_at), "PPpp") }}
           </div>
         </div>
       </div>
@@ -254,7 +178,7 @@
       <div class="h-screen justify-center space-y-2 overflow-y-auto bg-muted/50 p-1 text-sm">
         <div v-for="result in endpointStore.results"
              :key="result.id"
-             class="flex flex-col items-start gap-2 rounded-md border bg-background/95 p-3 text-left text-sm transition-all hover:bg-accent/50">
+             class="flex flex-col items-start gap-2 rounded-md bg-background/95 p-3 text-left text-sm shadow-sm transition-all hover:bg-accent/50">
           <Badge variant="outline"
                  class="border-green-600/20 bg-green-50 px-1 text-green-700">
             <div class="text-2xs font-semibold uppercase">
@@ -264,7 +188,7 @@
           <span class="text-xs text-muted-foreground">{{ result.request }}</span>
         </div>
         <div v-if="endpointStore.results.length < 1"
-             class="text-foreground-muted p-8 font-medium">
+             class="text-foreground-muted p-8 text-center font-medium">
           No results yet. Start a dynamic test.
         </div>
       </div>
@@ -277,12 +201,20 @@
 </template>
 
 <script lang="ts" setup>
-import { Archive, ArchiveX, Clock, Forward, MoreVertical, PocketKnifeIcon, RefreshCwIcon, Reply, ReplyAll, ScrollText, Trash2 } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
-import { addDays, addHours, format, nextSaturday } from 'date-fns'
+import { useRouter } from 'vue-router'
+import { PocketKnifeIcon, RefreshCwIcon, ScrollText, Trash2 } from 'lucide-vue-next'
+import { format } from 'date-fns'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Calendar } from '@/components/ui/calendar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -299,10 +231,13 @@ import {
 import { CaretSortIcon, CheckIcon } from '@radix-icons/vue'
 import type { Endpoint } from '@/stores/endpoint'
 import { useEndpointStore } from '@/stores/endpoint'
+import RequestMethod from './shared/RequestMethod.vue'
+
 interface EndpointDisplayProps {
   endpoint: Endpoint | undefined
 }
 
+const router = useRouter()
 const endpointStore = useEndpointStore()
 const attackTemplateSelectOpen = ref(false)
 const attackTemplateSelectValue = ref('')
@@ -310,9 +245,9 @@ const attackRunning = computed(() => endpointStore.attackRunning)
 const attackComplete = computed(() => endpointStore.attackComplete)
 const props = defineProps<EndpointDisplayProps>()
 
-const today = new Date()
+const isModalOpen = ref(false)
 
-const startAttack = () => {
+const handleCreateTest = () => {
   if (props.endpoint) {
     endpointStore.startAttack(props.endpoint)
   }
@@ -325,7 +260,7 @@ const clearResults = () => {
 }
 
 const testTypes = [
-  { value: '-', label: '-' },
+  { value: 'idor', label: 'Insecure Direct Object Reference (IDOR/BOLA)' },
   { value: 'bf', label: 'Brute Force' },
   { value: 'sqli', label: 'SQL Injection (SQLi)' },
   { value: 'header', label: 'HTTP Header Injection' },
@@ -335,7 +270,14 @@ const testTypes = [
   { value: 'lfi', label: 'Local File Inclusion (LFI)' },
   { value: 'patht', label: 'Path Traversal' },
   { value: 'ssti', label: 'Server Side Template Injection (SSTI)' },
-  { value: 'idor', label: 'Insecure Direct Object References (IDOR/BOLA)' },
   { value: 'cmdi', label: 'Command Injection (cmd/shell)' },
 ]
+
+const unsupportedTest = computed(() => {
+  return attackTemplateSelectValue.value !== 'idor' && attackTemplateSelectValue.value.length > 0
+})
+
+const viewReport = () => {
+  router.push("/reports")
+}
 </script>

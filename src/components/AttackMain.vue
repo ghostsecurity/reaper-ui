@@ -31,6 +31,7 @@
             <div class="relative">
               <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
               <Input v-model="searchValue"
+                     spellcheck="false"
                      placeholder="filter..."
                      class="pl-8" />
             </div>
