@@ -7,145 +7,29 @@
             <Button variant="ghost"
                     size="icon"
                     :disabled="!request">
-              <Archive class="size-4" />
-              <span class="sr-only">Archive</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Archive</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!request">
-              <ArchiveX class="size-4" />
-              <span class="sr-only">Move to junk</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Move to junk</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!request">
               <Trash2 class="size-4" />
               <span class="sr-only">Move to trash</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>Move to trash</TooltipContent>
         </Tooltip>
-        <Separator orientation="vertical"
-                   class="mx-1 h-6" />
-        <Tooltip>
-          <Popover>
-            <PopoverTrigger as-child>
-              <TooltipTrigger as-child>
-                <Button variant="ghost"
-                        size="icon"
-                        :disabled="!request">
-                  <Clock class="size-4" />
-                  <span class="sr-only">Snooze</span>
-                </Button>
-              </TooltipTrigger>
-            </PopoverTrigger>
-            <PopoverContent class="flex w-[535px] p-0">
-              <div class="flex flex-col gap-2 border-r px-2 py-4">
-                <div class="px-4 text-sm font-medium">
-                  Snooze until
-                </div>
-                <div class="grid min-w-[250px] gap-1">
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Later today
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addHours(today, 4), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Tomorrow
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 1), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    This weekend
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(nextSaturday(today), "E, h:m b") }}
-                    </span>
-                  </Button>
-                  <Button variant="ghost"
-                          class="justify-start font-normal">
-                    Next week
-                    <span class="ml-auto text-muted-foreground">
-                      {{ format(addDays(today, 7), "E, h:m b") }}
-                    </span>
-                  </Button>
-                </div>
-              </div>
-              <div class="p-2">
-                <Calendar />
-              </div>
-            </PopoverContent>
-          </Popover>
-          <TooltipContent>Snooze</TooltipContent>
-        </Tooltip>
       </div>
       <div class="ml-auto flex items-center gap-2">
         <Tooltip>
           <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
+            <Button variant="outline"
+                    @click="handleReplay"
                     :disabled="!request">
-              <Reply class="size-4" />
-              <span class="sr-only">Reply</span>
+              {{ sendButtonText }}
+              <ReplaceIcon class="ml-2 size-4 scale-x-[-1] transform" />
+              <span class="sr-only">{{ sendButtonText }}</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Reply</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!request">
-              <ReplyAll class="size-4" />
-              <span class="sr-only">Reply all</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reply all</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <Button variant="ghost"
-                    size="icon"
-                    :disabled="!request">
-              <Forward class="size-4" />
-              <span class="sr-only">Forward</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Forward</TooltipContent>
+          <TooltipContent>
+            {{ sendButtonText }}
+          </TooltipContent>
         </Tooltip>
       </div>
-      <Separator orientation="vertical"
-                 class="mx-2 h-6" />
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <Button variant="ghost"
-                  size="icon"
-                  :disabled="!request">
-            <MoreVertical class="size-4" />
-            <span class="sr-only">More</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>Mark as unread</DropdownMenuItem>
-          <DropdownMenuItem>Star thread</DropdownMenuItem>
-          <DropdownMenuItem>Add label</DropdownMenuItem>
-          <DropdownMenuItem>Mute thread</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
     <Separator />
     <div v-if="request"
@@ -182,8 +66,10 @@
       <Separator />
       <div class="h-screen space-y-2 overflow-y-auto whitespace-pre-wrap bg-muted/50 p-2 text-sm text-foreground/80">
         <div class="rounded-md bg-background shadow-sm">
-          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
+          <div class="flex gap-2 rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Headers
+            <Asterisk v-if="requestHeadersIsModified"
+                      class="size-4 text-primary" />
           </div>
           <textarea class="min-h-48 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
@@ -191,37 +77,34 @@
                     v-model="headersText"></textarea>
         </div>
         <div class="rounded-md bg-background shadow-sm">
-          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
+          <div class="flex gap-2 rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Body
+            <Asterisk v-if="requestBodyIsModified"
+                      class="size-4 text-primary" />
           </div>
           <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
                     spellcheck="false"
                     v-model="bodyText"></textarea>
         </div>
-        <div class="rounded-md bg-background shadow-sm">
-          <div class="flex items-center justify-between rounded-t-md bg-muted p-2 text-xs font-semibold">
+        <div class="rounded-md bg-muted shadow-sm">
+          <div class="flex items-center justify-between rounded-t-md p-2 text-xs font-semibold">
             <div class="flex items-center">
               Response
-              <div class="ml-4 flex cursor-ns-resize items-center text-xs">
-                <Rows2 class="size-4" />
-                <span class="ml-1">
-                  Show Headers
-                </span>
-              </div>
             </div>
-            <div class="ml-4 flex cursor-copy items-center text-xs">
+            <div class="ml-4 flex cursor-pointer items-center text-xs"
+                 @click="handleCopyResponse">
               <Copy class="size-4" />
               <span class="ml-1">
                 Copy
               </span>
             </div>
           </div>
-          <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
+          <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-muted p-2 font-mono text-xs focus:outline-none"
                     name=""
                     disabled
                     spellcheck="false"
-                    v-model="responseText"></textarea>
+                    v-model="responseTextFormatted"></textarea>
         </div>
       </div>
     </div>
@@ -233,16 +116,16 @@
 </template>
 
 <script lang="ts" setup>
-import { Archive, ArchiveX, Clock, Copy, Forward, MoreVertical, Reply, ReplyAll, Trash2, Rows2 } from 'lucide-vue-next'
-import { computed } from 'vue'
-import { addDays, addHours, format, nextSaturday } from 'date-fns'
-import { Calendar } from '@/components/ui/calendar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { ref, computed, watch } from 'vue'
+import { Asterisk, Copy, ReplaceIcon, Trash2 } from 'lucide-vue-next'
+import { format } from 'date-fns'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+
+import { useReplayStore } from '@/stores/replay'
+import { type ReplayPayload } from '@/stores/replay'
 import { type ReaperRequest } from '@/stores/request'
 
 interface ReplayDisplayProps {
@@ -250,27 +133,45 @@ interface ReplayDisplayProps {
 }
 
 const props = defineProps<ReplayDisplayProps>()
+const replayStore = useReplayStore()
+const originalRequestHeadersText = ref('')
+const originalRequestBodyText = ref('')
+const headersText = ref('')
+const bodyText = ref('')
+const responseText = ref('')
 
-const headersText = computed(() => {
-  if (props.request && props.request.headers.length > 0) {
-    return formattedBody(props.request.headers)
-  }
-  return ''
+const requestHeadersIsModified = computed(() => {
+  return headersText.value !== originalRequestHeadersText.value
 })
 
-const bodyText = computed(() => {
-  if (props.request && props.request.body.length > 0) {
-    return formattedBody(props.request.body)
-  }
-  return ''
+const requestBodyIsModified = computed(() => {
+  return bodyText.value !== originalRequestBodyText.value
 })
 
-const responseText = computed(() => {
-  if (props.request && props.request.response.body.length > 0) {
-    return formattedBody(props.request.response.body)
-  }
-  return ''
+const sendButtonText = computed(() => {
+  return requestHeadersIsModified.value || requestBodyIsModified.value ? 'Replay modified' : 'Replay original'
 })
+
+const handleReplay = () => {
+  const request: ReplayPayload = {
+    request: props.request!,
+    method: props.request?.method || 'GET',
+    url: props.request?.url || '',
+    headers: headersText.value,
+    body: bodyText.value,
+  }
+  replayStore.replayRequest(request)
+    .then((response) => {
+      responseText.value = replayStore.decodePayload(response.body)
+    })
+    .catch((error) => {
+      console.error("[ReplayDisplay.vue] handleReplay", error)
+    })
+}
+
+const handleCopyResponse = () => {
+  navigator.clipboard.writeText(responseTextFormatted.value)
+}
 
 const mailFallbackName = computed(() => {
   return props.request?.url
@@ -279,14 +180,24 @@ const mailFallbackName = computed(() => {
     .join('')
 })
 
-const today = new Date()
-
-const formattedBody = (body: string) => {
+const responseTextFormatted = computed(() => {
   try {
-    return JSON.stringify(JSON.parse(body), null, 2)
+    return JSON.stringify(JSON.parse(responseText.value), null, 2)
   }
   catch {
-    return body
+    return responseText.value
   }
-}
+})
+
+watch(() => props.request, (newRequest) => {
+  if (newRequest) {
+    originalRequestHeadersText.value = newRequest.headers || ''
+    originalRequestBodyText.value = newRequest.body || ''
+    headersText.value = originalRequestHeadersText.value
+    bodyText.value = originalRequestBodyText.value
+    if (newRequest.response.body) {
+      responseText.value = newRequest.response.body
+    }
+  }
+}, { immediate: true })
 </script>

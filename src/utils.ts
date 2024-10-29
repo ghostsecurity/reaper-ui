@@ -12,7 +12,6 @@ interface UtilStore {
 }
 
 export function useUtilStore(): UtilStore {
-
   const localeTimestamp = (ts: number) => {
     const date = new Date(ts * 1000)
     const timeString = date.toLocaleTimeString(userLocale, {
@@ -68,7 +67,6 @@ export function useUtilStore(): UtilStore {
     }
     return formatter.format(n)
   }
-
 
   return {
     customNumberFormat,
