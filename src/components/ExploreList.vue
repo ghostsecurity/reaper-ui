@@ -32,15 +32,15 @@
                   </svg>
                   <div class="my-1 flex w-full min-w-0 cursor-pointer rounded-sm pr-1 hover:bg-secondary">
                     <div class="w-10 flex-shrink-0">
-                      <span
-                            class="rounded-sm border border-green-300 bg-green-100 px-1 py-0.5 text-2xs font-medium text-green-700">
-                        {{ endpoint.method }}</span>
+                      <RequestMethod :code="endpoint.status">
+                        {{ endpoint.method }}
+                      </RequestMethod>
                     </div>
                     <div class="flex w-full min-w-0 justify-between">
                       <div class="ml-1 truncate text-foreground/80">{{ endpoint.path }}</div>
-                      <div
-                           class="mx-1 flex-shrink-0 rounded-sm border border-foreground/20 bg-background px-1 text-2xs font-semibold text-foreground/60">
-                        {{ endpoint.status }}</div>
+                      <RequestMethod :code="endpoint.status">
+                        {{ endpoint.status }}
+                      </RequestMethod>
                     </div>
                   </div>
                 </div>
@@ -62,6 +62,8 @@
 import { storeToRefs } from 'pinia'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
+import RequestMethod from '@/components/shared/RequestMethod.vue'
+
 import { useExploreStore } from '@/stores/explore'
 
 const exploreStore = useExploreStore()

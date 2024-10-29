@@ -10,7 +10,7 @@
           ×
         </span>
       </div>
-      <AlertDescription class="mt-1 text-foreground/80">
+      <AlertDescription class="mt-1 text-xs font-medium text-foreground/80">
         <slot />
       </AlertDescription>
     </Alert>

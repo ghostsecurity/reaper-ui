@@ -13,12 +13,9 @@
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
-                <Badge variant="outline"
-                       :class="badgeColorFromStatus(item.response.status_code)">
-                  <div class="text-2xs font-semibold">
-                    {{ item.method }}
-                  </div>
-                </Badge>
+                <RequestMethod :code="item.response.status_code">
+                  {{ item.method }}
+                </RequestMethod>
                 <span class="text-xs font-semibold">{{ pathFromURI(item.url) }}</span>
               </div>
             </div>
@@ -43,7 +40,8 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import RequestMethod from '@/components/shared/RequestMethod.vue'
+
 import { type ReaperRequest } from '@/stores/request'
 
 interface ReplayListProps {
@@ -61,15 +59,5 @@ const pathFromURI = (uri: string) => {
 const hostFromURI = (uri: string) => {
   const url = new URL(uri)
   return url.host
-}
-
-function badgeColorFromStatus(status: number) {
-  if (status >= 0 && status < 300)
-    return 'bg-green-50 border-green-600/20 text-green-700'
-
-  if (status >= 300 && status < 400)
-    return 'bg-yellow-50 border-yellow-600/20 text-yellow-700'
-
-  return 'bg-red-50 border-red-600/20 text-red-700'
 }
 </script>

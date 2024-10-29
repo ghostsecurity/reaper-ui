@@ -35,23 +35,18 @@
     <div v-if="request"
          class="flex flex-1 flex-col">
       <div class="flex items-start p-4">
-        <div class="flex items-start gap-4 text-sm">
-          <Avatar>
-            <AvatarFallback>
-              {{ mailFallbackName }}
-            </AvatarFallback>
-          </Avatar>
+        <div class="mr-4 flex items-start gap-4 text-sm">
+          <div class="flex flex-col gap-2">
+            <RequestMethod :code="request.response.status_code">
+              {{ request.method }}
+            </RequestMethod>
+            <div class="text-center text-xs font-medium">{{ request.response.status_code }}</div>
+          </div>
           <div class="grid gap-1">
-            <div class="font-semibold">
+            <div class="mr-4 truncate font-semibold text-foreground/80">
               {{ request.url }}
             </div>
-            <div class="line-clamp-1 text-xs">
-              {{ request.method }} / res: {{ request.response.content_length }}
-            </div>
             <div class="flex items-center justify-between gap-2 text-xs">
-              <div>
-                <span class="font-medium">Status:</span> {{ request.response.status }}
-              </div>
               <div>
                 {{ request.response.content_type }}
               </div>
@@ -59,8 +54,8 @@
           </div>
         </div>
         <div v-if="request.created_at"
-             class="ml-auto text-xs text-muted-foreground">
-          {{ format(new Date(request.created_at), "PPpp") }}
+             class="ml-auto w-36 text-xs text-muted-foreground">
+          {{ formatDistanceToNow(new Date(request.created_at), { addSuffix: true }) }}
         </div>
       </div>
       <Separator />
@@ -118,12 +113,11 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import { Asterisk, Copy, ReplaceIcon, Trash2 } from 'lucide-vue-next'
-import { format } from 'date-fns'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { formatDistanceToNow } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-
+import RequestMethod from '@/components/shared/RequestMethod.vue'
 import { useReplayStore } from '@/stores/replay'
 import { type ReplayPayload } from '@/stores/replay'
 import { type ReaperRequest } from '@/stores/request'
@@ -172,13 +166,6 @@ const handleReplay = () => {
 const handleCopyResponse = () => {
   navigator.clipboard.writeText(responseTextFormatted.value)
 }
-
-const mailFallbackName = computed(() => {
-  return props.request?.url
-    .split(' ')
-    .map(chunk => chunk[0])
-    .join('')
-})
 
 const responseTextFormatted = computed(() => {
   try {
