@@ -200,8 +200,22 @@
                     v-model="bodyText"></textarea>
         </div>
         <div class="rounded-md bg-background shadow-sm">
-          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold">
-            Response
+          <div class="rounded-t-md bg-muted p-2 text-xs font-semibold flex items-center justify-between">
+            <div class="flex items-center">
+              Response
+              <div class="ml-4 text-xs flex items-center cursor-ns-resize">
+                <Rows2 class="size-4" />
+                <span class="ml-1">
+                  Show Headers
+                </span>
+              </div>
+            </div>
+            <div class="ml-4 text-xs flex items-center cursor-copy">
+              <Copy class="size-4" />
+              <span class="ml-1">
+                Copy
+              </span>
+            </div>
           </div>
           <textarea class="min-h-64 w-full resize-y whitespace-pre rounded-sm bg-background p-2 font-mono text-xs focus:outline-none"
                     name=""
@@ -219,7 +233,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+import { Archive, ArchiveX, Clock, Copy, Forward, MoreVertical, Reply, ReplyAll, Trash2, Rows2 } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { addDays, addHours, format, nextSaturday } from 'date-fns'
 import { Calendar } from '@/components/ui/calendar'
