@@ -22,21 +22,22 @@
               <DialogHeader>
                 <DialogTitle>New session</DialogTitle>
                 <DialogDescription>
-                  Start a new AI session.
+                  Start with a descriptive name of your AI driven workflow.
                 </DialogDescription>
               </DialogHeader>
               <div class="py-0">
                 <Input id="name"
                        v-model="sessionName"
-                       placeholder="example.com session"
+                       placeholder="example.com dynamic security test"
                        @keyup.enter.prevent="handleCreateSession"
                        class="w-full" />
                 <div class="h-4 text-xs font-medium text-destructive">{{ errors }}</div>
               </div>
               <DialogFooter>
                 <Button type="submit"
-                        @click.prevent="handleCreateSession">
-                  New session
+                        @click.prevent="handleCreateSession"
+                        :disabled="!sessionName">
+                  Create session
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -105,13 +106,27 @@ const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
 const isModalOpen = ref(false)
+const isSubmitting = ref(false)
 const sessionName = ref('')
 
 const defaultLayout = ref([20, 30, 70])
 // const navCollapsedSize = ref(2)
 
 const handleCreateSession = () => {
-  isModalOpen.value = false
+  if (!sessionName.value) return
+
+  isSubmitting.value = true
+  agentStore.createSession({
+    description: sessionName.value,
+  })
+    .then(() => {
+      // close the modal and reset the form
+      isModalOpen.value = false
+      sessionName.value = ''
+    })
+    .finally(() => {
+      isSubmitting.value = false
+    })
 }
 
 const filteredSessionList = computed(() => {
@@ -122,7 +137,7 @@ const filteredSessionList = computed(() => {
   }
   else {
     output = sessions.value.filter((item) => {
-      return item.domain.includes(debouncedSearch.value)
+      return item.description.includes(debouncedSearch.value)
     })
   }
 

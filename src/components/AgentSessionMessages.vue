@@ -64,14 +64,6 @@ interface AgentSessionMessagesProps {
 
 const props = defineProps<AgentSessionMessagesProps>()
 const agentStore = useAgentStore()
-// const messages = ref([
-//   { author_id: 0, content: 'Hi, how can I help you today?' },
-//   { author_id: 1, content: 'Hey, I\'m having trouble with my account.' },
-//   { author_id: 0, content: 'What seems to be the problem?' },
-//   { author_id: 1, content: 'I can\'t log in.' },
-//   { author_id: 0, content: 'Thinking...' },
-// ])
-
 const input = ref('')
 const inputLength = computed(() => input.value.trim().length)
 const messages = computed(() => props.messages)

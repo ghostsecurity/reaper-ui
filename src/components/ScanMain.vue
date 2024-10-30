@@ -133,7 +133,7 @@ const handleAddDomain = () => {
     auto_scan: autoScan.value,
   })
     .then(() => {
-      // If successful, close the modal and reset the form
+      // close the modal and reset the form
       isModalOpen.value = false
       domainName.value = ''
       autoScan.value = false
