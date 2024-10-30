@@ -34,38 +34,47 @@
             </div>
           </form>
         </div>
-
-        <ExploreList />
+        <ExploreList :hosts="filteredHostList"
+                     v-model:searchValue="searchValue" />
       </ResizablePanel>
-      <ResizableHandle id="resiz-handle-2"
+      <ResizableHandle id="resize-handle-2"
                        with-handle />
       <ResizablePanel id="resize-panel-3"
                       :default-size="defaultLayout[2]">
-        <ExploreInstructions />
+        <ExploreDisplay :endpoint="undefined" />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
 </template>
 
 <script lang="ts" setup>
-import { Search } from 'lucide-vue-next'
 import { ref, onMounted, computed } from 'vue'
+import { refDebounced } from '@vueuse/core'
 import ExploreList from './ExploreList.vue'
-import ExploreInstructions from './ExploreInstructions.vue'
+import ExploreDisplay from './ExploreDisplay.vue'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Search } from 'lucide-vue-next'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import HelperHint from './HelperHint.vue'
 
 import { useExploreStore } from '@/stores/explore'
-
+import { type Host } from '@/stores/explore'
 const searchValue = ref('')
+const debouncedSearch = refDebounced(searchValue, 250)
 const defaultLayout = ref([20, 30, 70])
 const exploreStore = useExploreStore()
-
+const hosts = computed(() => exploreStore.hosts)
+/**
+ * TODO: fix this; we don't have and endpoint ID, only the current endpoints stored 
+ * in the store. If we want to navigate to a specific endpoint, we need to find it
+ * by host index (ExploreList.vue `i`) and endpoint index (ExploreList.vue `j`).
+ */
+// const selectedEndpoint = defineModel<number>('selectedEndpoint', { required: false })
+// const selectedEndpointData = computed(() => exploreStore.endpoints.find(item => item.id === selectedEndpoint.value))
 const proxyStatus = computed(() => exploreStore.proxy.enabled)
 
 const handleProxyStatusToggle = () => {
@@ -75,6 +84,22 @@ const handleProxyStatusToggle = () => {
     exploreStore.proxyStart()
   }
 }
+
+const filteredHostList = computed(() => {
+  let output: Host[] = []
+  const searchValue = debouncedSearch.value?.trim()
+  if (!searchValue) {
+    output = hosts.value
+  }
+  else {
+    output = hosts.value.filter((item) => {
+      return item.name.includes(debouncedSearch.value)
+        || item.endpoints.some(e => e.path.includes(debouncedSearch.value))
+    })
+  }
+
+  return output
+})
 
 onMounted(() => {
   exploreStore.proxyStatus()

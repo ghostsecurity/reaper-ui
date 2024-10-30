@@ -3,17 +3,21 @@
     <div class="flex flex-1 flex-col gap-2 p-4 pt-0">
       <div>
         <ul class="space-y-0.5 text-sm">
-          <li v-for="(host, index) in hosts"
-              :key="host.name + index">
-            <div class="flex items-center justify-between rounded-md bg-secondary px-2 py-1">
-              <span class="text-xs font-semibold">{{ host.name }}</span>
+          <li v-for="(host, i) in hosts"
+              :key="host.name + i">
+            <div class="flex group items-center justify-between rounded-md bg-secondary px-2 py-1">
+              <span class="text-xs font-semibold flex items-center gap-2 cursor-pointer"
+                    @click="searchValue = host.name">{{ host.name }}
+                <ScanEyeIcon class="size-4 hidden group-hover:block" />
+              </span>
               <span v-if="host.endpoints?.length > 0"
                     class="text-xs font-semibold text-muted-foreground">{{ host.endpoints.length }}</span>
             </div>
             <ul v-if="host.endpoints"
                 class="pl-2 pt-1 text-xs">
-              <li v-for="(endpoint, jdx) in host.endpoints"
-                  :key="endpoint.path + jdx">
+              <li v-for="(endpoint, j) in host.endpoints"
+                  @click="selectedEndpoint = endpoint.id"
+                  :key="endpoint.path + j">
                 <div class="flex items-center">
                   <svg width="18"
                        height="26"
@@ -24,7 +28,7 @@
                        class="-top-2 left-4 flex-shrink-0 text-foreground">
                     <path d="M1 -4 V18"
                           stroke-width="2" />
-                    <path v-if="jdx != host.endpoints.length - 1"
+                    <path v-if="j != host.endpoints.length - 1"
                           d="M1 -4 V48"
                           stroke-width="2" />
                     <path d="M1 14V17.5C1 20.2614 3.23858 22.5 6 22.5H15"
@@ -49,23 +53,22 @@
           </li>
         </ul>
       </div>
-      <div v-if="false">
-        <Button @click="exploreStore.addHost({ name: 'api.homedepot.com', endpoints: [] })">Add Host</Button>
-        <Button @click="exploreStore.addEndpoint('api.homedepot.com', { path: '/foo/bar', status: -1 })">Add
-          Endpoint</Button>
-      </div>
     </div>
   </ScrollArea>
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Button } from '@/components/ui/button'
+import { ScanEyeIcon } from 'lucide-vue-next';
 import RequestMethod from '@/components/shared/RequestMethod.vue'
+import { type Host } from '@/stores/explore'
 
-import { useExploreStore } from '@/stores/explore'
+interface ExploreListProps {
+  hosts: Host[]
+}
 
-const exploreStore = useExploreStore()
-const { hosts } = storeToRefs(exploreStore)
+defineProps<ExploreListProps>()
+const searchValue = defineModel('searchValue')
+
+const selectedEndpoint = defineModel<number>('selectedEndpoint', { required: false })
 </script>

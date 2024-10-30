@@ -4,13 +4,13 @@ import { useAxiosClient } from '@/stores/axios'
 
 const axios = useAxiosClient()
 
-type Host = {
+export type Host = {
   id?: number
   name: string
   endpoints: Endpoint[]
 }
 
-type Endpoint = {
+export type Endpoint = {
   id?: number
   method?: string
   path: string

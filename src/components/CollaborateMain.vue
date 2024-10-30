@@ -53,7 +53,7 @@
                        with-handle />
       <ResizablePanel id="resize-panel-3"
                       :default-size="defaultLayout[2]">
-        <ExploreInstructions />
+        <ExploreDisplay :endpoint="undefined" />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
 
-import ExploreInstructions from './ExploreInstructions.vue'
+import ExploreDisplay from './ExploreDisplay.vue'
 import { Separator } from '@/components/ui/separator'
 import {
   Card,

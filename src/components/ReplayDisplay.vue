@@ -113,8 +113,8 @@
       </div>
     </div>
     <div v-else
-         class="p-8 text-center text-muted-foreground">
-      No message selected
+         class="p-8 text-center text-sm text-muted-foreground">
+      No requests selected
     </div>
   </div>
 </template>
@@ -134,8 +134,8 @@ import { type ReaperRequest } from '@/stores/request'
 interface ReplayDisplayProps {
   request: ReaperRequest | undefined
 }
-
 const props = defineProps<ReplayDisplayProps>()
+
 const replayStore = useReplayStore()
 const replayInProgress = ref(false)
 const originalRequestHeadersText = ref('')

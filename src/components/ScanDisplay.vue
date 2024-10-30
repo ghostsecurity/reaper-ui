@@ -28,22 +28,6 @@
           <TooltipContent>Delete domain</TooltipContent>
         </Tooltip>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <Button variant="ghost"
-                  size="icon"
-                  :disabled="!domain">
-            <MoreVertical class="size-4" />
-            <span class="sr-only">More</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>Mark as unread</DropdownMenuItem>
-          <DropdownMenuItem>Star domain</DropdownMenuItem>
-          <DropdownMenuItem>Add label</DropdownMenuItem>
-          <DropdownMenuItem>Mute domain</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
     <Separator />
     <div v-if="domain"
@@ -146,8 +130,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { formatDistanceToNow } from 'date-fns'
-import { Binoculars, Hexagon, MoreVertical, Trash2 } from 'lucide-vue-next'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Binoculars, Hexagon, Trash2 } from 'lucide-vue-next'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
