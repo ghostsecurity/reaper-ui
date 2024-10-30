@@ -66,6 +66,8 @@
         <div class="rounded-md bg-background shadow-sm">
           <div class="flex gap-2 rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Headers
+            <LoaderCircle v-if="replayInProgress"
+                          class="size-4 animate-spin" />
             <Asterisk v-if="requestHeadersIsModified"
                       class="size-4 text-primary" />
           </div>
@@ -77,6 +79,8 @@
         <div class="rounded-md bg-background shadow-sm">
           <div class="flex gap-2 rounded-t-md bg-muted p-2 text-xs font-semibold">
             Request Body
+            <LoaderCircle v-if="replayInProgress"
+                          class="size-4 animate-spin" />
             <Asterisk v-if="requestBodyIsModified"
                       class="size-4 text-primary" />
           </div>
@@ -89,6 +93,8 @@
           <div class="flex items-center justify-between rounded-t-md p-2 text-xs font-semibold">
             <div class="flex items-center">
               Response
+              <LoaderCircle v-if="replayInProgress"
+                            class="size-4 animate-spin" />
             </div>
             <div class="ml-4 flex cursor-pointer items-center text-xs"
                  @click="handleCopyResponse">
@@ -115,7 +121,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import { Asterisk, Copy, ReplaceIcon, Trash2 } from 'lucide-vue-next'
+import { Asterisk, Copy, LoaderCircle, ReplaceIcon, Trash2 } from 'lucide-vue-next'
 import { formatDistanceToNow } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -131,6 +137,7 @@ interface ReplayDisplayProps {
 
 const props = defineProps<ReplayDisplayProps>()
 const replayStore = useReplayStore()
+const replayInProgress = ref(false)
 const originalRequestHeadersText = ref('')
 const originalRequestBodyText = ref('')
 const headersText = ref('')
@@ -146,6 +153,9 @@ const requestBodyIsModified = computed(() => {
 })
 
 const sendButtonText = computed(() => {
+  if (replayInProgress.value) {
+    return 'Replaying...'
+  }
   return requestHeadersIsModified.value || requestBodyIsModified.value ? 'Replay modified' : 'Replay original'
 })
 
@@ -157,12 +167,15 @@ const handleReplay = () => {
     headers: headersText.value,
     body: bodyText.value,
   }
+  replayInProgress.value = true
   replayStore.replayRequest(request)
     .then((response) => {
       responseText.value = replayStore.decodePayload(response.body)
+      replayInProgress.value = false
     })
     .catch((error) => {
       console.error("[ReplayDisplay.vue] handleReplay", error)
+      replayInProgress.value = false
     })
 }
 
