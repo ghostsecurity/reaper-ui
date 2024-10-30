@@ -188,14 +188,14 @@
           <span class="text-xs text-muted-foreground">{{ result.request }}</span>
         </div>
         <div v-if="endpointStore.results.length < 1"
-             class="text-foreground-muted p-8 text-center font-medium">
+             class="p-8 text-center font-medium text-muted-foreground">
           No results yet. Start a dynamic test.
         </div>
       </div>
     </div>
     <div v-else
          class="p-8 text-center text-muted-foreground">
-      No endpoint selected
+      No endpoint selected.
     </div>
   </div>
 </template>

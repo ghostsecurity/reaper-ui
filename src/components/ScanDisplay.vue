@@ -121,8 +121,8 @@
       </div>
     </div>
     <div v-else
-         class="p-8 text-center text-sm text-muted-foreground">
-      No domain selected
+         class="p-8 text-center text-sm font-medium text-muted-foreground">
+      No domain selected.
     </div>
   </div>
 </template>

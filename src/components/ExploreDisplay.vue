@@ -15,7 +15,7 @@
       </div>
     </div>
     <Separator />
-    <div class="p-8 text-center text-sm text-muted-foreground">
+    <div class="p-8 text-center text-sm font-medium text-muted-foreground">
       To explore hosts and endpoints, start browsing using the Reaper proxy.
     </div>
     <div>

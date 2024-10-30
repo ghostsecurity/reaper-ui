@@ -54,8 +54,8 @@
       </div>
     </div>
     <div v-else
-         class="p-8 text-center text-muted-foreground">
-      No report selected
+         class="p-8 text-center text-sm font-medium text-muted-foreground">
+      No report selected.
     </div>
   </div>
 </template>
