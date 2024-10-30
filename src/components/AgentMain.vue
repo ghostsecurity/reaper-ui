@@ -44,7 +44,7 @@
         </div>
         <Separator />
         <HelperHint hint-key="agent.session.list">
-          You can add components to your app using the cli.
+          Start an AI session to experiance how context-aware AI can help you drive intelligent and efficient workflows.
         </HelperHint>
         <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div class="relative">
