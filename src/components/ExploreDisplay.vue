@@ -18,6 +18,14 @@
     <div class="p-8 text-center text-sm font-medium text-muted-foreground">
       To explore hosts and endpoints, start browsing using the Reaper proxy.
     </div>
+    <div class="p-4 text-center text-xs">
+      The default proxy URL is
+      <Badge as="child"
+             variant="outline"
+             class="text-muted-foreground">
+        <a href="http://localhost:8080">http://localhost:8080</a>
+      </Badge>
+    </div>
     <div>
       {{ endpoint }}
     </div>
@@ -26,6 +34,7 @@
 
 <script lang="ts" setup>
 import { Trash2 } from 'lucide-vue-next'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
