@@ -5,10 +5,10 @@
         <ul class="space-y-0.5 text-sm">
           <li v-for="(host, i) in hosts"
               :key="host.name + i">
-            <div class="flex group items-center justify-between rounded-md bg-secondary px-2 py-1">
-              <span class="text-xs font-semibold flex items-center gap-2 cursor-pointer"
+            <div class="group flex items-center justify-between rounded-md bg-secondary px-2 py-1">
+              <span class="flex cursor-pointer items-center gap-2 text-xs font-semibold"
                     @click="searchValue = host.name">{{ host.name }}
-                <ScanEyeIcon class="size-4 hidden group-hover:block" />
+                <ScanEyeIcon class="hidden size-4 group-hover:block" />
               </span>
               <span v-if="host.endpoints?.length > 0"
                     class="text-xs font-semibold text-muted-foreground">{{ host.endpoints.length }}</span>
