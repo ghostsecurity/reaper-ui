@@ -21,21 +21,14 @@
          class="flex flex-1 flex-col">
       <div class="flex items-start p-4">
         <div class="flex items-start gap-4 text-sm">
-          <div>XYZ</div>
           <div class="grid gap-1">
             <div class="font-semibold">
               {{ session.description }}
-            </div>
-            <div class="line-clamp-1 text-xs">
-              {{ session.id }}
-            </div>
-            <div class="flex items-center justify-between gap-2 text-xs">
-              <div>
-                <span class="font-medium">Status:</span> {{ session.description }}
-              </div>
-              <div>
-                {{ session.created_at }}
-              </div>
+              <Badge v-if="session.messages && session.messages.length > 0"
+                     variant="outline"
+                     class="text-muted-foreground">
+                {{ session.messages.length }}
+              </Badge>
             </div>
           </div>
         </div>
@@ -64,6 +57,7 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Badge } from '@/components/ui/badge'
 import AgentSessionMessages from './AgentSessionMessages.vue'
 
 import type { AgentSession } from '@/stores/agent'
