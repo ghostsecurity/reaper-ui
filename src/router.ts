@@ -6,7 +6,6 @@ import ReplayMain from './components/ReplayMain.vue'
 import AttackMain from './components/AttackMain.vue'
 import AgentMain from './components/AgentMain.vue'
 import ReportsMain from './components/ReportsMain.vue'
-import LogsMain from './components/LogsMain.vue'
 import SettingsMain from './components/SettingsMain.vue'
 import CollaborateMain from './components/CollaborateMain.vue'
 
@@ -20,7 +19,6 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/collaborate', name: 'collaborate', component: CollaborateMain },
   { path: '/settings', name: 'settings', component: SettingsMain },
   { path: '/reports', name: 'reports', component: ReportsMain },
-  { path: '/logs', name: 'logs', component: LogsMain },
 ]
 
 const router = createRouter({
