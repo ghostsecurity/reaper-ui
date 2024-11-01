@@ -19,29 +19,16 @@
     <Separator />
     <div v-if="report"
          class="flex flex-1 flex-col">
-      <div class="flex items-start p-4">
+      <div class="flex items-center p-4">
         <div class="flex items-start gap-4 text-sm">
-          <Avatar>
-            <AvatarFallback>
-              {{ mailFallbackName }}
-            </AvatarFallback>
-          </Avatar>
           <div class="grid gap-1">
-            <div class="font-semibold">
+            <div class="text-lg font-semibold">
               {{ report.domain }}
-            </div>
-            <div class="line-clamp-1 text-xs">
-              {{ report.id }}
-            </div>
-            <div class="flex items-center justify-between gap-2 text-xs">
-              <div>
-                <span class="font-medium">Status:</span> {{ report.status }}
-              </div>
             </div>
           </div>
         </div>
         <div v-if="report.created_at"
-             class="ml-auto text-xs text-muted-foreground">
+             class="ml-auto text-xs font-semibold text-muted-foreground">
           {{ format(new Date(report.created_at), "PPpp") }}
         </div>
       </div>
@@ -62,9 +49,7 @@
 
 <script lang="ts" setup>
 import { Trash2 } from 'lucide-vue-next'
-import { computed } from 'vue'
 import { format } from 'date-fns'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -80,12 +65,6 @@ interface ReportsDisplayProps {
 }
 
 const props = defineProps<ReportsDisplayProps>()
-const mailFallbackName = computed(() => {
-  return props.report?.domain
-    .split(' ')
-    .map(chunk => chunk[0])
-    .join('')
-})
 
 const handleDeleteReport = () => {
   if (props.report) {
