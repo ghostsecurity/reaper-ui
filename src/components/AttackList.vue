@@ -4,11 +4,9 @@
       <TransitionGroup name="list"
                        appear>
         <button v-for="item of items"
+                class="flex flex-col items-start gap-2 rounded-md border bg-background/95 p-3 text-left text-sm transition-all hover:bg-accent/50"
                 :key="item.id"
-                :class="cn(
-                  'flex flex-col items-start gap-2 rounded-md border p-3 text-left text-sm transition-all hover:bg-accent/50 bg-background/95',
-                  selectedEndpoint === item.id && 'bg-muted',
-                )"
+                :class="selectedEndpoint === item.id && 'bg-muted'"
                 @click="selectedEndpoint = item.id">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
@@ -42,7 +40,6 @@
 <script lang="ts" setup>
 import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import type { Endpoint } from '@/stores/endpoint'
 

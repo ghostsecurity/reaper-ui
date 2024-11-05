@@ -4,11 +4,9 @@
       <TransitionGroup name="list"
                        appear>
         <button v-for="item of items"
+                class="flex flex-col items-start gap-2 rounded-md border bg-background/95 p-3 text-left text-sm transition-all hover:bg-accent/50"
                 :key="item.id"
-                :class="cn(
-                  'flex flex-col items-start gap-2 rounded-md border p-3 text-left text-sm transition-all hover:bg-accent/50 bg-background/95',
-                  selectedRequest === item.id && 'bg-muted',
-                )"
+                :class="selectedRequest === item.id && 'bg-muted'"
                 @click="selectedRequest = item.id">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
@@ -39,7 +37,6 @@
 <script lang="ts" setup>
 import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn } from '@/lib/utils'
 import RequestMethod from '@/components/shared/RequestMethod.vue'
 
 import { type ReaperRequest } from '@/stores/request'
