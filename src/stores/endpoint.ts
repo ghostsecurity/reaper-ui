@@ -11,6 +11,7 @@ export type Endpoint = {
   method: string
   hostname: string
   path: string
+  params: string
   created_at: string
 }
 
@@ -37,6 +38,7 @@ export const useEndpointStore = defineStore('endpoint', () => {
   const errors = ref<string[]>([])
   const attackRunning = ref(false)
   const attackComplete = ref(false)
+  const selectedParams = ref<Set<string>>(new Set())
 
   const getEndpoints = () => {
     axios
@@ -52,11 +54,10 @@ export const useEndpointStore = defineStore('endpoint', () => {
   const startAttack = (endpoint: Endpoint) => {
     attackRunning.value = true
     attackComplete.value = false
-    console.log("start attack", endpoint)
 
     const payload = {
       endpoint_id: endpoint.id,
-      tags: ['ghost'],
+      params: Array.from(selectedParams.value),
     }
     axios
       .post(`/api/attack`, payload)
@@ -73,7 +74,6 @@ export const useEndpointStore = defineStore('endpoint', () => {
   }
 
   const attackCompleted = () => {
-    console.log("[!!!] attack completed")
     attackComplete.value = true
     attackRunning.value = false
   }
@@ -95,6 +95,18 @@ export const useEndpointStore = defineStore('endpoint', () => {
     results.value = []
   }
 
+  const isParamSelected = (param: string): boolean => {
+    return selectedParams.value.has(param)
+  }
+
+  const toggleParam = (param: string, checked: boolean) => {
+    if (checked) {
+      selectedParams.value.add(param)
+    } else {
+      selectedParams.value.delete(param)
+    }
+  }
+
   return {
     addResult,
     attackComplete,
@@ -107,5 +119,7 @@ export const useEndpointStore = defineStore('endpoint', () => {
     results,
     getEndpoints,
     startAttack,
+    isParamSelected,
+    toggleParam,
   }
 })

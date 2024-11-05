@@ -83,26 +83,16 @@
               <span class="text-xs font-medium">
                 Included parameters
               </span>
-              <div class="mx-1 space-y-2 text-muted-foreground">
-                <div class="flex items-center gap-2">
-                  <Checkbox />
+              <div v-if="endpoint"
+                   class="mx-1 space-y-2 text-muted-foreground">
+                <div v-for="param in endpoint.params.split(',')"
+                     :key="param"
+                     class="flex items-center gap-2">
+                  <Checkbox :checked="endpointStore.isParamSelected(param)"
+                            @update:checked="(checked) => endpointStore.toggleParam(param, checked)" />
                   <label
                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    account_from
-                  </label>
-                </div>
-                <div class="flex items-center gap-2">
-                  <Checkbox />
-                  <label
-                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    account_to
-                  </label>
-                </div>
-                <div class="flex items-center gap-2">
-                  <Checkbox />
-                  <label
-                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    amount
+                    {{ param }}
                   </label>
                 </div>
               </div>
