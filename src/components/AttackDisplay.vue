@@ -192,7 +192,6 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { PocketKnifeIcon, RefreshCwIcon, ScrollText, Trash2 } from 'lucide-vue-next'
 import { format } from 'date-fns'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -227,7 +226,6 @@ interface EndpointDisplayProps {
   endpoint: Endpoint | undefined
 }
 
-const router = useRouter()
 const endpointStore = useEndpointStore()
 const attackTemplateSelectOpen = ref(false)
 const attackTemplateSelectValue = ref('')
