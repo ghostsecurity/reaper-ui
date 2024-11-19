@@ -266,8 +266,4 @@ const testTypes = [
 const unsupportedTest = computed(() => {
   return attackTemplateSelectValue.value !== 'idor' && attackTemplateSelectValue.value.length > 0
 })
-
-const viewReport = () => {
-  router.push("/reports")
-}
 </script>
