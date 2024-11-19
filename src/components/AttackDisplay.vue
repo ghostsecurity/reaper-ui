@@ -127,8 +127,8 @@
                 </Button>
                 <Button class="w-full"
                         v-if="attackComplete && !attackRunning"
-                        @click="viewReport">
-                  <ScrollText class="mr-2 size-4" /> View report
+                        @click="isModalOpen = false">
+                  <ScrollText class="mr-2 size-4" /> View results
                 </Button>
               </div>
             </DialogFooter>
