@@ -8,6 +8,7 @@ import AgentMain from './components/AgentMain.vue'
 import ReportsMain from './components/ReportsMain.vue'
 import SettingsMain from './components/SettingsMain.vue'
 import CollaborateMain from './components/CollaborateMain.vue'
+import BrowserMain from './components/BrowserMain.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'root', component: ScanMain },
@@ -19,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/collaborate', name: 'collaborate', component: CollaborateMain },
   { path: '/settings', name: 'settings', component: SettingsMain },
   { path: '/reports', name: 'reports', component: ReportsMain },
+  { path: '/browser', name: 'browser', component: BrowserMain },
 ]
 
 const router = createRouter({

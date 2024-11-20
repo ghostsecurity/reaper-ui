@@ -81,7 +81,6 @@ import { useExploreStore } from '@/stores/explore'
 import { useCollabStore } from '@/stores/collab'
 import { useUtilStore } from '@/utils'
 
-
 export interface LinkProp {
   title: string
   count?: number
@@ -115,6 +114,11 @@ const links: LinkProp[] = [
     title: 'Scan',
     icon: 'lucide:binoculars',
     href: '/scan',
+  },
+  {
+    title: 'Browser',
+    icon: 'lucide:monitor',
+    href: '/browser',
   },
   {
     title: 'Explore',
