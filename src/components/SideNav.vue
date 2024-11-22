@@ -117,6 +117,12 @@ const links: LinkProp[] = [
     icon: 'lucide:earth',
     href: '/explore',
   },
+  // {
+  //   title: 'Crawl',
+  //   label: '279',
+  //   icon: 'lucide:bug-play',
+  //   href: '/crawl',
+  // },
   {
     title: 'Replay',
     icon: 'lucide:replace-all',
@@ -127,22 +133,41 @@ const links: LinkProp[] = [
     icon: 'lucide:pocket-knife',
     href: '/test',
   },
+  // {
+  //   title: 'Collaborate',
+  //   label: '',
+  //   icon: 'lucide:users',
+  //   href: '/collaborate'
+  // },
   {
     title: 'AI Agent',
     icon: 'lucide:brain-circuit',
     href: '/agent',
   },
+  // {
+  //   title: 'Logs',
+  //   label: '',
+  //   icon: 'lucide:scroll-text',
+  //   href: '/logs',
+  // },
   {
     title: 'Reports',
     icon: 'lucide:scroll-text',
     href: '/reports',
   },
-  {
-    title: 'Settings',
-    icon: 'lucide:settings',
-    href: '/settings',
-  },
+  // {
+  //   title: 'Settings',
+  //   icon: 'lucide:settings',
+  //   href: '/settings',
+  // },
 ]
+
+// Add settings as the last item
+links.push({
+  title: 'Settings',
+  icon: 'lucide:settings',
+  href: '/settings',
+})
 
 onMounted(() => {
   exploreStore.proxyStatus()
