@@ -81,7 +81,6 @@ import { useExploreStore } from '@/stores/explore'
 import { useCollabStore } from '@/stores/collab'
 import { useUtilStore } from '@/utils'
 
-
 export interface LinkProp {
   title: string
   count?: number
@@ -99,12 +98,9 @@ const route = useRoute()
 const isCollapsed = ref(false)
 
 const scanActive = computed(() => {
-  // true if any domain is 'pending', 'scanning', or 'probing'
   return scanStore.domains.some(domain => domain.status === 'pending' || domain.status === 'scanning' || domain.status === 'probing')
 })
 
-// TODO: refactor to use dynamic classes
-// https://router.vuejs.org/guide/essentials/active-links.html
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
@@ -165,6 +161,13 @@ const links: LinkProp[] = [
   //   href: '/settings',
   // },
 ]
+
+// Add settings as the last item
+links.push({
+  title: 'Settings',
+  icon: 'lucide:settings',
+  href: '/settings',
+})
 
 onMounted(() => {
   exploreStore.proxyStatus()
