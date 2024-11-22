@@ -81,7 +81,6 @@ import { useExploreStore } from '@/stores/explore'
 import { useCollabStore } from '@/stores/collab'
 import { useUtilStore } from '@/utils'
 
-
 export interface LinkProp {
   title: string
   count?: number
@@ -99,12 +98,9 @@ const route = useRoute()
 const isCollapsed = ref(false)
 
 const scanActive = computed(() => {
-  // true if any domain is 'pending', 'scanning', or 'probing'
   return scanStore.domains.some(domain => domain.status === 'pending' || domain.status === 'scanning' || domain.status === 'probing')
 })
 
-// TODO: refactor to use dynamic classes
-// https://router.vuejs.org/guide/essentials/active-links.html
 const isActiveRoute = (href: string | undefined) => {
   if (!href) return false
   return route.path === href
@@ -121,12 +117,6 @@ const links: LinkProp[] = [
     icon: 'lucide:earth',
     href: '/explore',
   },
-  // {
-  //   title: 'Crawl',
-  //   label: '279',
-  //   icon: 'lucide:bug-play',
-  //   href: '/crawl',
-  // },
   {
     title: 'Replay',
     icon: 'lucide:replace-all',
@@ -137,33 +127,21 @@ const links: LinkProp[] = [
     icon: 'lucide:pocket-knife',
     href: '/test',
   },
-  // {
-  //   title: 'Collaborate',
-  //   label: '',
-  //   icon: 'lucide:users',
-  //   href: '/collaborate'
-  // },
   {
     title: 'AI Agent',
     icon: 'lucide:brain-circuit',
     href: '/agent',
   },
-  // {
-  //   title: 'Logs',
-  //   label: '',
-  //   icon: 'lucide:scroll-text',
-  //   href: '/logs',
-  // },
   {
     title: 'Reports',
     icon: 'lucide:scroll-text',
     href: '/reports',
   },
-  // {
-  //   title: 'Settings',
-  //   icon: 'lucide:settings',
-  //   href: '/settings',
-  // },
+  {
+    title: 'Settings',
+    icon: 'lucide:settings',
+    href: '/settings',
+  },
 ]
 
 onMounted(() => {

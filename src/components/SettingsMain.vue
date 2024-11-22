@@ -1,112 +1,106 @@
 <template>
-  <TooltipProvider :delay-duration="0">
-    <ResizablePanelGroup id="resize-panel-group-1"
-                         direction="horizontal"
-                         class="h-full items-stretch">
-      <Separator orientation="vertical" />
-      <ResizablePanel id="resize-panel-2"
-                      :default-size="defaultLayout[1]"
-                      :min-size="20">
-        <Tabs default-value="all">
-          <div class="flex items-center px-4 py-2">
-            <h1 class="text-xl font-bold">
-              Settings
-            </h1>
-            <TabsList class="ml-auto">
-              <TabsTrigger value="all"
-                           class="text-zinc-600 dark:text-zinc-200">
-                All
-              </TabsTrigger>
-              <TabsTrigger value="unread"
-                           class="text-zinc-600 dark:text-zinc-200">
-                APIs
-              </TabsTrigger>
-            </TabsList>
-          </div>
-          <Separator />
-          <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="flex h-full flex-col">
+    <div class="flex items-center border-b px-6 py-4">
+      <h1 class="text-xl font-bold">Settings</h1>
+    </div>
+    <div class="flex-1 space-y-8 overflow-auto p-6">
+      <div class="space-y-4">
+        <h2 class="text-lg font-semibold">OpenAI Configuration</h2>
+        <div class="space-y-4">
+          <div class="grid gap-2">
+            <Label for="apiKey">API Key</Label>
             <div class="relative">
-              <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-              <Input v-model="searchValue"
-                     placeholder="filter..."
-                     class="pl-8" />
+              <Input 
+                :type="showApiKey ? 'text' : 'password'"
+                id="apiKey"
+                v-model="apiKey"
+                placeholder="Enter your OpenAI API key"
+              />
+              <button 
+                @click="showApiKey = !showApiKey"
+                class="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+              >
+                <Icon 
+                  :icon="showApiKey ? 'lucide:eye-off' : 'lucide:eye'"
+                  class="size-4"
+                />
+              </button>
             </div>
           </div>
-          <TabsContent value="all"
-                       class="m-0 bg-secondary/50">
-            <AttackList v-model:selected-endpoint="selectedEndpoint"
-                        :items="filteredEndpointList" />
-          </TabsContent>
-          <TabsContent value="unread"
-                       class="m-0">
-            <AttackList v-model:selected-endpoint="selectedEndpoint"
-                        :items="filteredEndpointList" />
-          </TabsContent>
-        </Tabs>
-      </ResizablePanel>
-      <ResizableHandle id="resiz-handle-2"
-                       with-handle />
-      <ResizablePanel id="resize-panel-3"
-                      :default-size="defaultLayout[2]">
-        <AttackDisplay :endpoint="selectedEndpointData" />
-      </ResizablePanel>
-    </ResizablePanelGroup>
-  </TooltipProvider>
+
+          <div class="grid gap-2">
+            <Label for="model">Model</Label>
+            <Select id="model" v-model="selectedModel">
+              <SelectTrigger>
+                <SelectValue placeholder="Select a model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Available Models</SelectLabel>
+                  <SelectItem value="gpt-4o">GPT-4 Optimized</SelectItem>
+                  <SelectItem value="gpt-4o-mini">GPT-4 Optimized Mini</SelectItem>
+                  <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
+                  <SelectItem value="gpt-4">GPT-4</SelectItem>
+                  <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Button 
+            @click="saveSettings"
+            class="mt-4"
+            :disabled="saving"
+          >
+            {{ saving ? 'Saving...' : 'Save Changes' }}
+          </Button>
+
+          <div v-if="openAIStore.errors" class="mt-2 text-sm text-red-500">
+            {{ openAIStore.errors }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue'
-
-import { Search } from 'lucide-vue-next'
-import { refDebounced } from '@vueuse/core'
-import AttackList from './AttackList.vue'
-import AttackDisplay from './AttackDisplay.vue'
-import { Separator } from '@/components/ui/separator'
-import { Input } from '@/components/ui/input'
+import { ref, onMounted } from 'vue'
+import { Icon } from '@iconify/vue'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Button } from './ui/button'
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
-import { TooltipProvider } from '@/components/ui/tooltip'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useEndpointStore } from '@/stores/endpoint'
-import type { Endpoint } from '@/stores/endpoint'
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
+import { useOpenAIStore } from '../stores/openai'
 
-const endpointStore = useEndpointStore()
-const endpoints = computed(() => endpointStore.endpoints)
+const openAIStore = useOpenAIStore()
+const showApiKey = ref(false)
+const apiKey = ref('')
+const selectedModel = ref('gpt-4o')
+const saving = ref(false)
 
-const selectedEndpoint = ref<number | undefined>(endpoints.value.length > 0 ? endpoints.value[0].id : undefined)
-const searchValue = ref('')
-const debouncedSearch = refDebounced(searchValue, 250)
-
-const defaultLayout = ref([20, 30, 70])
-// const navCollapsedSize = ref(2)
-
-const filteredEndpointList = computed(() => {
-  let output: Endpoint[] = []
-  const searchValue = debouncedSearch.value?.trim()
-  if (!searchValue) {
-    output = endpoints.value
+const saveSettings = async () => {
+  saving.value = true
+  try {
+    await openAIStore.updateSettings(apiKey.value, selectedModel.value)
+  } catch (error) {
+    console.error('Failed to save settings:', error)
+  } finally {
+    saving.value = false
   }
-  else {
-    output = endpoints.value.filter((item) => {
-      return item.hostname.includes(debouncedSearch.value)
-        || item.path.includes(debouncedSearch.value)
-    })
-  }
-
-  return output
-})
-
-
-const selectedEndpointData = computed(() => endpoints.value.find(item => item.id === selectedEndpoint.value))
+}
 
 onMounted(() => {
-  endpointStore.getEndpoints()
-  if (endpoints.value.length > 0) {
-    selectedEndpoint.value = endpoints.value[0].id
-  }
+  openAIStore.getSettings()
+  apiKey.value = openAIStore.apiKey
+  selectedModel.value = openAIStore.model
 })
 </script>
